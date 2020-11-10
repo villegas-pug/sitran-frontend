@@ -16,14 +16,15 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { useDispatch, useSelector } from 'react-redux'
 /* import { cambiarContentMainDrawer } from 'redux/actions/drawerAction' */
 import { useHistory } from 'react-router-dom'
-import Title from 'components/Styled/Title'
-import { Menu, MenuItem, IconButton, Button } from '@material-ui/core'
+import AppTitle from 'components/Styled/AppTitle'
+import DrawerTitle from 'components/Styled/DrawerTitle'
+import { Menu, MenuItem, IconButton, Button, Badge } from '@material-ui/core'
 import { AccountCircle, ExitToApp, Build } from '@material-ui/icons'
 import { obtenerProcedimiento } from 'redux/actions/procedimientoActions'
 import { Icons } from 'helpers/icons'
 import _ from 'lodash'
 
-const drawerWidth = 300
+const drawerWidth = 320
 
 const useStyles = makeStyles((theme) => ({
    root: {
@@ -101,10 +102,11 @@ export default (props) => {
    const [open, setOpen] = React.useState(false)
    const { data: procedimiento } = useSelector(store => store.procedimiento)
 
+   /* 
    useEffect(() => {
       dispatcher(obtenerProcedimiento())
    }, [])
-
+   */
    const handleDrawerOpen = () => setOpen(true)
 
    const handleDrawerClose = () => setOpen(false)
@@ -146,7 +148,7 @@ export default (props) => {
                >
                   <MenuIcon />
                </IconButton>
-               <Title name="Nacionalización" size='2rem' color='#fff' />
+               <AppTitle name="Nacionalización" size='2rem' color='#fff' />
                <div style={{ marginLeft: 'auto' }}>
                   <Button
                      id='user-account'
@@ -195,14 +197,18 @@ export default (props) => {
             <Divider />
             <List>
                {
-                  procedimiento.map(({ nombre, path, icon }) => (
+                  procedimiento.map(({ nombre, path, icon }, i) => (
                      <ListItem
                         button
-                        key={nombre}
+                        key={i}
                         onClick={() => { handleOnClickOptSidebar(nombre, path) }}
                      >
-                        <ListItemIcon>{(() => _.get(Icons, icon, <Build />))()}</ListItemIcon>
-                        <ListItemText primary={nombre} />
+                        <ListItemIcon>
+                           <Badge badgeContent={5} color='error'>
+                              {(() => _.get(Icons, icon, <Build />))()}
+                           </Badge>
+                        </ListItemIcon>
+                        <ListItemText><DrawerTitle title={nombre} /></ListItemText>
                      </ListItem>
                   ))
                }

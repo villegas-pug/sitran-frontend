@@ -3,7 +3,7 @@ import Drawer from 'components/Drawer'
 
 const index = () => {
    return (
-      <Drawer bgColor='#FFD764' />
+      <Drawer bgColor='#FFD764'></Drawer>
    )
 }
 

@@ -1,4 +1,5 @@
 /*-> Titulo: */
 export const fontFamily = {
-   title: 'Galada'
+   AppTitle: 'Lobster, cursive',
+   DrawerTitle: 'Big Shoulders Stencil Text, cursive'
 }
