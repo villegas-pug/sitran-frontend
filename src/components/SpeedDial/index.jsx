@@ -10,24 +10,16 @@ import ShareIcon from '@material-ui/icons/Share';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
 const useStyles = makeStyles((theme) => ({
-   speedDial: {
-      position: 'fixed',
-      left: '5rem',
-      bottom: '.5rem',
-   },
+   speedDial: ({ position }) => ({
+      position: position ?? 'relative',
+      left: 0,
+      bottom: 0,
+   }),
 }))
 
-const actions = [
-   { icon: <FileCopyIcon />, name: 'Copy' },
-   { icon: <SaveIcon />, name: 'Save' },
-   { icon: <PrintIcon />, name: 'Print' },
-   { icon: <ShareIcon />, name: 'Share' },
-   { icon: <FavoriteIcon />, name: 'Like' },
-]
-
-export default function SpeedDials(props) {
-   const { direction, optSpeedDialAction } = props
-   const classes = useStyles()
+export default function SpeedDials({ position, ...rest }) {
+   const { direction, optSpeedDialAction } = rest
+   const classes = useStyles({ position })
    const [open, setOpen] = React.useState(false)
 
    const handleClose = () => {

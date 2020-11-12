@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import MaterialTable from 'material-table'
-import { tableIcons } from '../../helpers/icons'
+import { Icons } from 'helpers/icons'
 
 function Table(props) {
 
@@ -19,7 +19,7 @@ function Table(props) {
       <>
          {console.log('Tabla renderizada!!!')}
          <MaterialTable
-            icons={tableIcons}
+            icons={Icons}
             options={{ ...options, ...rest }}
             columns={state.columns}
             data={state.data}
@@ -60,8 +60,8 @@ function Table(props) {
                      }, 600);
                   }), */
             }}
-            components={{ Action: components }}
             actions={actions}
+            components={{ Action: components }}
          />
       </>
    )
@@ -72,7 +72,7 @@ Table.defaultProps = {
       pageSizeOptions: false,
       paginationType: "stepped",
       sorting: true,
-      maxBodyHeight: 300,
+      maxBodyHeight: 1800,
       showTitle: false,
       showEmptyDataSourceMessage: false,
       searchFieldAlignment: "left"

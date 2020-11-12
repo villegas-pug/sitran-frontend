@@ -18,10 +18,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import AppTitle from 'components/Styled/AppTitle'
 import DrawerTitle from 'components/Styled/DrawerTitle'
-import { Menu, MenuItem, IconButton, Button, Badge } from '@material-ui/core'
-import { AccountCircle, ExitToApp, Build } from '@material-ui/icons'
+import { Menu, MenuItem, IconButton, Button, Badge, Tooltip } from '@material-ui/core'
+import { AccountCircle, ExitToApp, Build, MailOutline, Drafts } from '@material-ui/icons'
 import { obtenerProcedimiento } from 'redux/actions/procedimientoActions'
 import { Icons } from 'helpers/icons'
+import styled from 'styled-components'
 import _ from 'lodash'
 
 const drawerWidth = 320
@@ -89,6 +90,12 @@ const useStyles = makeStyles((theme) => ({
    },
 }))
 
+const Noty = styled.div`
+   flex-grow: 1;
+   display: flex;
+   justify-content: center;
+`
+
 export default (props) => {
    const history = useHistory()
    /* const { userLogged, logout } = useAuth() */
@@ -149,6 +156,21 @@ export default (props) => {
                   <MenuIcon />
                </IconButton>
                <AppTitle name="Nacionalización" size='2rem' color='#fff' />
+
+               {/*-> Componente disponible para el procedimiento de EVALUACIÓN  */}
+               <Noty>
+                  <Badge badgeContent={2} color='error'>
+                     <Tooltip title='En proyecto evaluación' arrow>
+                        <MailOutline fontSize='large' />
+                     </Tooltip>
+                  </Badge>
+                  <Badge badgeContent={10} color='error'>
+                     <Tooltip title='No leido' arrow placement='top-end'>
+                        <Drafts fontSize='large' />
+                     </Tooltip>
+                  </Badge>
+               </Noty>
+
                <div style={{ marginLeft: 'auto' }}>
                   <Button
                      id='user-account'
@@ -175,6 +197,7 @@ export default (props) => {
                </div>
             </Toolbar>
          </AppBar>
+
          {/*» FLEX-ITEM: 02 */}
          <Drawer
             variant="permanent"

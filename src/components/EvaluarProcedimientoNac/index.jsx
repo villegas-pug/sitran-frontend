@@ -1,20 +1,26 @@
-import React, { useState, useRef } from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
-import { Formik, Form, useField, Field } from 'formik'
-import { Paper, FormControl, TextField, Select, MenuItem, InputLabel, FormHelperText, Button } from '@material-ui/core'
+import { Formik, Form } from 'formik'
+import {
+   Paper,
+   Button,
+   Grid,
+} from '@material-ui/core'
 import SpeedDial from 'components/SpeedDial'
-import { Autocomplete } from '@material-ui/lab'
 import { Save, DeleteForever } from '@material-ui/icons'
 import * as Yup from 'yup'
 import _ from 'lodash'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { registrarProcNac } from 'redux/actions/procNacAction'
+import ContentTitle from 'components/Styled/ContentTitle'
+import AsignarProcedimientoNac from 'components/AsignarProcedimientoNac'
+import MyTextField from 'components/Formik/MyTextField'
+import MyAutocomplete from 'components/Formik/Autocomplete'
 
 const Container = styled.div`
    display: flex;
    flex-wrap: wrap;
-   padding: 1rem;
-   min-height: 8rem;
+   padding: 1rem 1rem 0 1rem;
    justify-content: space-between;
    align-items: center;
 `
@@ -23,99 +29,18 @@ const Item = styled.div`
    height: 5rem;
 `
 
-/*-> Formik-Component: CONTROLADO  */
-const MyTextField = ({ type, size, label, ...rest }) => {
-   const [propsField, meta] = useField(rest)
-   const err = (meta.touched && meta.error) ? meta.error : ''
-   return (
-      <TextField
-         {...propsField}
-         type={type}
-         variant='outlined'
-         size='small'
-         style={{ width: `${size}rem` }}
-         label={label}
-         error={Boolean(err)}
-         InputLabelProps={{
-            shrink: true
-         }}
-         helperText={err}
-         autoComplete='off'
-      />
-   )
-}
-
-/*-> Formik-Component: CONTROLADO  */
-const MySelect = ({ width, opt, label, ...rest }) => {
-   const [propsField, meta] = useField(rest)
-   const err = meta.touched && meta.error ? meta.error : ''
-   return (
-      <FormControl variant='outlined' size='small' error={Boolean(err)}>
-         <InputLabel htmlFor='select'>{label}</InputLabel>
-         <Select
-            {...propsField}
-            label={label}
-            style={{ width: `${width}rem` }}
-            inputProps={{
-               id: 'select',
-            }}
-         >
-            {
-               opt.map((item, i) => {
-                  var values = Object.values(item)
-                  return (
-                     <MenuItem key={i} value={values[0]}>{values[1]}</MenuItem>
-                  )
-               })
-            }
-         </Select>
-         <FormHelperText>{err}</FormHelperText>
-      </FormControl>
-   )
-}
-
 /*-> Formik-Component: NO CONTROLADO  */
-const MyAutocomplete = ({ name, label, width, opt, setFieldValue, errors, values }) => {
-   const [touched, setTouched] = useState(false)
-   const err = _.get(errors, name) && touched ? _.get(errors, name) : ''
-
-   const entity = _.get(values, name)
-   const value = entity ? Object.values(entity)[1] : ''
-
-   console.log(value)
-   return (
-      <Autocomplete
-         inputValue={value}
-         options={opt}
-         getOptionLabel={(entity) => (Object.values(entity)[1])}
-         onChange={(e, entity) => setFieldValue([name], entity)}
-         onBlur={() => { setTouched(true) }}
-         style={{ width: `${width}rem` }}
-         renderInput={(params) => (
-            <Field
-               {...params}
-               error={Boolean(err)}
-               label={label}
-               as={TextField}
-               variant="outlined"
-               size='small'
-               helperText={err}
-            />
-         )}
-      />
-   )
-}
 
 const validationSchema = Yup.object({
-   tipoDocumento: Yup.string().required('Campo requerido'),
+   tipoDocumento: Yup.string().required('Campo requerido').nullable('¡Campo requerido!'),
    numeroDocumento: Yup.string().required('Campo requerido'),
    numeroTramite: Yup.string().required('Campo requerido'),
    administrado: Yup.string().required('Campo requerido'),
    nacionalidad: Yup.string().required('Campo requerido').nullable('Campo requerido'),
    correo: Yup.string().required('Campo requerido').email('¡Formato no valido!'),
    telefono: Yup.string().required('Campo requerido').min(9, '¡Almenos 9 dígitos!'),
-   tipoSolicitud: Yup.string().required('Campo requerido'),
-   tipoTramite: Yup.string().required('Campo requerido'),
+   tipoSolicitud: Yup.string().required('Campo requerido').nullable('¡Campo requerido!'),
+   tipoTramite: Yup.string().required('Campo requerido').nullable('¡Campo requerido!'),
 })
 
 const optTipoDocumento = [
@@ -143,7 +68,7 @@ const initialValues = {
    tipoTramite: ''
 }
 
-export default function RegistrarProcedimiento() {
+export default function EvaluarProcedimientoNac() {
 
    const dispatch = useDispatch()
    const rRegistrar = useRef()
@@ -163,7 +88,6 @@ export default function RegistrarProcedimiento() {
 
    return (
       <>
-         <SpeedDial direction='right' optSpeedDialAction={optSpeedDialAction} />
          <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -178,6 +102,7 @@ export default function RegistrarProcedimiento() {
                ({ ...rest }) =>
                   (
                      <Form>
+                        <ContentTitle title='REGISTRO Y ASIGNACIÓN DE PROCEDIMIENTOS DE NACIONALIZACIÓN' />
                         <Paper elevation={1} style={{ padding: 15 }}>
                            <Container>
                               <Item>
@@ -213,6 +138,9 @@ export default function RegistrarProcedimiento() {
                               <Item>
                                  <MyAutocomplete name='tipoTramite' label='Tipo trámite' width={30} opt={optNacionalidad} {...rest} />
                               </Item>
+                              <Item style={{ width: '100%', }}>
+                                 <SpeedDial direction='right' optSpeedDialAction={optSpeedDialAction} />
+                              </Item>
                            </Container>
                            <Button type='submit' ref={rRegistrar} hidden />
                            <Button type='reset' ref={rLimpiar} hidden />
@@ -221,6 +149,14 @@ export default function RegistrarProcedimiento() {
                   )
             }
          </Formik>
+
+         <Grid container>
+            <Grid item xs={12}>
+               <AsignarProcedimientoNac />
+            </Grid>
+         </Grid>
       </>
    )
 }
+
+
