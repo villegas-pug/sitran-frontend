@@ -11,7 +11,7 @@ const initialState = {
       { icon: 'Check', nombre: 'EN PROYECTO EVALUACIÓN', path: '/test' },
       { icon: 'Clear', nombre: 'NO LEIDOS', path: '/test' },
       { icon: 'DeleteOutline', nombre: 'REGISTRAR PROCEDIMIENTO', path: '/test' },
-      { icon: 'AddBox', nombre: 'PARA EVALUACIÓN', path: '/test' },
+      { icon: 'AddBox', nombre: 'PARA ASIGNAR', path: '/test' },
    ],
    error: null
 }

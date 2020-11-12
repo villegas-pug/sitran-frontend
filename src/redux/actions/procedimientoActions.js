@@ -11,7 +11,6 @@ export const obtenerProcedimientoError = (payload) => ({ type: OBTENER_PROCEDIMI
 
 export const obtenerProcedimiento = () => async (dispatch, store) => {
    const { data: { levelLog, message, data } } = await api.get('/microservicio-usrprocedimiento/test')
-   console.log(data)
    dispatch(obtenerProcedimientoCargando())
    switch (levelLog) {
       case SUCCESS:
