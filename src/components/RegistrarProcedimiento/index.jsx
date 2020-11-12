@@ -75,12 +75,17 @@ const MySelect = ({ width, opt, label, ...rest }) => {
 }
 
 /*-> Formik-Component: NO CONTROLADO  */
-const MyAutocomplete = ({ name, label, width, opt, setFieldValue, errors }) => {
+const MyAutocomplete = ({ name, label, width, opt, setFieldValue, errors, values }) => {
    const [touched, setTouched] = useState(false)
    const err = _.get(errors, name) && touched ? _.get(errors, name) : ''
 
+   const entity = _.get(values, name)
+   const value = entity ? Object.values(entity)[1] : ''
+
+   console.log(value)
    return (
       <Autocomplete
+         inputValue={value}
          options={opt}
          getOptionLabel={(entity) => (Object.values(entity)[1])}
          onChange={(e, entity) => setFieldValue([name], entity)}
@@ -142,6 +147,7 @@ export default function RegistrarProcedimiento() {
 
    const dispatch = useDispatch()
    const rRegistrar = useRef()
+   const rLimpiar = useRef()
 
    const optSpeedDialAction = [
       {
@@ -151,7 +157,7 @@ export default function RegistrarProcedimiento() {
       }, {
          tooltip: 'Limpiar',
          icon: <DeleteForever />,
-         handleOnClick: () => alert('Acción al presionar limpiar!!!')
+         handleOnClick: () => { rLimpiar.current.click() }
       },
    ]
 
@@ -161,8 +167,11 @@ export default function RegistrarProcedimiento() {
          <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={async (formData, meta) => {
-               await dispatch(registrarProcNac(formData))
+            onSubmit={(formData, meta) => {
+               dispatch(registrarProcNac(formData))
+            }}
+            onReset={(values, meta) => {
+               console.log(values)
             }}
          >
             {
@@ -206,6 +215,7 @@ export default function RegistrarProcedimiento() {
                               </Item>
                            </Container>
                            <Button type='submit' ref={rRegistrar} hidden />
+                           <Button type='reset' ref={rLimpiar} hidden />
                         </Paper>
                      </Form>
                   )
