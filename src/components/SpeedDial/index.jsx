@@ -1,13 +1,8 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import SpeedDial from '@material-ui/lab/SpeedDial';
-import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
-import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
-import FileCopyIcon from '@material-ui/icons/FileCopyOutlined';
-import SaveIcon from '@material-ui/icons/Save';
-import PrintIcon from '@material-ui/icons/Print';
-import ShareIcon from '@material-ui/icons/Share';
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import SpeedDial from '@material-ui/lab/SpeedDial'
+import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon'
+import SpeedDialAction from '@material-ui/lab/SpeedDialAction'
 
 const useStyles = makeStyles((theme) => ({
    speedDial: ({ position }) => ({

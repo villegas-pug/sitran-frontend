@@ -16,11 +16,11 @@ import { useDispatch } from 'react-redux'
 export default function AppRouter() {
    const dispatch = useDispatch()
    useEffect(() => {
-      dispatch(obtenerTipoDocumento())
+      /* dispatch(obtenerTipoDocumento())
       dispatch(obtenerPais())
       dispatch(obtenerTipoSolicitud())
       dispatch(obtenerTipoTramite())
-      dispatch(obtenerUsuario())
+      dispatch(obtenerUsuario()) */
    }, [])
 
    return (

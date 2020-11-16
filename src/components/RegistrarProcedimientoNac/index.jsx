@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
 import { Formik, Form } from 'formik'
 import {
@@ -17,6 +17,9 @@ import AsignarProcedimientoNac from 'components/AsignarProcedimientoNac'
 import MyTextField from 'components/Formik/MyTextField'
 import MyAutocomplete from 'components/Formik/Autocomplete'
 import { useSelector } from 'react-redux'
+import { Modal } from 'antd'
+import AsignarProcToEval from 'components/AsignarProcToEval'
+
 
 const Container = styled.div`
    display: flex;
@@ -67,11 +70,23 @@ const initialValues = {
    tipoTramite: ''
 }
 
+const handleOnSubmitModal = (values, meta) => {
+   console.log(values)
+}
+
 export default function RegistrarProcedimiento() {
 
    const dispatch = useDispatch()
    const rRegistrar = useRef()
    const rLimpiar = useRef()
+
+   const [visibleModal, setVisibleModal] = useState(false)
+   const [sendSumitModal, setSendSubmitModal] = useState(false)
+
+   const handleSendSumitModal = e => {
+      setSendSubmitModal(true)
+      setVisibleModal(false)
+   }
 
    const {
       tipoDocumento: { data: tipoDocumento },
@@ -115,7 +130,7 @@ export default function RegistrarProcedimiento() {
                         <Paper elevation={1} style={{ padding: 15 }}>
                            <Container>
                               <Item>
-                                 <MyAutocomplete name='tipoDocumento' label='Tipo documento' width={12} opt={tipoDocumento} {...rest} />
+                                 <MyAutocomplete name='tipoDocumento' label='Tipo documento' width={12} opt={optTipoDocumento} {...rest} />
                               </Item>
                               <Item>
                                  <MyTextField type='text' name='numeroDocumento' size={12} label="Número documento" />
@@ -159,13 +174,26 @@ export default function RegistrarProcedimiento() {
             }
          </Formik>
 
+         <Button
+            variant='outlined'
+            size='small'
+            onClick={() => { setVisibleModal(true) }}
+         >
+            Open Modal
+         </Button>
          <Grid container>
             <Grid item xs={12}>
-               <AsignarProcedimientoNac />
+               <Modal
+                  title='» SELECCIONA EVALUADOR'
+                  onOk={handleSendSumitModal}
+                  onCancel={() => setVisibleModal(false)}
+                  visible={visibleModal}
+               >
+                  <AsignarProcToEval sendSubmit={sendSumitModal} setSendSubmit={setSendSubmitModal} handleOnSubmit={handleOnSubmitModal} />
+               </Modal>
             </Grid>
          </Grid>
+         {/* <AsignarProcedimientoNac /> */}
       </>
    )
 }
-
-
