@@ -19,7 +19,7 @@ export const registrarProcNac = (payload) => async (dispatch, store) => {
    dispatch(registrarProcNacCargando())
    const { data: { levelLog, data, message } } = await api({
       method: 'POST',
-      url: '/microservicio-procnacionalizacion/registrar',
+      url: '/microservicio-procnacionalizacion/save',
       data: payload,
    })
 

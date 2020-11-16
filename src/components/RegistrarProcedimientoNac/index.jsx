@@ -7,7 +7,7 @@ import {
    Grid,
 } from '@material-ui/core'
 import SpeedDial from 'components/SpeedDial'
-import { Save, DeleteForever } from '@material-ui/icons'
+import { Save, DeleteForever, StayPrimaryLandscape } from '@material-ui/icons'
 import * as Yup from 'yup'
 import _ from 'lodash'
 import { useDispatch } from 'react-redux'
@@ -16,6 +16,7 @@ import ContentTitle from 'components/Styled/ContentTitle'
 import AsignarProcedimientoNac from 'components/AsignarProcedimientoNac'
 import MyTextField from 'components/Formik/MyTextField'
 import MyAutocomplete from 'components/Formik/Autocomplete'
+import { useSelector } from 'react-redux'
 
 const Container = styled.div`
    display: flex;
@@ -28,8 +29,6 @@ const Container = styled.div`
 const Item = styled.div`
    height: 5rem;
 `
-
-/*-> Formik-Component: NO CONTROLADO  */
 
 const validationSchema = Yup.object({
    tipoDocumento: Yup.string().required('Campo requerido').nullable('¡Campo requerido!'),
@@ -74,6 +73,14 @@ export default function RegistrarProcedimiento() {
    const rRegistrar = useRef()
    const rLimpiar = useRef()
 
+   const {
+      tipoDocumento: { data: tipoDocumento },
+      pais: { data: pais },
+      tipoSolicitud: { data: tipoSolicitud },
+      tipoTramite: { data: tipoTramite },
+      usuario: { data: usuario }
+   } = useSelector(store => store)
+
    const optSpeedDialAction = [
       {
          icon: <Save />,
@@ -86,14 +93,16 @@ export default function RegistrarProcedimiento() {
       },
    ]
 
+   const handleSubmit = (values, meta) => {
+      dispatch(registrarProcNac({ procNacionalizacion: values, usuario: usuario[0] }))
+   }
+
    return (
       <>
          <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={(formData, meta) => {
-               dispatch(registrarProcNac(formData))
-            }}
+            onSubmit={handleSubmit}
             onReset={(values, meta) => {
                console.log(values)
             }}
@@ -106,7 +115,7 @@ export default function RegistrarProcedimiento() {
                         <Paper elevation={1} style={{ padding: 15 }}>
                            <Container>
                               <Item>
-                                 <MyAutocomplete name='tipoDocumento' label='Tipo documento' width={12} opt={optTipoDocumento} {...rest} />
+                                 <MyAutocomplete name='tipoDocumento' label='Tipo documento' width={12} opt={tipoDocumento} {...rest} />
                               </Item>
                               <Item>
                                  <MyTextField type='text' name='numeroDocumento' size={12} label="Número documento" />
@@ -121,7 +130,7 @@ export default function RegistrarProcedimiento() {
                                  <MyTextField type='text' name='administrado' size={30} label="Administrado" />
                               </Item>
                               <Item>
-                                 <MyAutocomplete name='nacionalidad' label='Nacionalidad' width={20} opt={optNacionalidad} {...rest} />
+                                 <MyAutocomplete name='nacionalidad' label='Nacionalidad' width={20} opt={pais} {...rest} />
                               </Item>
                               <Item>
                                  <MyTextField type='text' name='distrito' size={20} label="Distrito" />
@@ -133,10 +142,10 @@ export default function RegistrarProcedimiento() {
                                  <MyTextField type='number' name='telefono' size={10} label="Telefono" />
                               </Item>
                               <Item>
-                                 <MyAutocomplete name='tipoSolicitud' label='Tipo solicitud' width={15} opt={optTipoDocumento} {...rest} />
+                                 <MyAutocomplete name='tipoSolicitud' label='Tipo solicitud' width={15} opt={tipoSolicitud} {...rest} />
                               </Item>
                               <Item>
-                                 <MyAutocomplete name='tipoTramite' label='Tipo trámite' width={30} opt={optNacionalidad} {...rest} />
+                                 <MyAutocomplete name='tipoTramite' label='Tipo trámite' width={30} opt={tipoTramite} {...rest} />
                               </Item>
                               <Item style={{ width: '100%', }}>
                                  <SpeedDial direction='right' optSpeedDialAction={optSpeedDialAction} />

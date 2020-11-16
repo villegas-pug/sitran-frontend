@@ -14,8 +14,7 @@ export default function MyAutocomplete({ name, label, width, opt, setFieldValue,
 
    return (
       <Autocomplete
-         multiple
-         inputValue={value}
+         /* inputValue={value} */
          options={opt}
          getOptionLabel={(entity) => (Object.values(entity)[1])}
          onChange={(e, entity) => setFieldValue([name], entity)}
