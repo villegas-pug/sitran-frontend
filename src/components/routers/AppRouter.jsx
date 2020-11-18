@@ -5,22 +5,22 @@ import AsignarProcedimientoNac from 'components/AsignarProcedimientoNac'
 import Calendar from 'components/Calendar'
 import DashboardRouters from './DashboardRouters'
 import Drawer from 'components/Drawer'
-import { obtenerTipoDocumento } from 'redux/actions/tipoDocumentoAction'
-import { obtenerTipoSolicitud } from 'redux/actions/tipoSolicitudAction'
 import { obtenerTipoTramite } from 'redux/actions/tipoTramiteAction'
 import { obtenerPais } from 'redux/actions/paisAction'
 import { obtenerUsuario } from 'redux/actions/usuarioAction'
+import { obtenerProcNac } from 'redux/actions/procNacAction'
 import { useDispatch } from 'react-redux'
 
 
 export default function AppRouter() {
    const dispatch = useDispatch()
+
    useEffect(() => {
-      dispatch(obtenerTipoDocumento())
       dispatch(obtenerPais())
-      dispatch(obtenerTipoSolicitud())
       dispatch(obtenerTipoTramite())
       dispatch(obtenerUsuario())
+      /*» READ... */
+      dispatch(obtenerProcNac())
    }, [])
 
    return (

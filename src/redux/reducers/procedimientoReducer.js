@@ -16,7 +16,7 @@ const initialState = {
    error: null
 }
 
-export default function (state = initialState, { type, payload }) {
+export default function procedimientoReducer(state = initialState, { type, payload }) {
    switch (type) {
       case OBTENER_PROCEDIMIENTO_CARGANDO:
          return { loading: true, data: [], error: null }

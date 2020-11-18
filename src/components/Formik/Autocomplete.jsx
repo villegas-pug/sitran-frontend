@@ -12,7 +12,7 @@ export default function MyAutocomplete({ name, label, width, opt, setFieldValue,
    const entity = _.get(values, name)
    const value = entity ? Object.values(entity)[1] : ''
 
-   return (
+   return (/*-> Al ralizar el binding con `inputValue` bloquea el input... */
       <Autocomplete
          /* inputValue={value} */
          options={opt}

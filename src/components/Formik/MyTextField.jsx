@@ -5,6 +5,7 @@ import { TextField } from '@material-ui/core'
 export default function MyTextField({ type, size, label, ...rest }) {
    const [propsField, meta] = useField(rest)
    const err = (meta.touched && meta.error) ? meta.error : ''
+
    return (
       <TextField
          {...propsField}

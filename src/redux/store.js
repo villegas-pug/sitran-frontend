@@ -7,6 +7,7 @@ import paisReducer from 'redux/reducers/paisReducer'
 import tipoSolicitudReducer from 'redux/reducers/tipoSolicitudReducer'
 import tipoTramiteReducer from 'redux/reducers/tipoTramiteReducer'
 import usuarioReducer from 'redux/reducers/usuarioReducer'
+import formsReducer from 'redux/reducers/formsReducer'
 import thunk from 'redux-thunk'
 
 const reducers = combineReducers({
@@ -16,7 +17,9 @@ const reducers = combineReducers({
    pais: paisReducer,
    tipoSolicitud: tipoSolicitudReducer,
    tipoTramite: tipoTramiteReducer,
-   usuario: usuarioReducer
+   usuario: usuarioReducer,
+
+   forms: formsReducer,
 })
 
 export default createStore(

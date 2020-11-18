@@ -1,7 +1,10 @@
 import {
-   REGISTRAR_PROCNAC_CARGANDO,
-   REGISTRAR_PROCNAC_EXITO,
-   REGISTRAR_PROCNAC_ERROR
+   GUARDAR_PROCNAC_CARGANDO,
+   GUARDAR_PROCNAC_EXITO,
+   GUARDAR_PROCNAC_ERROR,
+   OBTENER_PROCNAC_CARGANDO,
+   OBTENER_PROCNAC_EXITO,
+   OBTENER_PROCNAC_ERROR,
 } from 'redux/actions/procNacAction'
 
 const initialState = {
@@ -10,13 +13,19 @@ const initialState = {
    error: null
 }
 
-export default function (state = initialState, { action, payload }) {
-   switch (action) {
-      case REGISTRAR_PROCNAC_CARGANDO:
+export default function procNacReducer(state = initialState, { type, payload }) {
+   switch (type) {
+      case GUARDAR_PROCNAC_CARGANDO:
          return { loading: true, data: [], error: null }
-      case REGISTRAR_PROCNAC_EXITO:
+      case GUARDAR_PROCNAC_EXITO:
          return { loading: false, data: payload, error: null }
-      case REGISTRAR_PROCNAC_ERROR:
+      case GUARDAR_PROCNAC_ERROR:
+         return { loading: false, data: [], error: payload }
+      case OBTENER_PROCNAC_CARGANDO:
+         return { loading: true, data: [], error: null }
+      case OBTENER_PROCNAC_EXITO:
+         return { loading: false, data: payload, error: null }
+      case OBTENER_PROCNAC_ERROR:
          return { loading: false, data: [], error: payload }
       default:
          return state
