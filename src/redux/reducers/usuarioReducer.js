@@ -10,7 +10,7 @@ const initialState = {
    error: null
 }
 
-export default function (state = initialState, { type, payload }) {
+export default function usuarioReducer(state = initialState, { type, payload }) {
    switch (type) {
       case OBTENER_USUARIO_CARGANDO:
          return { loading: true, data: [], error: null }

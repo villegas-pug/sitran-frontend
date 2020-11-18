@@ -6,11 +6,13 @@ import {
 
 const initialState = {
    loading: false,
-   data: [],
+   data: [
+      { idTipoSolicitud: 'NAC', descripcion: 'Nacionalización' },
+   ],
    error: null
 }
 
-export default function (state = initialState, { type, payload }) {
+export default function tipoSolicitudReducer(state = initialState, { type, payload }) {
    switch (type) {
       case OBTENER_TIPOSOLICITUD_CARGANDO:
          return { loading: true, data: [], error: null }

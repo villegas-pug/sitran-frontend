@@ -10,7 +10,7 @@ const initialState = {
    error: null
 }
 
-export default function (state = initialState, { type, payload }) {
+export default function paisReducer(state = initialState, { type, payload }) {
    switch (type) {
       case OBTENER_PAIS_CARGANDO:
          return { loading: true, data: [], error: null }

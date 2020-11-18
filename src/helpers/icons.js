@@ -19,12 +19,6 @@ import {
 } from '@material-ui/icons'
 
 export const Icons = {
-   Add: <AddBox />,
-   Check: <Check />,
-   Clear: <Clear />,
-   Delete: <DeleteOutline />,
-   DetailPanel: <ChevronRight />,
-   Edit: <Edit />,
    Export: SaveAlt,
    Filter: FilterList,
    FirstPage: FirstPage,
@@ -38,5 +32,11 @@ export const Icons = {
    ViewColumn: ViewColumn,
    /*» Iconos reservados para procedimientos...  */
    Test: <Build />,
-   Cloud: <Cloud />
+   Cloud: <Cloud />,
+   Add: <AddBox />,
+   Check: <Check />,
+   Clear: <Clear />,
+   Delete: <DeleteOutline />,
+   DetailPanel: <ChevronRight />,
+   Edit: <Edit />,
 }

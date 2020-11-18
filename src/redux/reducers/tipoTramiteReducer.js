@@ -10,7 +10,7 @@ const initialState = {
    error: null
 }
 
-export default function (state = initialState, { type, payload }) {
+export default function tipoTramiteReducer(state = initialState, { type, payload }) {
    switch (type) {
       case OBTENER_TIPOTRAMITE_CARGANDO:
          return { loading: true, data: [], error: null }

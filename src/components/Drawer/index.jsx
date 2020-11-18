@@ -96,41 +96,45 @@ const Noty = styled.div`
    justify-content: center;
 `
 
-export default (props) => {
+export default function Drawer(props) {
+
+   /*-> HOOK'S...  */
    const history = useHistory()
    /* const { userLogged, logout } = useAuth() */
 
    const classes = useStyles(props);
    const theme = useTheme();
 
-   const dispatcher = useDispatch()
-
    const [anchorEl, setAnchorEl] = useState(null)
    const [open, setOpen] = React.useState(false)
    const { data: procedimiento } = useSelector(store => store.procedimiento)
 
+   /*-> STORE...  */
+   const dispatcher = useDispatch()
+
+
+   /*-> EFFECT'S : Ciclo de vida...  */
    /* 
    useEffect(() => {
       dispatcher(obtenerProcedimiento())
    }, [])
    */
+
+   /*-> HANDLER'S...  */
    const handleDrawerOpen = () => setOpen(true)
-
    const handleDrawerClose = () => setOpen(false)
-
    const handleOnClickOptSidebar = (titulo, path) => {
       /* dispatcher(cambiarContentMainDrawer(titulo)) */
       /* history.push(path) */
    }
 
    const handleOpenMenu = (e) => { setAnchorEl(e.currentTarget) }
-
    const handleCloseMenu = () => { setAnchorEl(null) }
-
    const handleCerrarSesion = () => {
       /* handleCloseMenu()
       logout() */
    }
+
 
    return (
       <div className={classes.root}>{/*» FLEX-CONTAINER */}
@@ -139,9 +143,7 @@ export default (props) => {
          {/*» FLEX-ITEM: 01, Barra superior  */}
          <AppBar
             position="fixed"
-            className={clsx(classes.appBar, {
-               [classes.appBarShift]: open,
-            })}
+            className={clsx(classes.appBar, { [classes.appBarShift]: open })}
          >
             <Toolbar>
                <IconButton
@@ -149,9 +151,7 @@ export default (props) => {
                   aria-label="open drawer"
                   onClick={handleDrawerOpen}
                   edge="start"
-                  className={clsx(classes.menuButton, {
-                     [classes.hide]: open,
-                  })}
+                  className={clsx(classes.menuButton, { [classes.hide]: open })}
                >
                   <MenuIcon />
                </IconButton>
@@ -238,7 +238,7 @@ export default (props) => {
             </List>
          </Drawer>
 
-         {/*» FLEX-ITEM: 03   */}
+         {/*» FLEX-ITEM: 03 ► Container dinámico...   */}
          <main className={classes.content}>
             <div className={classes.toolbar} />
             {props.children}
