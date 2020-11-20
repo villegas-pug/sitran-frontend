@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Calendar, Badge, ConfigProvider } from 'antd'
 import esPE from 'antd/lib/locale/es_ES'
 import styled from 'styled-components'
+import Pulse from 'react-reveal/Pulse'
 
 
 const Container = styled.div`
@@ -67,17 +68,19 @@ function monthCellRender(value) {
 export default function Calendario() {
    const [daySelected, setDaySelected] = useState()
    return (
-      <Container>
-         <div style={{ height: '5rem', backgroundColor: '#1f1f1f10' }}>
-            <h1>{daySelected}</h1>
-         </div>
-         <ConfigProvider locale={esPE}>
-            <Calendar
-               dateCellRender={dateCellRender}
-               monthCellRender={monthCellRender}
-               onSelect={(meta) => { setDaySelected(meta.calendar('dd/MM/yyyy')) }}
-            />
-         </ConfigProvider>
-      </Container>
+      <Pulse>
+         <Container>
+            <div style={{ height: '5rem', backgroundColor: '#1f1f1f10' }}>
+               <h1>{daySelected}</h1>
+            </div>
+            <ConfigProvider locale={esPE}>
+               <Calendar
+                  dateCellRender={dateCellRender}
+                  monthCellRender={monthCellRender}
+                  onSelect={(meta) => { setDaySelected(meta.calendar('dd/MM/yyyy')) }}
+               />
+            </ConfigProvider>
+         </Container>
+      </Pulse>
    )
 }

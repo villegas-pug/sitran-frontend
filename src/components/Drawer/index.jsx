@@ -96,7 +96,7 @@ const Noty = styled.div`
    justify-content: center;
 `
 
-export default function Drawer(props) {
+export default function MyDrawer(props) {
 
    /*-> HOOK'S...  */
    const history = useHistory()
@@ -125,7 +125,7 @@ export default function Drawer(props) {
    const handleDrawerClose = () => setOpen(false)
    const handleOnClickOptSidebar = (titulo, path) => {
       /* dispatcher(cambiarContentMainDrawer(titulo)) */
-      /* history.push(path) */
+      history.push(path)
    }
 
    const handleOpenMenu = (e) => { setAnchorEl(e.currentTarget) }
@@ -155,7 +155,7 @@ export default function Drawer(props) {
                >
                   <MenuIcon />
                </IconButton>
-               <AppTitle name="Nacionalización" size='2rem' color='#fff' />
+               <AppTitle name="Procedimientos de Nacionalización" size='2rem' color='#fff' />
 
                {/*-> Componente disponible para el procedimiento de EVALUACIÓN  */}
                <Noty>

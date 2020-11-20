@@ -7,6 +7,8 @@ import FrmProcNac from 'components/Form/FrmProcNac'
 import { useSelector } from 'react-redux'
 import { Modal } from 'antd'
 import AsignarProcToEval from 'components/AsignarProcToEval'
+import AsignarProcedimientoNac from 'components/AsignarProcedimientoNac'
+import Pulse from 'react-reveal/Pulse'
 
 export default function RegistrarProcedimiento() {
 
@@ -38,7 +40,7 @@ export default function RegistrarProcedimiento() {
    }
 
    return (
-      <>
+      <Pulse>
          <ContentTitle title='REGISTRO Y ASIGNACIÓN DE PROCEDIMIENTOS' />
          <FrmProcNac />
          <Grid container>
@@ -49,11 +51,11 @@ export default function RegistrarProcedimiento() {
                   onCancel={() => setVisibleModal(false)}
                   visible={visibleModal}
                >
-                  <AsignarProcToEval sendSubmit={sendSumitModal} setSendSubmit={setSendSubmitModal} handleOnSubmit={handleOnSubmitModal} />
+                  <AsignarProcToEval sendSubmit={sendSumitModal} setSendSubmit={setSendSubmitModal} handleOnSubmit={handleSubmit} />
                </Modal>
             </Grid>
          </Grid>
-         {/* <AsignarProcedimientoNac /> */}
-      </>
+         <AsignarProcedimientoNac />
+      </Pulse>
    )
 }

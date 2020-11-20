@@ -7,11 +7,9 @@ import {
 const initialState = {
    loading: false,
    data: [
-      { icon: 'AddBox', nombre: 'PARA EVALUACIÓN', path: '/test' },
-      { icon: 'Check', nombre: 'EN PROYECTO EVALUACIÓN', path: '/test' },
-      { icon: 'Clear', nombre: 'NO LEIDOS', path: '/test' },
-      { icon: 'DeleteOutline', nombre: 'REGISTRAR PROCEDIMIENTO', path: '/test' },
-      { icon: 'AddBox', nombre: 'PARA ASIGNAR', path: '/test' },
+      { icon: 'AddBox', nombre: 'REGISTRAR PROCEDIMIENTO', path: '/registrar' },
+      { icon: 'Check', nombre: 'EN PROYECTO EVALUACIÓN', path: '/evaluar' },
+      { icon: 'AddBox', nombre: 'CITAS', path: '/calendar' },
    ],
    error: null
 }
