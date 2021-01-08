@@ -155,21 +155,7 @@ export default function MyDrawer(props) {
                >
                   <MenuIcon />
                </IconButton>
-               <AppTitle name="Procedimientos de Nacionalización" size='2rem' color='#fff' />
-
-               {/*-> Componente disponible para el procedimiento de EVALUACIÓN  */}
-               <Noty>
-                  <Badge badgeContent={2} color='error'>
-                     <Tooltip title='En proyecto evaluación' arrow>
-                        <MailOutline fontSize='large' />
-                     </Tooltip>
-                  </Badge>
-                  <Badge badgeContent={10} color='error'>
-                     <Tooltip title='No leido' arrow placement='top-end'>
-                        <Drafts fontSize='large' />
-                     </Tooltip>
-                  </Badge>
-               </Noty>
+               <AppTitle name="SISTEMA INTEGRAL" size='2rem' color='#fff' />
 
                <div style={{ marginLeft: 'auto' }}>
                   <Button

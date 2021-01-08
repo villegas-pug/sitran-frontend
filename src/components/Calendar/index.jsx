@@ -15,28 +15,28 @@ function getListData(value) {
    switch (value.date()) {
       case 8:
          listData = [
-            { type: 'warning', content: 'This is warning event.' },
-            { type: 'success', content: 'This is usual event.' },
+            { type: 'warning', content: 'Cita tomada.' },
+            { type: 'success', content: 'Cita tomada.' },
          ]
          break
       case 13:
          listData = [
-            { type: 'warning', content: 'This is warning event.' },
-            { type: 'success', content: 'This is usual event.' },
-            { type: 'error', content: 'This is error event.' },
+            { type: 'warning', content: 'Cita tomada.' },
+            { type: 'success', content: 'Cita tomada.' },
+            { type: 'error', content: 'Cita tomada.' },
          ];
          break
       case 15:
          listData = [
-            { type: 'warning', content: 'This is warning event' },
-            { type: 'error', content: 'This is error event 3.' },
-            { type: 'error', content: 'This is error event 4.' },
+            { type: 'warning', content: 'Cita tomada.' },
+            { type: 'error', content: 'Cita tomada.' },
+            { type: 'error', content: 'Cita tomada.' },
          ];
 
          break
       case 16:
          listData = [
-            { type: 'warning', content: 'This is warning event' },
+            { type: 'warning', content: 'Cita tomada.' },
          ];
          break
       default:
@@ -47,13 +47,15 @@ function getListData(value) {
 function dateCellRender(value) {
    const listData = getListData(value);
    return (
-      <>
+      <ul style={{ paddingLeft: 0 }}>
          {
             listData.map(item => (
-               <Badge status={item.type} text={item.content} />
+               <li style={{ textDecoration: 'none' }}>
+                  <Badge status={item.type} text={item.content} />
+               </li>
             ))
          }
-      </>
+      </ul>
    )
 }
 
