@@ -88,7 +88,6 @@ export default function ElaboracionNormativa() {
                                     </IconButton>
                                  </InputAdornment>
                               }
-
                            />
                            <FormHelperText></FormHelperText>
                         </FormControl>

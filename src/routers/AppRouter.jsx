@@ -12,8 +12,6 @@ import { obtenerPais } from 'redux/actions/paisAction'
 import { obtenerUsuario } from 'redux/actions/usuarioAction'
 import { obtenerProcNac } from 'redux/actions/procNacAction'
 import { useDispatch } from 'react-redux'
-import Normativa from 'components/Normativa'
-import ElaboracionNormativa from 'components/ElaboracionNormativa'
 
 export default function AppRouter() {
 
@@ -31,18 +29,7 @@ export default function AppRouter() {
       <BrowserRouter>
          <Drawer bgColor='#004795'>
             <Switch>
-               {/*-> NORMATIVA:  */}
-               <Route path='/normativa-elaboracion' component={ElaboracionNormativa} />
-               <Route path='/normativa-visualizar' component={Normativa} />
-               <Route path='/normativa-aprobacion' component={Normativa} />
-               <Route path='/normativa' component={Normativa} />
-
-               {/* <Route path='/' component={DashboardRouters} /> */}
-               {/* <Route path='/registrar' component={RegistrarProcedimiento} />
-               <Route path='/evaluar' component={EvaluarProcedimientoNac} />
-               <Route path='/asignar' component={AsignarProcedimientoNac} />
-               <Route path='/calendar' component={Calendar} /> */}
-               <Redirect to='/' />
+               <DashboardRouters />
             </Switch>
          </Drawer>
       </BrowserRouter>

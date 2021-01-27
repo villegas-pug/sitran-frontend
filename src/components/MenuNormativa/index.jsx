@@ -4,9 +4,9 @@ import SimpleCard from 'components/SimpleCard'
 import Flash from 'react-reveal/Flash'
 
 const components = [
-   { name: 'Elaboración', path: '/normativa-elaboracion' },
-   { name: 'Visualizar', path: '/normativa-visualizar' },
-   { name: 'Aprobación', path: '/normativa-aprobacion' },
+   { name: 'Crear Normativa', path: '/normativa-crear' },
+   { name: 'Visualizar Normativa', path: '/normativa-visualizar' },
+   { name: 'Aprobar Normativa', path: '/normativa-aprobacion' },
 ]
 
 export default function MenuNormativa() {
