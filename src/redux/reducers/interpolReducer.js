@@ -2,7 +2,7 @@ import {
    OBTENER_INTERPOL_CARGANDO,
    OBTENER_INTERPOL_EXITO,
    OBTENER_INTERPOL_ERROR
-} from 'redux/types/interpolAction'
+} from 'redux/types/interpolType'
 
 const initialValues = {
    loading: false,

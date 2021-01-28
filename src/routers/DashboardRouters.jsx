@@ -1,29 +1,12 @@
 import React, { useEffect } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import RegistrarProcedimientoNac from 'components/RegistrarProcedimientoNac'
-import EvaluarProcedimientoNac from 'components/EvaluarProcedimientoNac'
 import Normativa from 'components/Normativa'
-import ElaboracionNormativa from 'components/ElaboracionNormativa'
 import CrearNormativa from 'components/Normativa/CrearNormativa'
 import AprobarNormativa from 'components/Normativa/AprobarNormativa'
 import Interpol from 'pages/Interpol'
-
-import { useDispatch } from 'react-redux'
-
-/*» ACTIONS...  */
-import { obtenerInterpol } from 'redux/actions/interpolAction'
-
+import AsignarProcedimientoNac from 'components/AsignarProcedimientoNac'
 
 export default function DashboardRouters() {
-
-   /*» HOOK'S STORE...  */
-   const dispatch = useDispatch()
-
-
-   /*» Load: Interpol...  */
-   useEffect(() => {
-      dispatch(obtenerInterpol())
-   }, [])
 
    return (
       <>

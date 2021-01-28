@@ -27,6 +27,7 @@ export default function useModal({ type, title, width }) {
       onOk: () => { setOnOk(true) }
    }
 
+   /*» Open: Modal  */
    const handleModal = () => {
       switch (type) {
          case typeModal[0]:

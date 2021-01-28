@@ -8,11 +8,6 @@ import {
    Tabs,
    Tab,
    Box,
-   List,
-   ListItem,
-   ListItemIcon,
-   ListItemText,
-   IconButton,
    Grid
 } from '@material-ui/core'
 import { GetApp } from '@material-ui/icons'

@@ -1,29 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import { useDispatch, useSelector } from 'react-redux'
-/* import { cambiarContentMainDrawer } from 'redux/actions/drawerAction' */
+import React, { useState, useEffect } from 'react'
+import clsx from 'clsx'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
+import Drawer from '@material-ui/core/Drawer'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import List from '@material-ui/core/List'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import Divider from '@material-ui/core/Divider'
+import MenuIcon from '@material-ui/icons/Menu'
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
+import ChevronRightIcon from '@material-ui/icons/ChevronRight'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
 import { useHistory } from 'react-router-dom'
 import AppTitle from 'components/Styled/AppTitle'
 import DrawerTitle from 'components/Styled/DrawerTitle'
-import { Menu, MenuItem, IconButton, Button, Badge, Tooltip } from '@material-ui/core'
-import { AccountCircle, ExitToApp, Build, MailOutline, Drafts } from '@material-ui/icons'
-import { obtenerProcedimiento } from 'redux/actions/procedimientoActions'
+import { Menu, MenuItem, IconButton, Button, Badge } from '@material-ui/core'
+import { AccountCircle, ExitToApp, Build } from '@material-ui/icons'
 import { Icons } from 'helpers/icons'
 import styled from 'styled-components'
 import _ from 'lodash'
+
+import { useDispatch, useSelector } from 'react-redux'
 
 const drawerWidth = 320
 
@@ -98,8 +97,13 @@ const Noty = styled.div`
 
 export default function MyDrawer(props) {
 
+   /*-> HOOK'S STORE...  */
+   const { data: procedimientoDb } = useSelector(store => store.procedimiento)
+   const dispatcher = useDispatch()
+
    /*-> HOOK'S...  */
    const history = useHistory()
+
    /* const { userLogged, logout } = useAuth() */
 
    const classes = useStyles(props);
@@ -107,10 +111,7 @@ export default function MyDrawer(props) {
 
    const [anchorEl, setAnchorEl] = useState(null)
    const [open, setOpen] = React.useState(false)
-   const { data: procedimiento } = useSelector(store => store.procedimiento)
 
-   /*-> STORE...  */
-   const dispatcher = useDispatch()
 
 
    /*-> EFFECT'S : Ciclo de vida...  */
@@ -155,7 +156,7 @@ export default function MyDrawer(props) {
                >
                   <MenuIcon />
                </IconButton>
-               <AppTitle name="SISTEMA INTEGRAL" size='2rem' color='#fff' />
+               <AppTitle name="SISTEMA INTEGRAL" size='2.1' color='#fff' />
 
                <div style={{ marginLeft: 'auto' }}>
                   <Button
@@ -206,7 +207,7 @@ export default function MyDrawer(props) {
             <Divider />
             <List>
                {
-                  procedimiento.map(({ nombre, path, icon }, i) => (
+                  procedimientoDb.map(({ nombre, path, icon }, i) => (
                      <ListItem
                         button
                         key={i}
@@ -217,7 +218,7 @@ export default function MyDrawer(props) {
                               {(() => _.get(Icons, icon, <Build />))()}
                            </Badge>
                         </ListItemIcon>
-                        <ListItemText><DrawerTitle title={nombre} /></ListItemText>
+                        <ListItemText><DrawerTitle title={nombre} size={1.2} /></ListItemText>
                      </ListItem>
                   ))
                }

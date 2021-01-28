@@ -12,6 +12,12 @@ const useStyles = makeStyles((theme) => ({
    }),
 }))
 
+const css = {
+   button: {
+      backgroundColor: 'red'
+   }
+}
+
 export default function SpeedDials({ position, ...rest }) {
    const { direction, optSpeedDialAction } = rest
    const classes = useStyles({ position })
@@ -29,6 +35,7 @@ export default function SpeedDials({ position, ...rest }) {
       <SpeedDial
          ariaLabel="SpeedDial example"
          className={classes.speedDial}
+         FabProps={{ style: { backgroundColor: '#004795', color: '#fff' } }}
          icon={<SpeedDialIcon />}
          onClose={handleClose}
          onOpen={handleOpen}
@@ -45,6 +52,7 @@ export default function SpeedDials({ position, ...rest }) {
                      action.handleOnClick()
                      handleClose()
                   }}
+                  color='primary'
                />
             ))
          }

@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react'
+import React, { useRef, useMemo, useEffect } from 'react'
 import {
    Paper,
    Box,
@@ -8,62 +8,47 @@ import {
 import {
    DeleteSweep,
    Search,
-   FindInPage
+   FindInPage,
 } from '@material-ui/icons'
 import MyTextField from 'components/Formik/MyTextField'
 import AppTitle from 'components/Styled/AppTitle'
 import SpeedDial from 'components/SpeedDial'
+import Flash from 'react-reveal/Flash'
+import { ClockLoader } from 'react-spinners'
+
 import Table from 'components/Table'
 
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
-
-import { useSelector } from 'react-redux'
-
-const optFormik = {
-   initialValues: {
-      nombres: '',
-      cedula: '',
-      pasaporte: '',
-      nacionalidad: '',
-      fechaEmision: '',
-      procedencia: ''
-   },
-   validationSchema: Yup.object({
-      nombres: Yup.string().required('¡Campo requerido!').min(3, '¡Mínimo 3 caracteres!'),
-   }),
-   onSubmit: (values, meta) => {
-      console.log(values)
-   },
-}
-
+import moment from 'moment'
+import useInterpol from 'hooks/useInterpol'
+import useModal from 'hooks/useModal'
+import InterpolDetalle from 'components/InterpolDetalle'
 
 export default function Interpol() {
-
-   /*» HOOK'S STORE...*/
-   const { interpol } = useSelector(store => store)
 
    /*» HOOK'S...*/
    const rSubmit = useRef()
    const rReset = useRef()
 
-   /*» EFFECT'S  */
+   /*» CUSTOM HOOK'S ... */
+   const { interpolDb, loading, handleFindByApprox } = useInterpol()
+   const [contentModal] = useModal({ title: <AppTitle name='DETALLE CIUDADANO' color='#777' size={1.2} />, width: 800 })
 
+   /*» EFFECT'S ... */
+   useEffect(() => { }, [])
+
+   /*» HANDLER'S ...  */
+   const handleActionDetalle = (rowData) => {
+      console.log(rowData)
+      contentModal(
+         <InterpolDetalle data={rowData} />
+      )
+   }
 
    /*» ARGUMENT ◄► `dataTable`  */
-   const dataTable = useMemo(() => ({
-      columns: [
-         { title: 'Nro', field: 'idInterpol', type: 'number', width: 10 },
-         { title: 'Ciudadano', field: 'nombres', type: 'date', width: 70 },
-         { title: 'Nacionalidad', field: 'nacionalidad', width: 20 },
-         { title: 'Fecha Emisión', field: 'fechaEmision', type: 'date', width: 15 },
-      ],
-      data: []
-   }), [])
-
-   /*» ARGUMENT ◄► `dataTable`  */
-   const configTable = () => ({
-      actions: [{ icon: 'Detalle' }, { icon: '' }],
+   const configTable = useMemo(() => ({
+      actions: [{ icon: 'Detalle' }],
       components: ({ action: { icon }, data }) => {
          if (icon === 'Detalle')
             return (
@@ -72,14 +57,31 @@ export default function Interpol() {
                   arrow
                >
                   <IconButton
-                     onClick={() => { }}
+                     onClick={() => { handleActionDetalle(data) }}
                   >
                      <FindInPage />
                   </IconButton>
                </Tooltip>
             )
       }
-   })
+   }), [interpolDb])
+
+   /*» ARGUMENT ◄► `dataTable`  */
+   const dataTable = useMemo(() => ({
+      columns: [
+         { title: 'Nro', field: 'idInterpol', type: 'number', width: 10 },
+         {
+            title: 'Ciudadano', field: 'nombres', type: 'date', width: 70,
+            render: ({ nombres, apellidos }) => `${nombres}, ${apellidos}`
+         },
+         { title: 'Nacionalidad', field: 'nacionalidad', width: 20 },
+         {
+            title: 'Fecha Emisión', field: 'fechaEmision', type: 'date', width: 15,
+            render: ({ fechaEmision }) => moment(fechaEmision).format('LL')
+         },
+      ],
+      data: interpolDb
+   }), [interpolDb])
 
    /*» ARGUMENT : `optSpeedDialAction`  */
    const optSpeedDialAction = [
@@ -94,21 +96,38 @@ export default function Interpol() {
          handleOnClick: () => { rReset.current.click() }
       }
    ]
+
+   const optFormik = {
+      initialValues: {
+         nombres: '',
+         apellidos: '',
+         cedula: '',
+         pasaporte: '',
+         nacionalidad: '',
+         fechaEmision: '',
+         procedencia: ''
+      },
+      validationSchema: Yup.object({
+         /* nombres: Yup.string().required('¡Campo requerido!').min(3, '¡Mínimo 3 caracteres!'), */
+      }),
+      onSubmit: (values, meta) => { handleFindByApprox(values) },
+   }
+
    return (
-      <>
+      <Flash>
          {/* HEADER... */}
          <Formik {...optFormik} >
             {
-               ({ values: { nombres, cedula, pasaporte, nacionalidad, fechaEmision, procedencia } }) => (
+               ({ values: { nombres, apellidos, cedula, pasaporte, fechaEmision } }) => (
                   <Form>
-                     <AppTitle name='INTERPOL' />
+                     <AppTitle name='CONSULTAR INTERPOL EMITIDOS' size={1.4} color='#777' />
                      <Paper elevation={5} style={{ padding: 20 }} >
-                        <Box display='flex' justifyContent='space-between' height={55} >
-                           <MyTextField name='nombres' value={nombres} label='Nombres' size={40} />
+                        <Box display='flex' justifyContent='space-around' >
+                           <MyTextField name='nombres' value={nombres} label='Nombres' size={20} />
+                           <MyTextField name='apellidos' value={apellidos} label='Apellidos' size={20} />
                            <MyTextField name='cedula' value={cedula} label='N° Cédula' size={10} />
                            <MyTextField name='pasaporte' value={pasaporte} label='N° Pasaporte' size={10} />
-                           <MyTextField name='fechaEmision' value={fechaEmision} label='Fecha emisión' size={15} type='date' />
-                           <MyTextField name='procedencia' value={procedencia} label='Procedencia' size={15} />
+                           {/* <MyTextField name='fechaEmision' value={fechaEmision} label='Fecha emisión' size={15} type='date' /> */}
                         </Box>
                         <Box display='flex' justifyContent='flex-start' mt={1}>
                            <SpeedDial direction='right' optSpeedDialAction={optSpeedDialAction} />
@@ -123,10 +142,27 @@ export default function Interpol() {
 
          {/* » BODY */}
          <Box mt={2}>
-            <Table dataTable={dataTable} configTable={configTable} />
+            {
+               loading
+                  ? (
+                     <Box display='flex' justifyContent='center' alignItems='center' height={200}>
+                        <ClockLoader color='#FFCD43' size={50} />
+                     </Box>
+                  )
+                  : (interpolDb.length === 0
+                     ? (
+                        <Paper elevation={1}>
+                           <Box display='flex' justifyContent='center' alignItems='center' height={200}>
+                              <AppTitle name='««« No hay datos para mostrar »»»' color='#666' size={1} />
+                           </Box>
+                        </Paper>
+                     )
+                     : (
+                        <Table dataTable={dataTable} configTable={configTable} />
+                     )
+                  )
+            }
          </Box>
-      </>
-
-
+      </Flash>
    )
 }

@@ -72,7 +72,9 @@ Table.defaultProps = {
       pageSizeOptions: false,
       paginationType: "stepped",
       sorting: true,
-      maxBodyHeight: 500,
+      maxBodyHeight: 600,
+      pageSize: 6,
+      search: false,
       showTitle: false,
       showEmptyDataSourceMessage: false,
       searchFieldAlignment: "left"

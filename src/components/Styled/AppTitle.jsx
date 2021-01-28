@@ -4,8 +4,8 @@ import { fontFamily } from 'config/font'
 
 const AppTitle = styled.title`
    display: block;
-   font-family: ${fontFamily.AppTitle};
-   font-size: ${({ size }) => (size ? size : '1.8rem')} ;
+   font-family: ${fontFamily.DrawerTitle};
+   font-size: ${({ size }) => (size ? `${size}rem` : '1.8rem')};
    color: ${({ color }) => (color ? color : '#000')};
    text-align: center;
 `

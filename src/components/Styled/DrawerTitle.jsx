@@ -7,7 +7,7 @@ const DrawerTitle = styled.title`
    display: block;
    font-family: ${fontFamily.DrawerTitle};
    font-weight: 100;
-   font-size: 1.2rem;
+   font-size: ${({ size }) => size ? `${size}rem` : '1.2rem'};
    color: #999;
    text-align: right;   
 `

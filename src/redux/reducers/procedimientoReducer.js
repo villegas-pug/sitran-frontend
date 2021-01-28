@@ -8,8 +8,8 @@ const initialState = {
    loading: false,
    data: [
       { icon: 'AddBox', nombre: 'LINEAMIENTOS GENERALES', path: '/normativa' },
-      /* { icon: 'AddBox', nombre: 'REGISTRAR PROCEDIMIENTO', path: '/registrar' },
-      { icon: 'Check', nombre: 'EN PROYECTO EVALUACIÓN', path: '/evaluar' },
+      { icon: 'AddBox', nombre: 'INTERPOL EMITIDOS', path: '/interpol' },
+      /* { icon: 'Check', nombre: 'EN PROYECTO EVALUACIÓN', path: '/evaluar' },
       { icon: 'AddBox', nombre: 'CITAS', path: '/calendar' }, */
    ],
    error: null
