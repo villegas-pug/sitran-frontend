@@ -1,6 +1,6 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
 import { devToolsEnhancer } from 'redux-devtools-extension'
-import procedimientoReducer from 'redux/reducers/procedimientoReducer'
+import moduloReducer from 'redux/reducers/moduloReducer'
 import procNacReducer from 'redux/reducers/procNacReducer'
 import tipoDocumentoReducer from 'redux/reducers/tipoDocumentoReducer'
 import paisReducer from 'redux/reducers/paisReducer'
@@ -16,7 +16,7 @@ import interpolReducer from 'redux/reducers/interpolReducer'
 
 
 const reducers = combineReducers({
-   procedimiento: procedimientoReducer,
+   modulo: moduloReducer,
    procNacionalizacion: procNacReducer,
    tipoDocumento: tipoDocumentoReducer,
    pais: paisReducer,
@@ -30,6 +30,7 @@ const reducers = combineReducers({
 
 export default createStore(
    reducers,
+   /* applyMiddleware(thunk) */
    compose(
       applyMiddleware(thunk),
       devToolsEnhancer()

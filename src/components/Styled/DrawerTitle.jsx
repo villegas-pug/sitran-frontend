@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import { fontFamily } from 'config/font'
-import index from 'components/App'
 
 const DrawerTitle = styled.title`
    display: block;

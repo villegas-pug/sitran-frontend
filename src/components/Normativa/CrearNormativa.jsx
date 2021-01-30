@@ -78,7 +78,7 @@ export default function CrearGrupo() {
 
                {/*» BODY... */}
                <Box display='flex' mt={1} justifyContent='center'>
-                  <Box width={1600}>
+                  <Box width='100%'>
                      {
                         <Accordion groups={groups} />
                      }

@@ -17,7 +17,7 @@ export default function AppRouter() {
    }, [])
 
    return (
-      <BrowserRouter>
+      <BrowserRouter basename='/sistema-integral'>
          <Drawer bgColor='#004795'>
             <Switch>
                <DashboardRouters />

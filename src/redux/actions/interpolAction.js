@@ -16,8 +16,8 @@ const obtenerInterpolExito = (payload) => ({ type: OBTENER_INTERPOL_EXITO, paylo
 const obtenerInterpolError = (payload) => ({ type: OBTENER_INTERPOL_ERROR, payload })
 
 export const obtenerInterpol = () => async (dispatch, store) => {
-   const { data: { levelLog, message, data } } = await api.get('microservicio-interpol/findAll')
    dispatch(obtenerInterpolCargando())
+   const { data: { levelLog, message, data } } = await api.get('microservicio-interpol/findAll')
    switch (levelLog) {
       case SUCCESS:
          dispatch(obtenerInterpolExito(data))
@@ -32,12 +32,12 @@ export const obtenerInterpol = () => async (dispatch, store) => {
 }
 
 export const obtenerInterpolApprox = (payload) => async (dispatch, store) => {
+   dispatch(obtenerInterpolCargando())
    const { data: { levelLog, message, data } } = await api({
       method: 'POST',
       url: 'microservicio-interpol/findByApprox',
       data: payload
    })
-   dispatch(obtenerInterpolCargando())
    switch (levelLog) {
       case SUCCESS:
          dispatch(obtenerInterpolExito(data))

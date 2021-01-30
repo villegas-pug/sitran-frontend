@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import clsx from 'clsx'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
@@ -6,7 +6,6 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import List from '@material-ui/core/List'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import Divider from '@material-ui/core/Divider'
 import MenuIcon from '@material-ui/icons/Menu'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
@@ -16,7 +15,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import { useHistory } from 'react-router-dom'
 import AppTitle from 'components/Styled/AppTitle'
 import DrawerTitle from 'components/Styled/DrawerTitle'
-import { Menu, MenuItem, IconButton, Button, Badge } from '@material-ui/core'
+import { Menu, MenuItem, IconButton, Button, Divider, Tooltip } from '@material-ui/core'
 import { AccountCircle, ExitToApp, Build } from '@material-ui/icons'
 import { Icons } from 'helpers/icons'
 import styled from 'styled-components'
@@ -24,7 +23,7 @@ import _ from 'lodash'
 
 import { useDispatch, useSelector } from 'react-redux'
 
-const drawerWidth = 320
+const drawerWidth = 180
 
 const useStyles = makeStyles((theme) => ({
    root: {
@@ -36,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
          easing: theme.transitions.easing.sharp,
          duration: theme.transitions.duration.leavingScreen,
       }),
-      backgroundColor: ({ bgColor }) => `${bgColor}`
+      backgroundColor: ({ bgColor }) => `${bgColor}`,
    },
    appBarShift: {
       marginLeft: drawerWidth,
@@ -98,7 +97,7 @@ const Noty = styled.div`
 export default function MyDrawer(props) {
 
    /*-> HOOK'S STORE...  */
-   const { data: procedimientoDb } = useSelector(store => store.procedimiento)
+   const { data: moduloDb } = useSelector(store => store.modulo)
    const dispatcher = useDispatch()
 
    /*-> HOOK'S...  */
@@ -156,7 +155,7 @@ export default function MyDrawer(props) {
                >
                   <MenuIcon />
                </IconButton>
-               <AppTitle name="SISTEMA INTEGRAL" size='2.1' color='#fff' />
+               <AppTitle name="SISTEMA INTEGRAL" size='2' color='#fff' />
 
                <div style={{ marginLeft: 'auto' }}>
                   <Button
@@ -204,22 +203,22 @@ export default function MyDrawer(props) {
                   {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
                </IconButton>
             </div>
-            <Divider />
             <List>
                {
-                  procedimientoDb.map(({ nombre, path, icon }, i) => (
-                     <ListItem
-                        button
-                        key={i}
-                        onClick={() => { handleOnClickOptSidebar(nombre, path) }}
-                     >
-                        <ListItemIcon>
-                           <Badge badgeContent={5} color='error'>
-                              {(() => _.get(Icons, icon, <Build />))()}
-                           </Badge>
-                        </ListItemIcon>
-                        <ListItemText><DrawerTitle title={nombre} size={1.2} /></ListItemText>
-                     </ListItem>
+                  moduloDb.map(({ nombre, path, icon, tooltip }, i) => (
+                     <>
+                        <Divider />
+                        <ListItem
+                           button
+                           key={i}
+                           onClick={() => { handleOnClickOptSidebar(nombre, path) }}
+                        >
+                           <Tooltip arrow placement='right-end' title={tooltip}>
+                              <ListItemIcon>{(() => _.get(Icons, icon, <Build />))()}</ListItemIcon>
+                           </Tooltip>
+                           <ListItemText><DrawerTitle title={nombre} size={1} /></ListItemText>
+                        </ListItem>
+                     </>
                   ))
                }
             </List>

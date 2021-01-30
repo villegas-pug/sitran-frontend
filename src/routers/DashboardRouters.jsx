@@ -4,7 +4,11 @@ import Normativa from 'components/Normativa'
 import CrearNormativa from 'components/Normativa/CrearNormativa'
 import AprobarNormativa from 'components/Normativa/AprobarNormativa'
 import Interpol from 'pages/Interpol'
-import AsignarProcedimientoNac from 'components/AsignarProcedimientoNac'
+import ConsultaMenu from 'pages/ConsultaMenu'
+import EstadisticaMenu from 'pages/EstadisticaMenu'
+import LineamientoMenu from 'pages/LineamientoMenu'
+import EstadisticaMesaDigital from 'pages/EstadisticaMesaDigital'
+import EstadisticaOperativos from 'pages/EstadisticaOperativos'
 
 export default function DashboardRouters() {
 
@@ -16,10 +20,16 @@ export default function DashboardRouters() {
             <Route path='/normativa-crear' component={CrearNormativa} />
             <Route path='/normativa-visualizar' component={Normativa} />
             <Route path='/normativa-aprobacion' component={AprobarNormativa} />
-            <Route path='/normativa' component={Normativa} />
+            <Route path='/lineamiento' component={LineamientoMenu} />
 
-            {/*-> INTERPOL  */}
-            <Route path='/interpol' component={Interpol} />
+            {/*-> CONSULTAS  */}
+            <Route path='/consulta' component={ConsultaMenu} />
+            <Route path='/consulta-interpol' component={Interpol} />
+
+            {/*-> ESTADÍSTICAS  */}
+            <Route path='/estadistica' component={EstadisticaMenu} />
+            <Route path='/estadistica-mesa-digital' component={EstadisticaMesaDigital} />
+            <Route path='/estadistica-operativos' component={EstadisticaOperativos} />
 
             {/* <Route path='/' component={DashboardRouters} /> */}
             {/* <Route path='/registrar' component={RegistrarProcedimiento} />

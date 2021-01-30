@@ -21,45 +21,9 @@ function Table(props) {
          <MaterialTable
             icons={Icons}
             options={{ ...options, ...rest }}
+            localization={{ header: { actions: 'Acciones' }, pagination: { labelDisplayedRows: '{from}-{to} de {count}' } }}
             columns={state.columns}
             data={state.data}
-            editable={{
-               /* onRowAdd: (newData) =>
-                  new Promise((resolve) => {
-                     setTimeout(() => {
-                        resolve();
-                        setState((prevState) => {
-                           const data = [...prevState.data];
-                           data.push(newData);
-                           return { ...prevState, data };
-                        });
-                     }, 600);
-                  }), */
-               /* onRowUpdate: (newData, oldData) =>
-                  new Promise((resolve) => {
-                     setTimeout(() => {
-                        resolve();
-                        if (oldData) {
-                           setState((prevState) => {
-                              const data = [...prevState.data];
-                              data[data.indexOf(oldData)] = newData;
-                              return { ...prevState, data };
-                           });
-                        }
-                     }, 600);
-                  }), */
-               /* onRowDelete: (oldData) =>
-                  new Promise((resolve) => {
-                     setTimeout(() => {
-                        resolve();
-                        setState((prevState) => {
-                           const data = [...prevState.data];
-                           data.splice(data.indexOf(oldData), 1);
-                           return { ...prevState, data };
-                        });
-                     }, 600);
-                  }), */
-            }}
             actions={actions}
             components={{ Action: components }}
          />
@@ -70,10 +34,12 @@ function Table(props) {
 Table.defaultProps = {
    options: {
       pageSizeOptions: false,
-      paginationType: "stepped",
+      /* paginationType: "stepped", */
       sorting: true,
-      maxBodyHeight: 600,
-      pageSize: 6,
+      maxBodyHeight: 400,
+      pageSize: 4,
+      rowStyle: { fontSize: 10, textTransform: 'uppercase' },
+      toolbar: false,
       search: false,
       showTitle: false,
       showEmptyDataSourceMessage: false,

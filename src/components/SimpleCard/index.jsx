@@ -14,45 +14,50 @@ import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles({
    root: {
-      maxWidth: ({ width }) => width ?? 345,
+      width: 250,
    },
    media: {
-      height: ({ height }) => height ?? 140,
+      margin: 'auto',
+      marginTop: 10,
+      width: 70,
+      height: 70
    },
 })
 
-export default function SimpleCard({ title, descripcion, path, ...rest }) {
+export default function SimpleCard({ title, descripcion, pathImg, path, ...rest }) {
 
+   /*» HOOK'S */
    const classes = useStyles(rest)
    const history = useHistory()
 
+   /*» HANDLER'S */
    const handleOnClick = (path) => { history.push(path) }
 
    return (
-      <Card className={classes.root}>
+      <Card className={classes.root} >
          <CardActionArea>
             <CardMedia
                className={classes.media}
-               image="/static/img/cards/plantillas-de-excel-para-recursos-humanos.jpg"
-               title="Documento"
+               image={pathImg}
+               title={title}
             />
             <CardContent>
-               <Typography gutterBottom variant="h5" component="h2">
+               <Typography variant="subtitle2" component="h1" color='textPrimary'>
                   {title.toUpperCase()}
                </Typography>
-               <Typography variant="body2" color="textSecondary" component="p">
+               <Typography variant="body2" color="textSecondary" component="p" align='justify'>
                   {descripcion}
                </Typography>
             </CardContent>
          </CardActionArea>
          <CardActions>
             <Button
-               size="small"
+               size='small'
                color="primary"
                variant='text'
                onClick={() => { handleOnClick(path) }}
             >
-               <ArrowForward />
+               <ArrowForward color='action' />
             </Button>
          </CardActions>
       </Card>

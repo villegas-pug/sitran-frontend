@@ -7,7 +7,7 @@ const AppTitle = styled.title`
    font-family: ${fontFamily.DrawerTitle};
    font-size: ${({ size }) => (size ? `${size}rem` : '1.8rem')};
    color: ${({ color }) => (color ? color : '#000')};
-   text-align: center;
+   text-align: ${({ align }) => align ?? 'center'};
 `
 
 export default function (props) {

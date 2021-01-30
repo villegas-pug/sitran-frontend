@@ -9,9 +9,15 @@ import store from 'redux/store'
 
 import 'antd/dist/antd.css'
 
+/*» CONFIG BREAK POINT'S  */
+import ReactBreakPoints from 'react-breakpoints'
+import { breakpoints } from 'constants/breakpoints'
+
 ReactDOM.render(
-   <Provider store={store}>
-      <AppRouter />
-   </Provider>,
+   <ReactBreakPoints breakpoints={breakpoints}>
+      <Provider store={store}>
+         <AppRouter />
+      </Provider>
+   </ReactBreakPoints>,
    document.getElementById('root')
 )

@@ -15,7 +15,9 @@ import {
    Search,
    ViewColumn,
    Cloud,
-   Build
+   Build,
+   BarChartRounded,
+   PageviewRounded
 } from '@material-ui/icons'
 
 export const Icons = {
@@ -39,4 +41,6 @@ export const Icons = {
    Delete: <DeleteOutline />,
    DetailPanel: <ChevronRight />,
    Edit: <Edit />,
+   BarChartRounded: <BarChartRounded />,
+   PageviewRounded: <PageviewRounded />
 }

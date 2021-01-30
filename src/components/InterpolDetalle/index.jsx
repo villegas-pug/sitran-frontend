@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {
    Card,
    CardHeader,
@@ -11,7 +11,6 @@ import {
    Grid
 } from '@material-ui/core'
 import { PersonOutline, ChevronRight } from '@material-ui/icons'
-import moment from 'moment'
 
 export default function InterpolDetalle({ data }) {
    const {
@@ -38,7 +37,7 @@ export default function InterpolDetalle({ data }) {
             />
             <CardContent>
                <Grid container>
-                  <Grid item xs={6}>
+                  <Grid item item xs={3} xl={6}>
                      <List>
                         <ListItem>
                            <ListItemIcon><ChevronRight /></ListItemIcon>
@@ -52,6 +51,10 @@ export default function InterpolDetalle({ data }) {
                            <ListItemIcon><ChevronRight /></ListItemIcon>
                            <ListItemText primary='Nacionalidad' secondary={nacionalidad} />
                         </ListItem>
+                     </List>
+                  </Grid>
+                  <Grid item xs={3} xl={6}>
+                     <List>
                         <ListItem>
                            <ListItemIcon><ChevronRight /></ListItemIcon>
                            <ListItemText primary='Sexo' secondary={sexo} />
@@ -62,7 +65,7 @@ export default function InterpolDetalle({ data }) {
                         </ListItem>
                      </List>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={3} xl={6}>
                      <List>
                         <ListItem>
                            <ListItemIcon><ChevronRight /></ListItemIcon>
@@ -72,6 +75,10 @@ export default function InterpolDetalle({ data }) {
                            <ListItemIcon><ChevronRight /></ListItemIcon>
                            <ListItemText primary='Motivo' secondary={motivo} />
                         </ListItem>
+                     </List>
+                  </Grid>
+                  <Grid item xs={3} xl={6}>
+                     <List>
                         <ListItem>
                            <ListItemIcon><ChevronRight /></ListItemIcon>
                            <ListItemText primary='Procedencia' secondary={procedencia} />
@@ -85,6 +92,7 @@ export default function InterpolDetalle({ data }) {
                </Grid>
             </CardContent>
          </Card>
+
       </>
    )
 }
