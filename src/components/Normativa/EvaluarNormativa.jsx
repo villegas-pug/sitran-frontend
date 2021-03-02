@@ -11,7 +11,7 @@ import {
    Block
 } from '@material-ui/icons'
 
-export default function AprobarNormativa() {
+export default function EvaluarNormativa() {
 
    /*» ARGUMENT ◄► `dataTable`  */
    const dataTable = () => ({

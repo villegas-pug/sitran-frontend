@@ -1,8 +1,8 @@
 import {
-   OBTENER_PAIS_CARGANDO,
-   OBTENER_PAIS_EXITO,
-   OBTENER_PAIS_ERROR
-} from 'redux/types/paisType'
+   LIST_DISTRITO_LOADING,
+   LIST_DISTRITO_SUCCESS,
+   LIST_DISTRITO_ERROR
+} from 'redux/types/distritoType'
 
 const initialState = {
    loading: false,
@@ -10,13 +10,13 @@ const initialState = {
    error: null
 }
 
-export default function paisReducer(state = initialState, { type, payload }) {
+export default function distritoReducer(state = initialState, { type, payload }) {
    switch (type) {
-      case OBTENER_PAIS_CARGANDO:
+      case LIST_DISTRITO_LOADING:
          return { loading: true, data: [], error: null }
-      case OBTENER_PAIS_EXITO:
+      case LIST_DISTRITO_SUCCESS:
          return { loading: false, data: payload, error: null }
-      case OBTENER_PAIS_ERROR:
+      case LIST_DISTRITO_ERROR:
          return { loading: false, data: [], error: payload }
       default:
          return state

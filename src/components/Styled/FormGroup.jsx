@@ -2,14 +2,14 @@ import React from 'react'
 import styled from 'styled-components'
 
 const FormGroup = styled.div`
-   display: flex;
-   flex-direction: column;
-   margin: 0.5rem;
+   display: inline-block;
+   padding: .5rem;
+   height: 4rem;
 `
-export default (props) => {
+export default ({ children }) => {
    return (
       <FormGroup>
-         {props.children}
+         {children}
       </FormGroup>
    )
 }

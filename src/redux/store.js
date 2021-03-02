@@ -13,7 +13,14 @@ import thunk from 'redux-thunk'
 /*» Last reducer's added... */
 import lineamientoReducer from 'redux/reducers/lineamientoReducer'
 import interpolReducer from 'redux/reducers/interpolReducer'
+import tipoOperativoReducer from 'redux/reducers/tipoOperativoReducer'
+import empresaReducer from 'redux/reducers/empresaReducer'
+import operativoReducer from 'redux/reducers/operativoReducer'
+import distritoReducer from 'redux/reducers/distritoReducer'
+import tipoInfraccionReducer from 'redux/reducers/tipoInfraccionReducer'
 
+/*» Manage status of the step's sub-module's...  */
+import stagesReducer from 'redux/reducers/stagesReducer'
 
 const reducers = combineReducers({
    modulo: moduloReducer,
@@ -25,7 +32,14 @@ const reducers = combineReducers({
    usuario: usuarioReducer,
    forms: formsReducer,
    lineamiento: lineamientoReducer,
-   interpol: interpolReducer
+   interpol: interpolReducer,
+   tipoOperativo: tipoOperativoReducer,
+   empresa: empresaReducer,
+   operativo: operativoReducer,
+   distrito: distritoReducer,
+   tipoInfraccion: tipoInfraccionReducer,
+
+   stages: stagesReducer,
 })
 
 export default createStore(

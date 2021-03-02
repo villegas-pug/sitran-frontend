@@ -2,21 +2,23 @@ import React from 'react'
 import { useField } from 'formik'
 import { TextField } from '@material-ui/core'
 
-export default function MyTextField({ type, size, label, ...rest }) {
-   const [propsField, meta] = useField(rest)
+export default function MyTextField({ type, size, label, focused, ...rest }) {
+   const [fieldProps, meta] = useField(rest)
    const err = (meta.touched && meta.error) ? meta.error : ''
 
    return (
       <TextField
-         {...propsField}
+         {...fieldProps}
          type={type}
+         color='primary'
          variant='outlined'
          size='small'
+         autoFocus={!!focused}
          style={{ width: `${size}rem` }}
          label={label}
          error={Boolean(err)}
          InputLabelProps={{
-            shrink: true
+            shrink: type === 'date' || meta.value && true
          }}
          helperText={err}
          autoComplete='off'

@@ -17,7 +17,9 @@ import {
    Cloud,
    Build,
    BarChartRounded,
-   PageviewRounded
+   PageviewRounded,
+   LiveHelp,
+   Settings
 } from '@material-ui/icons'
 
 export const Icons = {
@@ -42,5 +44,7 @@ export const Icons = {
    DetailPanel: <ChevronRight />,
    Edit: <Edit />,
    BarChartRounded: <BarChartRounded />,
-   PageviewRounded: <PageviewRounded />
+   PageviewRounded: <PageviewRounded />,
+   LiveHelp: <LiveHelp />,
+   Settings: <Settings />
 }

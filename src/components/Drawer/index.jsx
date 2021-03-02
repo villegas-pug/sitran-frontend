@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
          easing: theme.transitions.easing.sharp,
          duration: theme.transitions.duration.leavingScreen,
       }),
-      backgroundColor: ({ bgColor }) => `${bgColor}`,
+      backgroundColor: theme.palette.primary.main,
    },
    appBarShift: {
       marginLeft: drawerWidth,
@@ -98,7 +98,6 @@ export default function MyDrawer(props) {
 
    /*-> HOOK'S STORE...  */
    const { data: moduloDb } = useSelector(store => store.modulo)
-   const dispatcher = useDispatch()
 
    /*-> HOOK'S...  */
    const history = useHistory()
@@ -111,15 +110,6 @@ export default function MyDrawer(props) {
    const [anchorEl, setAnchorEl] = useState(null)
    const [open, setOpen] = React.useState(false)
 
-
-
-   /*-> EFFECT'S : Ciclo de vida...  */
-   /* 
-   useEffect(() => {
-      dispatcher(obtenerProcedimiento())
-   }, [])
-   */
-
    /*-> HANDLER'S...  */
    const handleDrawerOpen = () => setOpen(true)
    const handleDrawerClose = () => setOpen(false)
@@ -131,8 +121,6 @@ export default function MyDrawer(props) {
    const handleOpenMenu = (e) => { setAnchorEl(e.currentTarget) }
    const handleCloseMenu = () => { setAnchorEl(null) }
    const handleCerrarSesion = () => {
-      /* handleCloseMenu()
-      logout() */
    }
 
 

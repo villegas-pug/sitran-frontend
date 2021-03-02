@@ -35,7 +35,7 @@ export default function SpeedDials({ position, ...rest }) {
       <SpeedDial
          ariaLabel="SpeedDial example"
          className={classes.speedDial}
-         FabProps={{ style: { backgroundColor: '#004795', color: '#fff' } }}
+         FabProps={{ style: { backgroundColor: '#004795', color: '#fff', fontSize: 17 } }}
          icon={<SpeedDialIcon />}
          onClose={handleClose}
          onOpen={handleOpen}

@@ -1,19 +1,22 @@
-import { message } from 'antd'
-import { api } from 'config/axios'
+import {
+   OBTENER_PAIS_CARGANDO,
+   OBTENER_PAIS_EXITO,
+   OBTENER_PAIS_ERROR,
+} from 'redux/types/paisType'
+
 import {
    SUCCESS,
    WARNING,
    ERROR,
 } from 'constants/levelLog'
-export const OBTENER_PAIS_CARGANDO = 'OBTENER_PAIS_CARGANDO'
-export const OBTENER_PAIS_EXITO = 'OBTENER_PAIS_EXITO'
-export const OBTENER_PAIS_ERROR = 'OBTENER_PAIS_ERROR'
+
+import { api } from 'config/axios'
 
 const obtenerPaisCargando = () => ({ type: OBTENER_PAIS_CARGANDO })
 const obtenerPaisExito = (payload) => ({ type: OBTENER_PAIS_EXITO, payload })
 const obtenerPaisError = (payload) => ({ type: OBTENER_PAIS_ERROR, payload })
 
-export const obtenerPais = () => async (dispatch, store) => {
+export const obtenerPais = () => async (dispatch, getStore) => {
    dispatch(obtenerPaisCargando())
    const { data: { levelLog, data, message } } = await api.get('/microservicio-pais/findAll')
    switch (levelLog) {

@@ -28,7 +28,7 @@ import InterpolDetalle from 'components/InterpolDetalle'
 
 import { Media } from 'react-breakpoints'
 
-export default function Interpol(props) {
+export default function BuscarInterpolSubMod(props) {
 
    /*» HOOK'S...*/
    const rSubmit = useRef()
@@ -110,7 +110,8 @@ export default function Interpol(props) {
          procedencia: ''
       },
       validationSchema: Yup.object({
-         /* nombres: Yup.string().required('¡Campo requerido!').min(3, '¡Mínimo 3 caracteres!'), */
+         nombres: Yup.string().required('¡Campo requerido!').min(4, '¡Mínimo 4 caracteres!'),
+         apellidos: Yup.string().required('¡Campo requerido!').min(4, '¡Mínimo 4 caracteres!'),
       }),
       onSubmit: (values, meta) => { handleFindByApprox(values) },
    }

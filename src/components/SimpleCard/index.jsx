@@ -24,7 +24,7 @@ const useStyles = makeStyles({
    },
 })
 
-export default function SimpleCard({ title, descripcion, pathImg, path, ...rest }) {
+export default function SimpleCard({ title, description, pathImg, path, ...rest }) {
 
    /*» HOOK'S */
    const classes = useStyles(rest)
@@ -46,7 +46,7 @@ export default function SimpleCard({ title, descripcion, pathImg, path, ...rest 
                   {title.toUpperCase()}
                </Typography>
                <Typography variant="body2" color="textSecondary" component="p" align='justify'>
-                  {descripcion}
+                  {description}
                </Typography>
             </CardContent>
          </CardActionArea>

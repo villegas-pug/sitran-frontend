@@ -1,34 +1,59 @@
-import React, { useState } from 'react'
-import { Field } from 'formik'
+import React, { useState, useEffect, useMemo } from 'react'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { TextField } from '@material-ui/core'
-import _ from 'lodash'
+import { Field } from 'formik'
 
-export default function MyAutocomplete({ name, label, width, opt, setFieldValue, errors, values }) {
+export default function MyAutocomplete({ name, label, width, opt, handleChangeUncontrolled, ...rest }) {
+
+   /*» PROP'S  */
+   const { setFieldValue, errors, values, isValidating } = rest
+
+   /*» HOOK'S  */
    const [touched, setTouched] = useState(false)
-   const err = _.get(errors, name) && touched ? _.get(errors, name) : ''
+   const [msjError, setMsjError] = useState('')
+   const [inputValue, setInputValue] = useState('')
 
-   /*-> Obtiene el estado, para el binding con el componente...  */
-   const entity = _.get(values, name)
-   const value = entity ? Object.values(entity)[1] : ''
+   /*» EFFECT'S  */
+   useEffect(() => { !values[name] && setInputValue('') }, [values[name]])
+   useEffect(() => { values[name] && setInputValue(Object.values(values[name])[1]) }, [])
 
-   return (/*-> Al ralizar el binding con `inputValue` bloquea el input... */
+   useEffect(() => {
+      errors[name] && touched ? setMsjError(errors[name]) : setMsjError('')
+   }, [touched])
+
+   useEffect(() => {
+      if (isValidating) errors[name] ? setMsjError(errors[name]) : setMsjError('')
+   }, [isValidating])
+
+
+   /*» HANDLER  */
+   const handleOnChange = (e, obj) => {
+      setFieldValue([name], obj)
+      handleChangeUncontrolled({ [name]: obj })
+   }
+   const handleOnInputChange = (e, value) => { setInputValue(value) }
+   const handleOnInputBlur = e => { setTouched(true) }
+
+   return (/*-> Al realizar el binding con `inputValue` bloquea el input... */
       <Autocomplete
-         inputValue={value}
+         inputValue={inputValue}
+         onInputChange={handleOnInputChange}
+         onChange={handleOnChange}
+         onBlur={handleOnInputBlur}
+         noOptionsText='¡No hay registros!'
+         loadingText='Cargando...'
          options={opt}
-         getOptionLabel={(entity) => (Object.values(entity)[1])}
-         onChange={(e, entity) => setFieldValue([name], entity)}
-         onBlur={() => { setTouched(true) }}
+         getOptionLabel={(obj) => (Object.values(obj)[1])}/*» Drop down list label...  */
          style={{ width: `${width}rem` }}
          renderInput={(params) => (
             <Field
                {...params}
-               error={Boolean(err)}
+               error={Boolean(msjError)}
                label={label}
                as={TextField}
-               variant="outlined"
+               variant='outlined'
                size='small'
-               helperText={err}
+               helperText={msjError}
             />
          )}
       />

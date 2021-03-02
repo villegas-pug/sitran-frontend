@@ -1,24 +1,31 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter, Switch } from 'react-router-dom'
-import DashboardRouters from './DashboardRouters'
+import DashboardRouters from './DashboardRoutes'
 import Drawer from 'components/Drawer'
-import { useDispatch } from 'react-redux'
-import { obtenerInterpol } from 'redux/actions/interpolAction'
+import useEmpresa from 'hooks/useEmpresa'
+import usePais from 'hooks/usePais'
+import useDistrito from 'hooks/useDistrito'
 
 export default function AppRouter() {
 
-   /*» HOOK'S STORE...  */
-   const dispatch = useDispatch()
+   /*» HOOK'S...  */
+   const { handleListEmpresa } = useEmpresa()
+   const { handleListDistrito } = useDistrito()
+   const { handleListPais } = usePais()
 
+   /*» EFFECT'S  */
+   /*» Load: Empresa...  */
+   useEffect(() => { handleListEmpresa() }, [])
 
-   /*» Load: Interpol...  */
-   useEffect(() => {
-      /* dispatch(obtenerInterpol()) */
-   }, [])
+   /*» Load: Distrito...  */
+   useEffect(() => { handleListDistrito() }, [])
+
+   /*» Load: Pais...  */
+   useEffect(() => { handleListPais() }, [])
 
    return (
-      <BrowserRouter basename='/sistema-integral'>
-         <Drawer bgColor='#004795'>
+      <BrowserRouter basename='/sidtefim'>
+         <Drawer>
             <Switch>
                <DashboardRouters />
             </Switch>
