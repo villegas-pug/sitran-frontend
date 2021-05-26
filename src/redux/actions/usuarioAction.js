@@ -4,26 +4,31 @@ import {
    WARNING,
    ERROR,
 } from 'constants/levelLog'
-export const OBTENER_USUARIO_CARGANDO = 'OBTENER_USUARIO_CARGANDO'
-export const OBTENER_USUARIO_EXITO = 'OBTENER_USUARIO_EXITO'
-export const OBTENER_USUARIO_ERROR = 'OBTENER_USUARIO_ERROR'
+import { 
+   FIND_USER_BY_LOGIN_ERROR,
+   FIND_USER_BY_LOGIN_LOADING, 
+   FIND_USER_BY_LOGIN_SUCCESS 
+} from 'redux/types/usuarioType'
 
-const obtenerUsuarioCargando = () => ({ type: OBTENER_USUARIO_CARGANDO })
-const obtenerUsuarioExito = (payload) => ({ type: OBTENER_USUARIO_EXITO, payload })
-const obtenerUsuarioError = (payload) => ({ type: OBTENER_USUARIO_ERROR, payload })
+const findUserByLoginLoading = () => ({ type: FIND_USER_BY_LOGIN_LOADING })
+const findUserByLoginSuccess = (payload) => ({ type: FIND_USER_BY_LOGIN_SUCCESS, payload })
+const findUserByLoginError = (payload) => ({ type: FIND_USER_BY_LOGIN_ERROR, payload })
 
-export const obtenerUsuario = () => async (dispatch, store) => {
-   dispatch(obtenerUsuarioCargando())
-   const { data: { levelLog, data, message } } = await api.get('/microservicio-usuario/findAll')
+export const findUserByLogin = () => async (dispatch, getStore) => {
+   dispatch(findUserByLoginLoading())
+   const { usuario: { userLogin } } = getStore()
+   console.log('Usuario: ', userLogin)
+   const { data: { levelLog, data, message } } = await api.get(`/microservicio-usuario/findByLogin/${userLogin}`)
    switch (levelLog) {
-      case SUCCESS:
-         dispatch(obtenerUsuarioExito(data))
-         break
-      case WARNING:
-         dispatch(obtenerUsuarioError(message))
-         break
-      case ERROR:
-         dispatch(obtenerUsuarioError(message))
-         break
+   case SUCCESS:
+      dispatch(findUserByLoginSuccess(data))
+      break
+   case WARNING:
+      dispatch(findUserByLoginError(message))
+      
+      break
+   case ERROR:
+      dispatch(findUserByLoginError(message))
+      break
    }
 }

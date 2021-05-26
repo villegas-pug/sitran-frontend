@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useRef, useEffect} from 'react'
 import {
    Card,
    CardActionArea,
@@ -8,15 +8,20 @@ import {
    Typography,
    Box,
    IconButton,
-   Tooltip
+   Tooltip,
+   CircularProgress
 } from '@material-ui/core'
 import { Storage, Publish, AttachFile, Cancel } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import Flash from 'react-reveal/Flash'
 import styled from 'styled-components'
-import MyButton from 'components/MuiButton'
-import useOperativo from 'hooks/useOperativo'
 
+import MyButton from 'components/MuiButton'
+import Noty from 'helpers/noty'
+import {WARNING} from 'constants/levelLog'
+
+import useOperativo from 'hooks/useOperativo'
+import useStages from 'hooks/useStages'
 
 const Body = styled.div`
    display: flex;
@@ -43,27 +48,35 @@ const useStyles = makeStyles({
    storage: {
       fontSize: 150,
       margin: 'auto'
-
    }
 })
 
 export default function SecondStageOpt02() {
+   
    /*» HOOK'S  */
-   const rFile = useRef()
+   const rFile = useRef({})
    const classes = useStyles()
-
-   /*» HOOK'S  */
-   const { loading, handleChangeInputUncontrolled, handleSaveOperativo } = useOperativo()
+   
+   const { 
+      operativoLoading,
+      handleChangeInputUncontrolled, 
+      handleSaveOperativo,
+   } = useOperativo()
+   
+   const { handleResetStages } = useStages('NuevoOperativoSubMod')
 
    /*» EFFECT'S  */
-   /* useEffect(() => () => { rFile.current = null }, [])/*» Cleanup... */
+   useEffect(() => () => {/*» Cleanup...*/
+      if(rFile.current) rFile.current.value = ''
+   }, [])
 
    /*» HANDLER'S  */
-   const handleOnChageInputFile = ({ target: { files } }) => { handleChangeInputUncontrolled({ file: files[0] }) }
-
-   const handleOnClickInputFile = e => { rFile.current.click() }
-
-   const handleOnClickGuardar = e => { handleSaveOperativo() }
+   const handleOnChageInputFile = ({ target: {files} }) => {  handleChangeInputUncontrolled({ file: files[0] })}
+   const handleOnClickInputFile = () => { rFile.current.click() }
+   const handleOnClickSave = () => {
+      if(operativoLoading) Noty(WARNING, '¡Hay otro proceso en curso!')
+      else handleSaveOperativo()
+   }
 
    return (
       <>
@@ -73,43 +86,53 @@ export default function SecondStageOpt02() {
                   <CardActionArea>
                      <CardMedia
                         className={classes.media}
-                        title="Storage"
+                        title='Storage'
                      >
                         <Box display='flex' justifyContent='center' alignItems='center'>
                            <Storage color='action' className={classes.storage} />
                         </Box>
                      </CardMedia>
                      <CardContent>
-                        <Typography gutterBottom variant='h6' component='h6'>
-                           » ALMACENAMIENTO
+                        <Typography gutterBottom variant='h3' color='textPrimary'>
+                           ALMACENAMIENTO
                         </Typography>
-                        <Typography variant="subtitle2" color="textSecondary" component="p">
+                        <Typography variant='subtitle2' color='textSecondary' component='p'>
                            Eligir archivo en formato xlsx.
                         </Typography>
                      </CardContent>
                   </CardActionArea>
                   <CardActions>
-                     <input type='file' ref={rFile} accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' onChange={handleOnChageInputFile} hidden />
+                     <input 
+                        type='file' 
+                        ref={rFile} 
+                        accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+                        onChange={handleOnChageInputFile} 
+                        hidden 
+                     />
                      <Tooltip title='Adjuntar archivo' arrow placement='left'>
                         <IconButton
                            edge='start'
                            size='medium'
                            onClick={handleOnClickInputFile}
+                           disabled={operativoLoading}
                         >
-                           <AttachFile />
+                           <AttachFile fontSize='large' />
                         </IconButton>
                      </Tooltip>
                      <Tooltip title='Guardar' arrow placement='right' >
                         <IconButton
                            edge='end'
                            size='medium'
-                           disabled={!rFile.current}
-                           onClick={handleOnClickGuardar}
+                           disabled={!rFile.current?.value}
+                           onClick={handleOnClickSave}
                         >
-                           {<Publish />}
+                           {
+                              operativoLoading 
+                                 ? <CircularProgress size={18} color='inherit'  /> 
+                                 : <Publish fontSize='large' />
+                           }
                         </IconButton>
                      </Tooltip>
-
                   </CardActions>
                </Card>
             </Body>
@@ -118,6 +141,8 @@ export default function SecondStageOpt02() {
                   variant='outlined'
                   color='secondary'
                   startIcon={<Cancel />}
+                  onClick={handleResetStages}
+                  disabled={operativoLoading}
                >
                   CANCELAR
                </MyButton>
@@ -126,4 +151,3 @@ export default function SecondStageOpt02() {
       </>
    )
 }
-

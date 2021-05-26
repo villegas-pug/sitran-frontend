@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import {
    Accordion,
@@ -56,7 +57,7 @@ export default function MyAccordion({ groups }) {
                   </AccordionSummary>
                   {
                      items.map((item, i) => (
-                        <AccordionDetails>
+                        <AccordionDetails key={i}>
                            <TextField
                               variant='outlined'
                               fullWidth
@@ -87,6 +88,6 @@ export default function MyAccordion({ groups }) {
    )
 }
 
-
-
-
+MyAccordion.propTypes = {
+   groups: PropTypes.array.isRequired
+}

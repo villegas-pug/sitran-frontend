@@ -1,4 +1,5 @@
-import React from 'react';
+import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 const FormContainer = styled.form`
@@ -16,13 +17,17 @@ const FormContainer = styled.form`
 
 `
 
-export default (props) => {
-   const { handleSubmit } = props
+export default function MyFormContainer({children, handleSubmit}) {
    return (
       <FormContainer
          onSubmit={handleSubmit}
       >
-         {props.children}
+         {children}
       </FormContainer>
    )
+}
+
+MyFormContainer.propTypes = {
+   children: PropTypes.any.isRequired, 
+   handleSubmit: PropTypes.func.isRequired
 }

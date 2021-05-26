@@ -31,20 +31,20 @@ const Container = styled.div`
    align-items: center;
 `
 
-const optTipoOperativo = [
+const optModalidadOperativo = [
    { id: 'Presencial', description: 'Presencial' },
    { id: 'Remoto', description: 'Remoto' },
 ]
 
 const useStyles = makeStyles({
    paper: {
-      width: ({ screen, breakpoints }) => screen == breakpoints.desktop ? 700 : 600,
+      width: ({ currentScreen, breakpoints }) => currentScreen == breakpoints.desktop ? 700 : 600,
       padding: '12px 25px',
    },
    box: {
-      flexWrap: ({ screen, breakpoints }) => screen == breakpoints.desktop && 'wrap',
-      flexDirection: ({ screen, breakpoints }) => screen == breakpoints.desktop && 'row',
-      justifyContent: ({ screen, breakpoints }) => screen == breakpoints.desktop && 'space-between'
+      flexWrap: ({ currentScreen, breakpoints }) => currentScreen == breakpoints.desktop && 'wrap',
+      flexDirection: ({ currentScreen, breakpoints }) => currentScreen == breakpoints.desktop && 'row',
+      justifyContent: ({ currentScreen, breakpoints }) => currentScreen == breakpoints.desktop && 'space-between'
    }
 })
 
@@ -58,8 +58,8 @@ export default function FirstStage() {
    const { handleNextStage } = useStages('NuevoOperativoSubMod')
 
    /*» HOOKS  */
-   const { screen, breakpoints, unsuscribeScreenResizeListener } = useBreakpoints()
-   const styles = useStyles({ screen, breakpoints })
+   const { currentScreen, breakpoints, unsuscribeScreenResizeListener } = useBreakpoints()
+   const classes = useStyles({ currentScreen, breakpoints })
 
    /*» EFFECT'S  */
    useEffect(() => () => { unsuscribeScreenResizeListener() }, [])
@@ -69,11 +69,11 @@ export default function FirstStage() {
       initialValues: inputValues,
       validationSchema: Yup.object({
          fechaOperativo: Yup.string().required('¡Requerido!'),
-         distrito: Yup.string().required('¡Requerido!').nullable('¡Requerido!'),
+         distrito: Yup.string().required('¡Requerido!').nullable(),
          numeroOperativo: Yup.string().required('¡Requerido!'),
-         tipoOperativo: Yup.string().required('¡Requerido!'),
-         numeroInforme: Yup.string().required('¡Requerido!'),
-         entidadSolicitaOperativo: Yup.string().required('¡Requerido!').nullable('¡Requerido!'),
+         modalidadOperativo: Yup.string().required('¡Requerido!'),
+         /* numeroInforme: Yup.string().required('¡Requerido!'), */
+         entidadSolicitaOperativo: Yup.string().required('¡Requerido!').nullable(),
       }),
       onSubmit: () => { handleNextStage() }
    }), [inputValues])
@@ -87,10 +87,10 @@ export default function FirstStage() {
                      onChange={handleChangeInputControlled}
                   >
                      <Container>
-                        <Paper elevation={5} className={styles.paper}>
-                           <Typography variant="h6" color='initial'>» NUEVO OPERATIVO</Typography>
+                        <Paper elevation={5} className={classes.paper}>
+                           <Typography gutterBottom variant="h4" color='primary'>NUEVO OPERATIVO</Typography>
                            <Divider style={{ marginBottom: 20 }} />
-                           <Box display='flex' flexDirection='column' className={styles.box}>
+                           <Box display='flex' flexDirection='column' className={classes.box}>
                               <FormGroup>
                                  <MyTextField type='date' name='fechaOperativo' size={10} label="Fecha operativo" focused />
                               </FormGroup>
@@ -109,25 +109,26 @@ export default function FirstStage() {
 
                               <FormGroup>
                                  <MySelect
-                                    name='tipoOperativo'
+                                    name='modalidadOperativo'
                                     width={25}
-                                    label='Tipo operativo'
-                                    opt={optTipoOperativo}
+                                    label='Modalidad operativo'
+                                    opt={optModalidadOperativo}
                                     handleChangeUncontrolled={handleChangeInputUncontrolled}
                                     {...rest}
                                  />
                               </FormGroup>
                               <FormGroup>
-                                 <MyTextField type='text' name='numeroInforme' size={8} label="#Informe" />
+                                 <MyTextField type='text' name='numeroInforme' size={8} label="Número Informe" />
                               </FormGroup>
                               <FormGroup>
                                  <MyAutocomplete
-                                    name='EntidadSolicitaOperativo'
-                                    label='¿Quién solicita operativo?'
+                                    name='entidadSolicitaOperativo'
+                                    label='Tipo Operativo'
                                     width={30}
                                     opt={entidadSolicitaOpeDb}
                                     handleChangeUncontrolled={handleChangeInputUncontrolled}
-                                    {...rest} />
+                                    {...rest} 
+                                 />
                               </FormGroup>
                            </Box>
                            <Divider style={{ margin: '10px 0' }} />
@@ -147,7 +148,7 @@ export default function FirstStage() {
                                  startIcon={<NavigateNext />}
                               >
                                  SIGUIENTE
-                                 </Button>
+                              </Button>
                            </Box>
                         </Paper>
                      </Container>

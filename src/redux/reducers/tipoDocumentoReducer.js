@@ -8,9 +8,9 @@ const initialState = {
    error: null
 }
 
-export default function tipoDocumentoReducer(state = initialState, { type, payload }) {
+export default function tipoDocumentoReducer(state = initialState, { type }) {
    switch (type) {
-      default:
-         return state
+   default:
+      return state
    }
 }

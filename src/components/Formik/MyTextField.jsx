@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { useField } from 'formik'
 import { TextField } from '@material-ui/core'
 
@@ -8,6 +9,7 @@ export default function MyTextField({ type, size, label, focused, ...rest }) {
 
    return (
       <TextField
+         {...rest}
          {...fieldProps}
          type={type}
          color='primary'
@@ -24,4 +26,11 @@ export default function MyTextField({ type, size, label, focused, ...rest }) {
          autoComplete='off'
       />
    )
+}
+
+MyTextField.propTypes = {
+   type: PropTypes.string.isRequired, 
+   size: PropTypes.number.isRequired, 
+   label: PropTypes.string.isRequired, 
+   focused: PropTypes.bool.isRequired
 }

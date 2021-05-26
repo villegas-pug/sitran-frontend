@@ -11,11 +11,11 @@ const initialState = {
    ]
 }
 
-export default function lineamientoReducer(state = initialState, { type, payload }) {
+export default function lineamientoReducer(state = initialState, { type }) {
    switch (type) {
-      case 'test':
-         return {}
-      default:
-         return state
+   case 'test':
+      return {}
+   default:
+      return state
    }
 }

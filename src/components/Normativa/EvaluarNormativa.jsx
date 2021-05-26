@@ -3,7 +3,6 @@ import Table from 'components/Table'
 import {
    IconButton,
    Tooltip,
-   Box
 } from '@material-ui/core'
 import {
    OpenInNew,
@@ -26,49 +25,50 @@ export default function EvaluarNormativa() {
    /*» ARGUMENT ◄► `dataTable`  */
    const configTable = () => ({
       actions: [{ icon: 'Ver' }, { icon: 'Aprobar' }, { icon: 'Denegar' }],
-      components: ({ action: { icon }, data }) => {
+      /* components: ({ action: { icon }, data }) => { */
+      components: ({ action: { icon }}) => {
          switch (icon) {
-            case 'Ver':
-               return (
-                  <Tooltip
-                     title={icon}
-                     arrow
+         case 'Ver':
+            return (
+               <Tooltip
+                  title={icon}
+                  arrow
+               >
+                  <IconButton
+                     onClick={() => { }}
                   >
-                     <IconButton
-                        onClick={() => { }}
-                     >
-                        <OpenInNew />
-                     </IconButton>
-                  </Tooltip>
-               )
-            case 'Aprobar':
-               return (
-                  <Tooltip
-                     title={icon}
-                     arrow
+                     <OpenInNew />
+                  </IconButton>
+               </Tooltip>
+            )
+         case 'Aprobar':
+            return (
+               <Tooltip
+                  title={icon}
+                  arrow
+               >
+                  <IconButton
+                     onClick={() => { }}
                   >
-                     <IconButton
-                        onClick={() => { }}
-                     >
-                        <Block />
-                     </IconButton>
-                  </Tooltip>
-               )
-            case 'Denegar':
-               return (
-                  <Tooltip
-                     title={icon}
-                     arrow
+                     <Block />
+                  </IconButton>
+               </Tooltip>
+            )
+         case 'Denegar':
+            return (
+               <Tooltip
+                  title={icon}
+                  arrow
+               >
+                  <IconButton
+                     onClick={() => { }}
                   >
-                     <IconButton
-                        onClick={() => { }}
-                     >
-                        <Spellcheck />
-                     </IconButton>
-                  </Tooltip>
-               )
-            default:
-               break
+                     <Spellcheck />
+                  </IconButton>
+               </Tooltip>
+            )
+         default:
+            break
          }
       }
    })

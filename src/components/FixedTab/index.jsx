@@ -10,7 +10,6 @@ import {
    Box,
    Grid
 } from '@material-ui/core'
-import { GetApp } from '@material-ui/icons'
 import SimpleCard from 'components/SimpleCard'
 
 const lineamientos = {

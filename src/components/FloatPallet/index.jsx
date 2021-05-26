@@ -1,5 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import { makeStyles } from '@material-ui/core/styles'
 
 const Body = styled.div`
    /* outline: 1px solid #999; */
@@ -10,21 +12,34 @@ const Body = styled.div`
    padding: .3rem;
    display: flex;
    flex-direction: column;
-   justify-content: center;
-   align-items: center;
+   justify-content: space-between;
    z-index: 100;
-   background-color: #fff;
    border-radius: .5rem;
 `
 
+const useStyle = makeStyles({
+   iconButton:{
+      backgroundColor: '#fff'
+   }
+})
+
 export default function FloatPallet({ children, ...rest }) {
+   /*» HOOK'S  */
+   const classes = useStyle()
+
    return (
       <>
          <Body
             {...rest}
          >
-            {children}
+            {
+               children(classes)
+            }
          </Body>
       </>
    )
+}
+
+FloatPallet.propTypes = {
+   children: PropTypes.any.isRequired
 }

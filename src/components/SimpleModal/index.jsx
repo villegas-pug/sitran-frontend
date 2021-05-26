@@ -1,46 +1,52 @@
-import React, { useState } from 'react'
-import Modal from '@material-ui/core/Modal'
+import React, { /* useImperativeHandle */ } from 'react'
+import PropTypes from 'prop-types'
+import {
+   Modal,
+   Backdrop,
+   Fade
+} from '@material-ui/core'
 import styled from 'styled-components'
 
-
-const Container = styled.div`
-   position: absolute;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   top: 0;
-   right: 0;
-   bottom: 0;
-   left: 0;
-`
-
 const Body = styled.div`
-   position: relative;
-   top: 25%;
-   margin: auto;
-   width: 20rem;
-   height: 20rem;
+   position: absolute;
+   display: inline-block;
+   top: 50vh;
+   left: 50vw;
+   transform: translateY(-50%) translateX(-50%);
+   padding: 1rem;
    background-color: #fff;
-   outline: 1px solid red;
 `
+function SimpleModal({ children, open, setOpen }) {
 
-export default function SimpleModal({ children }) {
-
-   /*» HOOK'S  */
-   const [open, setOpen] = useState(true);
+   /*» HOOK'S */
 
    /*» HANDLER'S  */
-   const handleOpen = () => { setOpen(true) }
    const handleClose = () => { setOpen(false) }
 
    return (
       <Modal
          open={open}
          onClose={handleClose}
+         BackdropComponent={Backdrop}
+         BackdropProps={{ timeout: 1000 }}
+         closeAfterTransition={true}
+         disableAutoFocus={true}
+         disableEnforceFocus={true}
+         disableRestoreFocus={true}
       >
-         <Body>
-            {children}
-         </Body>
+         <Fade in={open}>
+            <Body>
+               {children}
+            </Body>
+         </Fade>
       </Modal>
    )
 }
+
+SimpleModal.propTypes = {
+   children: PropTypes.any.isRequired,
+   open: PropTypes.bool.isRequired,
+   setOpen: PropTypes.func.isRequired
+}
+
+export default React.memo(SimpleModal)

@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useEffect } from 'react'
+import React, { useRef, useMemo, useState, useEffect } from 'react'
 import {
    Paper,
    Box,
@@ -9,49 +9,54 @@ import {
    DeleteSweep,
    Search,
    FindInPage,
+   GetApp
 } from '@material-ui/icons'
+import Fade from 'react-reveal/Fade'
+import { Formik, Form } from 'formik'
+import * as Yup from 'yup'
+import { format } from 'date-fns'
+import { es } from 'date-fns/locale'
+import styled from 'styled-components'
+
 import MyTextField from 'components/Formik/MyTextField'
 import AppTitle from 'components/Styled/AppTitle'
 import SpeedDial from 'components/SpeedDial'
-import Flash from 'react-reveal/Flash'
-import Fade from 'react-reveal/Fade'
-import { ClockLoader } from 'react-spinners'
-
 import Table from 'components/Table'
-
-import { Formik, Form } from 'formik'
-import * as Yup from 'yup'
-import moment from 'moment'
-import useInterpol from 'hooks/useInterpol'
-import useModal from 'hooks/useModal'
 import InterpolDetalle from 'components/InterpolDetalle'
+import SimpleModal from 'components/SimpleModal'
 
-import { Media } from 'react-breakpoints'
+import useInterpol from 'hooks/useInterpol'
+import useBreakpoints from 'hooks/useBreakpoints'
+import { END_POINT_BASE } from 'constants/endpointBase'
 
+const Content = styled.div`
+   margin: .5rem;
+`
 export default function BuscarInterpolSubMod(props) {
-
    /*» HOOK'S...*/
    const rSubmit = useRef()
    const rReset = useRef()
+   const [openModal, setOpenModal] = useState(false)
+   const [detInterpolRecord, setDetInterpolRecord] = useState({})
 
    /*» CUSTOM HOOK'S ... */
-   const { interpolDb, loading, handleFindByApprox } = useInterpol()
-   const [contentModal] = useModal({ title: <AppTitle name='DATOS ADICIONALES DEL EXTRANJERO' align='left' color='#777' size={1} />, width: 950 })
+   const { interpolLoading, interpolDb, handleFindByApprox } = useInterpol()
+   const { currentScreen, breakpoints, unsuscribeScreenResizeListener } = useBreakpoints() 
 
    /*» EFFECT'S ... */
-   useEffect(() => { }, [])
+   useEffect(() => () => { unsuscribeScreenResizeListener() }, [])
 
    /*» HANDLER'S ...  */
    const handleActionDetalle = (rowData) => {
-      contentModal(
-         <InterpolDetalle data={rowData} {...props} />
-      )
+      setDetInterpolRecord(rowData)
+      setOpenModal(true)
    }
 
+   /*» DEPENDENCY'S  */
    /*» ARGUMENT ◄► `dataTable`  */
    const configTable = useMemo(() => ({
-      actions: [{ icon: 'Detalle' }],
-      components: ({ action: { icon }, data }) => {
+      actions: [{ icon: 'Detalle' }, { icon: 'Descargar' }],
+      components: ({ action: { icon }, data: record }) => {
          if (icon === 'Detalle')
             return (
                <Tooltip
@@ -59,12 +64,26 @@ export default function BuscarInterpolSubMod(props) {
                   arrow
                >
                   <IconButton
-                     onClick={() => { handleActionDetalle(data) }}
+                     onClick={() => { handleActionDetalle(record) }}
                   >
                      <FindInPage />
                   </IconButton>
                </Tooltip>
             )
+         else if(icon === 'Descargar'){
+            return (
+               <Tooltip
+                  title='Descargar'
+                  arrow
+               >
+                  <IconButton
+                     onClick={() => { window.open(`${END_POINT_BASE}/microservicio-interpol/downloadInterpol/${record.archivo}`) }}
+                  >
+                     <GetApp />
+                  </IconButton>
+               </Tooltip>
+            )
+         }
       }
    }), [interpolDb])
 
@@ -79,7 +98,7 @@ export default function BuscarInterpolSubMod(props) {
          { title: 'Nacionalidad', field: 'nacionalidad', width: 20 },
          {
             title: 'Fecha Emisión', field: 'fechaEmision', type: 'date', width: 15,
-            render: ({ fechaEmision }) => moment(fechaEmision).format('LL')
+            render: ({ fechaEmision }) => format(fechaEmision, 'PPPP', { locale: es })
          },
       ],
       data: interpolDb
@@ -88,12 +107,12 @@ export default function BuscarInterpolSubMod(props) {
    /*» ARGUMENT : `optSpeedDialAction`  */
    const optSpeedDialAction = [
       {
-         icon: <Search />,
+         icon: <Search fontSize='large' />,
          tooltip: 'Buscar',
          handleOnClick: () => { rSubmit.current.click() }
       },
       {
-         icon: <DeleteSweep />,
+         icon: <DeleteSweep fontSize='large'/>,
          tooltip: 'Limpiar',
          handleOnClick: () => { rReset.current.click() }
       }
@@ -105,83 +124,73 @@ export default function BuscarInterpolSubMod(props) {
          apellidos: '',
          cedula: '',
          pasaporte: '',
-         nacionalidad: '',
-         fechaEmision: '',
-         procedencia: ''
       },
       validationSchema: Yup.object({
          nombres: Yup.string().required('¡Campo requerido!').min(4, '¡Mínimo 4 caracteres!'),
          apellidos: Yup.string().required('¡Campo requerido!').min(4, '¡Mínimo 4 caracteres!'),
       }),
-      onSubmit: (values, meta) => { handleFindByApprox(values) },
+      onSubmit: (values) => { 
+         handleFindByApprox(values) 
+         console.log(values)
+      },
    }
 
    return (
-      <Media>
-         {
-            ({ breakpoints, currentBreakpoint }) => (
-               <Flash>
-                  {/* HEADER... */}
-                  <Formik {...optFormik} >
-                     {
-                        ({ values: { nombres, apellidos, cedula, pasaporte, fechaEmision } }) => (
-                           <Form>
-                              <AppTitle name='» BUSCAR FICHA INTERPOL EMITIDAS' align='left' size={1} color='#777' />
-                              <Paper elevation={10} style={{ padding: 13 }} >
-                                 <Box display='flex' justifyContent='space-around' >
-                                    <MyTextField name='nombres' value={nombres} label='Nombres' size={20} />
-                                    <MyTextField name='apellidos' value={apellidos} label='Apellidos' size={20} />
-                                    <MyTextField name='cedula' value={cedula} label='N° Cédula' size={10} />
-                                    <MyTextField name='pasaporte' value={pasaporte} label='N° Pasaporte' size={10} />
-                                    {/* <MyTextField name='fechaEmision' value={fechaEmision} label='Fecha emisión' size={15} type='date' /> */}
-                                 </Box>
-                                 <Box display='flex' justifyContent='flex-start' mt={1}>
-                                    <SpeedDial direction='right' optSpeedDialAction={optSpeedDialAction} />
-                                 </Box>
-                              </Paper>
-                              <input type='submit' ref={rSubmit} hidden />
-                              <input type='reset' ref={rReset} hidden />
-                           </Form>
-                        )
-                     }
-                  </Formik>
+      <>
+         <Content>
+            {/* HEADER... */}
+            <Fade clear>
+               <Formik {...optFormik} >
+                  {
+                     ({ values: { nombres, apellidos, cedula, pasaporte } }) => (
+                        <Form>
+                           <AppTitle name='» BUSCAR INTERPOL' align='left' size={1} color='#777' />
+                           <Paper elevation={10}>
+                              <Box display='flex' justifyContent='space-between' p={2} height={75} >
+                                 <MyTextField name='nombres' value={nombres} label='Nombres' size={20} />
+                                 <MyTextField name='apellidos' value={apellidos} label='Apellidos' size={20} />
+                                 <MyTextField name='cedula' value={cedula} label='N° Cédula' size={10} />
+                                 <MyTextField name='pasaporte' value={pasaporte} label='N° Pasaporte' size={10} />
+                              </Box>
+                           </Paper>
+                           <input type='submit' ref={rSubmit} hidden />
+                           <input type='reset' ref={rReset} hidden />
+                        </Form>
+                     )
+                  }
+               </Formik>
 
-                  {/* » BODY */}
-                  <Box mt={.5}>
-                     {
-                        loading
-                           ? (
-                              <Paper elevation={1}>
-                                 <Box display='flex' justifyContent='center' alignItems='center' height={200}>
-                                    <ClockLoader color='#999' size={50} />
-                                 </Box>
-                              </Paper>
-                           )
-                           : (
-                              interpolDb.length === 0
-                                 ? (
-                                    <Paper elevation={1}>
-                                       <Box display='flex' justifyContent='center' alignItems='center' height={200}>
-                                          <AppTitle name='««« No hay datos para mostrar »»»' color='#666' size={1} />
-                                       </Box>
-                                    </Paper>
-                                 )
-                                 : (
-                                    <Fade clear>
-                                       <Table
-                                          dataTable={dataTable}
-                                          configTable={configTable}
-                                          pageSize={breakpoints[currentBreakpoint] >= breakpoints.desktopLarge ? 10 : 5}
-                                       />
-                                    </Fade>
-                                 )
-                           )
+               {/* » BODY */}
+               <Box mt={.5}>
+                  <Table
+                     isLoading={interpolLoading}
+                     dataTable={dataTable}
+                     configTable={configTable}
+                     pageSize={ 
+                        currentScreen === breakpoints.desktop 
+                           ? 6 
+                           : currentScreen === breakpoints.desktopLarge
+                              ? 11 
+                              : 6 
                      }
-                  </Box>
-               </Flash>
-            )
-         }
+                  />
+               </Box>
+            </Fade>
+         </Content>
 
-      </Media>
+         {/*» FLOAT  */}
+         <SpeedDial
+            position='absolute'
+            direction='right'
+            opt={{bottom: 2}}
+            optSpeedDialAction={optSpeedDialAction} 
+         />
+
+         {/*» MODAL  */}
+         <SimpleModal open={openModal} setOpen={setOpenModal} >
+            <AppTitle name='DATOS ADICIONALES' align='left' color='#777' size={1} />
+            <InterpolDetalle data={detInterpolRecord} {...props} />
+         </SimpleModal>
+      </>
    )
 }

@@ -1,3 +1,4 @@
+import React from 'react'
 import {
    AddBox,
    ArrowUpward,
@@ -19,7 +20,10 @@ import {
    BarChartRounded,
    PageviewRounded,
    LiveHelp,
-   Settings
+   Settings,
+   Person,
+   SupervisorAccount,
+   Home
 } from '@material-ui/icons'
 
 export const Icons = {
@@ -34,17 +38,23 @@ export const Icons = {
    SortArrow: ArrowUpward,
    ThirdStateCheck: Remove,
    ViewColumn: ViewColumn,
-   /*» Iconos reservados para procedimientos...  */
+
+   /*» MOD'S...  */
+   Home: <Home fontSize='large' />,
+   Person: <Person fontSize='large' />,
+   SupervisorAccount: <SupervisorAccount fontSize='large' />,
+   AddBox: <AddBox fontSize='large' />,
+   Settings: <Settings fontSize='large' />,
+   LiveHelp: <LiveHelp fontSize='large' />,
+   BarChartRounded: <BarChartRounded fontSize='large' />,
+
+   /*» SUB-MOD'S...  */
    Test: <Build />,
    Cloud: <Cloud />,
-   Add: <AddBox />,
    Check: <Check />,
    Clear: <Clear />,
    Delete: <DeleteOutline />,
    DetailPanel: <ChevronRight />,
    Edit: <Edit />,
-   BarChartRounded: <BarChartRounded />,
    PageviewRounded: <PageviewRounded />,
-   LiveHelp: <LiveHelp />,
-   Settings: <Settings />
 }

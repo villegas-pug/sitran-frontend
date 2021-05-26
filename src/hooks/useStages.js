@@ -11,7 +11,9 @@ import { handleInputsReset } from 'redux/actions/operativoAction'
 export default function useStages(subModName) {/*» SUB-MODULE... */
    /*» STORE HOOK'S... */
    const dispatch = useDispatch()
-   const { stages: stagesDb } = useSelector(store => store)
+   const { 
+      stages: stagesDb,
+   } = useSelector(store => store)
 
    /*» HOOK'S  */
    const [{ currentStage, stages }, setCurrentSubmod] = useState({})

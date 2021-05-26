@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import { Formik, Form } from 'formik'
-import { Grid, FormControl, FormHelperText, Button } from '@material-ui/core'
+import { Grid, Button } from '@material-ui/core'
 import * as Yup from 'yup'
 import MyAutocomplete from 'components/Formik/Autocomplete'
 
@@ -56,4 +57,10 @@ export default function AsignarProcToEval({ sendSubmit, setSendSubmit, handleOnS
          }
       </Formik>
    )
+}
+
+AsignarProcToEval.propTypes = {
+   sendSubmit: PropTypes.func.isRequired, 
+   setSendSubmit: PropTypes.func.isRequired, 
+   handleOnSubmit: PropTypes.func.isRequired
 }

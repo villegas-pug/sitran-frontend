@@ -18,14 +18,14 @@ import * as Yup from 'yup'
 import useAuth from 'hooks/useAuth'
 import { useHistory } from 'react-router-dom'
 
-const useStyle = makeStyles((theme) => ({
+const useStyle = makeStyles({
    portal: {
       width: '17rem',
       backgroundColor: 'rgba(255,255,255, 0.8)',
       transform: 'rotateY(-15deg)',
       border: '1px solid #1f1f1f30'
    }
-}))
+})
 
 const animaLogin = keyframes`
    from {

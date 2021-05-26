@@ -1,25 +1,26 @@
 import React from 'react'
-import Flash from 'react-reveal/Flash'
 
-import Menu from 'components/Menu'
+import useAuth from 'hooks/useAuth'
+
 import SimpleCard from 'components/SimpleCard'
+import Menu from 'components/Menu'
 
-import useComponent from 'hooks/useComponent'
+import { modulo } from 'constants/component'
+
+const { REPORTES } = modulo
 
 export default function ReportesMod() {
 
    /*» HOOK'S  */
-   const { subModulo } = useComponent('REPORTES')
+   const { submodAuthenticated } = useAuth()
 
    return (
-      <Flash>
-         <Menu>
-            {
-               subModulo?.map(({ nombre, descripcion, pathImg, path }) => (
-                  <SimpleCard title={nombre} description={descripcion} pathImg={pathImg} path={path} />
-               ))
-            }
-         </Menu>
-      </Flash>
+      <Menu>
+         {
+            submodAuthenticated[REPORTES]?.map((props, i) => (
+               <SimpleCard key={i} {...props} />
+            ))
+         }
+      </Menu>
    )
 }

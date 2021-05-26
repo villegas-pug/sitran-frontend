@@ -1,23 +1,28 @@
 import React from 'react'
+
+import useAuth from 'hooks/useAuth'
+
+import SimpleCard from 'components/SimpleCard'
 import Menu from 'components/Menu'
 
-import useComponent from 'hooks/useComponent'
-import SimpleCard from 'components/SimpleCard'
-import Flash from 'react-reveal/Flash'
+import { modulo } from 'constants/component'
 
-export default function ProcesosMod() {
+const { PROCESOS } = modulo
 
-   const { subModulo } = useComponent('PROCESOS')
+function ProcesosMod() {
+
+   /*» HOOK'S  */
+   const { submodAuthenticated } = useAuth()
 
    return (
-      <Flash>
-         <Menu>
-            {
-               subModulo?.map(({ nombre, descripcion, pathImg, path }) => (
-                  <SimpleCard title={nombre} description={descripcion} pathImg={pathImg} path={path} />
-               ))
-            }
-         </Menu>
-      </Flash>
+      <Menu>
+         {
+            submodAuthenticated[PROCESOS]?.map((props, i) => (
+               <SimpleCard key={i} {...props} />
+            ))
+         }
+      </Menu>
    )
 }
+
+export default React.memo(ProcesosMod)

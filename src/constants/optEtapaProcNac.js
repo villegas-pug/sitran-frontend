@@ -1,3 +1,4 @@
+import React from 'react'
 import { Progress } from 'antd'
 export const optEtapaProcNac = [
    { id: 1, etapa: 'REGISTRO DE DATOS', progress: <Progress percent={30} size='small' status='active' /> },

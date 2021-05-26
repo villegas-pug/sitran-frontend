@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { TextField } from '@material-ui/core'
 import { Field } from 'formik'
@@ -32,7 +33,7 @@ export default function MyAutocomplete({ name, label, width, opt, handleChangeUn
       handleChangeUncontrolled({ [name]: obj })
    }
    const handleOnInputChange = (e, value) => { setInputValue(value) }
-   const handleOnInputBlur = e => { setTouched(true) }
+   const handleOnInputBlur = () => { setTouched(true) }
 
    return (/*-> Al realizar el binding con `inputValue` bloquea el input... */
       <Autocomplete
@@ -44,7 +45,7 @@ export default function MyAutocomplete({ name, label, width, opt, handleChangeUn
          loadingText='Cargando...'
          options={opt}
          getOptionLabel={(obj) => (Object.values(obj)[1])}/*» Drop down list label...  */
-         style={{ width: `${width}rem` }}
+         style={{ width: `${width}rem`}}
          renderInput={(params) => (
             <Field
                {...params}
@@ -58,4 +59,12 @@ export default function MyAutocomplete({ name, label, width, opt, handleChangeUn
          )}
       />
    )
+}
+
+MyAutocomplete.propTypes = {
+   name: PropTypes.string.isRequired, 
+   label: PropTypes.string.isRequired, 
+   width: PropTypes.string.isRequired, 
+   opt: PropTypes.object.isRequired, 
+   handleChangeUncontrolled: PropTypes.func.isRequired
 }

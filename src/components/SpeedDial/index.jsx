@@ -1,35 +1,24 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import SpeedDial from '@material-ui/lab/SpeedDial'
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon'
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction'
 
-const useStyles = makeStyles((theme) => ({
-   speedDial: ({ position }) => ({
+const useStyles = makeStyles(({
+   speedDial: ({ position, opt }) => ({
       position: position ?? 'relative',
-      left: 0,
-      bottom: 0,
-   }),
+      ...opt
+   })
 }))
 
-const css = {
-   button: {
-      backgroundColor: 'red'
-   }
-}
-
-export default function SpeedDials({ position, ...rest }) {
-   const { direction, optSpeedDialAction } = rest
-   const classes = useStyles({ position })
+export default function SpeedDials({direction, optSpeedDialAction, ...rest}) {
+   const classes = useStyles(rest)
    const [open, setOpen] = React.useState(false)
 
-   const handleClose = () => {
-      setOpen(false)
-   }
-
-   const handleOpen = () => {
-      setOpen(true)
-   }
+   /*» HANDLER'S  */
+   const handleClose = () => { setOpen(false)}
+   const handleOpen = () => {setOpen(true)}
 
    return (
       <SpeedDial
@@ -43,19 +32,25 @@ export default function SpeedDials({ position, ...rest }) {
          direction={direction}
       >
          {
-            optSpeedDialAction.map((action) => (
+            optSpeedDialAction.map(({tooltip, handleOnClick, icon, fabProps}) => (
                <SpeedDialAction
-                  key={action.tooltip}
-                  tooltipTitle={action.tooltip}
-                  icon={action.icon}
+                  key={tooltip}
+                  tooltipTitle={tooltip}
+                  icon={icon}
                   onClick={() => {
-                     action.handleOnClick()
+                     handleOnClick()
                      handleClose()
                   }}
                   color='primary'
+                  FabProps={{...fabProps}}
                />
             ))
          }
       </SpeedDial>
    )
+}
+
+SpeedDials.propTypes ={
+   direction: PropTypes.string.isRequired,
+   optSpeedDialAction: PropTypes.array.isRequired
 }

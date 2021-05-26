@@ -33,14 +33,6 @@ const Container = styled.div`
    justify-content: center;
    align-items: center;
 `
-
-const Footer = styled.footer`
-   position: absolute;
-   display: flex;
-   justify-content: space-between;
-   bottom: 1rem;
-`
-
 const optSexo = [
    { key: 'Femenido', value: 'Femenido' },
    { key: 'Masculino', value: 'Masculino' },
@@ -111,7 +103,7 @@ export default function ThirdStage() {
                   >
                      <Container>
                         <Paper elevation={5} className={stylesMui.paper}>
-                           <Typography variant="h6" color="initial">» DETALLE OPERATIVO</Typography>
+                           <Typography variant="h3" color="initial">» DETALLE OPERATIVO</Typography>
                            <Divider style={{ marginBottom: 20 }} />
                            <Box display='flex' flexWrap='wrap' justifyContent='space-between'>
                               <FormGroup>

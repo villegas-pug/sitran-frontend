@@ -28,11 +28,11 @@ export const initialValues = {
 
 export default function formsReducer(state = initialValues, { type, payload }) {
    switch (type) {
-      case ACTULIZAR_INPUTVALUES_PROCNAC:
-         return { ...state, inputValuesProcNac: { ...payload } }
-      case LIMPIAR_INPUTVALUES_PROCNAC:
-         return { ...state, inputValuesProcNac: initialValues.inputValuesProcNac }
-      default:
-         return state
+   case ACTULIZAR_INPUTVALUES_PROCNAC:
+      return { ...state, inputValuesProcNac: { ...payload } }
+   case LIMPIAR_INPUTVALUES_PROCNAC:
+      return { ...state, inputValuesProcNac: initialValues.inputValuesProcNac }
+   default:
+      return state
    }
 }

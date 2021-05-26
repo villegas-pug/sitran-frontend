@@ -1,5 +1,6 @@
-import AsignarProcedimientoNac from "components/AsignarProcedimientoNac"
-import RegistrarProcedimiento from "components/RegistrarProcedimientoNac"
+import React from 'react'
+import AsignarProcedimientoNac from 'components/AsignarProcedimientoNac'
+import RegistrarProcedimiento from 'components/RegistrarProcedimientoNac'
 import Calendar from 'components/Calendar'
 
 

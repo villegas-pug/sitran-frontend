@@ -39,7 +39,7 @@ export default function ElaboracionNormativa() {
    /*» ARGUMENT ◄► `dataTable`  */
    const configTable = () => ({
       actions: [{ icon: 'Editar' }, { icon: 'Exportar Excel' }],
-      components: ({ action: { icon }, data }) => {
+      components: ({ action: { icon }}) => {
          if (icon === 'Editar')
             return (
                <Tooltip
@@ -106,7 +106,12 @@ export default function ElaboracionNormativa() {
                            >
                               {
                                  docs.map((doc, i) => (
-                                    <MenuItem value={i}>{doc.toUpperCase()}</MenuItem>
+                                    <MenuItem 
+                                       key={i} 
+                                       value={i}
+                                    >
+                                       {doc.toUpperCase()}
+                                    </MenuItem>
                                  ))
                               }
                            </Select>

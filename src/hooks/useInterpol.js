@@ -1,9 +1,24 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { obtenerInterpolApprox, obtenerInterpol } from 'redux/actions/interpolAction'
+import { 
+   obtenerInterpolApprox, 
+   obtenerInterpol, 
+   saveInterpoPdf 
+} from 'redux/actions/interpolAction'
+
+import Noty from 'helpers/noty'
+import { WARNING } from 'constants/levelLog'
 
 export default function useInterpol() {
    /*» STORE ...  */
-   const { interpol: { loading, error, data: interpolDb } } = useSelector(store => store)
+   const { interpol: { 
+      loading: interpolLoading, 
+      error, 
+      data: interpolDb,
+      interpolPdf: {
+         loading: interpolPdfLoading,
+         data: interpolPdfDb
+      }
+   } } = useSelector(store => store)
    const dispatch = useDispatch()
 
    /*» CUSTOM HOOKiS  */
@@ -12,12 +27,21 @@ export default function useInterpol() {
    /*» HANDLER'S  */
    const handleFindByApprox = (payload) => { dispatch(obtenerInterpolApprox(payload)) }
    const handleFindAll = () => { dispatch(obtenerInterpol()) }
+   const handleSaveFile = (file) => { 
+      if (interpolPdfLoading) Noty(WARNING, '¡Hay otro proceso en curso!')
+      else dispatch(saveInterpoPdf(file)) 
+   }
 
    return {
+      interpolLoading,
       interpolDb,
-      loading,
+      interpolPdfLoading,
+      interpolPdfDb,
+
       error,
+
       handleFindAll,
-      handleFindByApprox
+      handleFindByApprox,
+      handleSaveFile
    }
 }

@@ -4,14 +4,12 @@ import { breakpoints as breakpointsDb } from 'constants/breakpoints'
 export default function useBreakpoints() {
 
    const [breakpoints, setBreakpoints] = useState({})
-   const [screen, setScreen] = useState('')
+   const [currentScreen, setCurrentScreen] = useState('')
 
    /*» EFFECT'S  */
    useEffect(() => {
       findScreenByBreakPoint({
-         target: {
-            outerWidth: window.screen.width
-         }
+         target: { outerWidth: window.screen.width}
       })
    }, [])
 
@@ -27,7 +25,7 @@ export default function useBreakpoints() {
 
    /*» PRIVATE - HANDLER'S   */
    const findScreenByBreakPoint = ({ target: { outerWidth } }) => {
-      setScreen(
+      setCurrentScreen(
          breakpointsDb.find(({ measure }) => outerWidth >= measure)?.name
       )
    }
@@ -38,9 +36,9 @@ export default function useBreakpoints() {
    }
 
    return {
-      screen,
+      currentScreen,
       breakpoints,
+
       unsuscribeScreenResizeListener
    }
-
 }

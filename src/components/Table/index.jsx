@@ -1,27 +1,47 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import MaterialTable from 'material-table'
 import { Icons } from 'helpers/icons'
+import PropTypes from 'prop-types'
+import {
+   Typography
+} from '@material-ui/core'
 
 function Table(props) {
 
    const {
+      isLoading,
       dataTable: { columns, data },
       configTable: { actions, components },
       options,/*-> Default props...*/
       ...rest
    } = props
 
+   /*» HOOK'S  */
    const [state, setState] = useState({ columns })
 
+   /*» EFFECT'S  */
    useEffect(() => { setState((prevState) => ({ ...prevState, data })) }, [data])
 
    return (
       <>
-         {console.log('Tabla renderizada!!!')}
          <MaterialTable
+            isLoading={isLoading}
             icons={Icons}
-            options={{ ...options, ...rest }}
-            localization={{ header: { actions: 'Acciones' }, pagination: { labelDisplayedRows: '{from}-{to} de {count}' } }}
+            options={{ 
+               ...options, 
+               ...rest, 
+               headerStyle: { textAlign: 'left', fontWeight: 700 },
+               rowStyle: { fontSize: 8, textTransform: 'uppercase' },
+            }}
+            localization={{ 
+               header: { actions: 'Acciones' }, 
+               pagination: { labelDisplayedRows: '{from}-{to} de {count}' },
+               body:{
+                  emptyDataSourceMessage:(
+                     <Typography variant='h3' color='textSecondary'>««« No existen datos para mostrar »»»</Typography>
+                  )
+               }
+            }}
             columns={state.columns}
             data={state.data}
             actions={actions}
@@ -32,20 +52,30 @@ function Table(props) {
 }
 
 Table.defaultProps = {
+   dataTable: [],
+   configTable: {},
    options: {
       pageSizeOptions: false,
-      /* paginationType: "stepped", */
+      /* paginationType: 'stepped', */
+      /* showEmptyDataSourceMessage: false, */
       sorting: true,
-      maxBodyHeight: 400,
+      minBodyHeight: 100,
       pageSize: 4,
-      rowStyle: { fontSize: 10, textTransform: 'uppercase' },
       toolbar: false,
       search: false,
       showTitle: false,
-      showEmptyDataSourceMessage: false,
-      searchFieldAlignment: "left"
+      searchFieldAlignment: 'left',
+      loadingType: 'linear'
    }
 }
+
+Table.propTypes = {
+   isLoading: PropTypes.bool.isRequired,
+   dataTable: PropTypes.object.isRequired,
+   configTable: PropTypes.object.isRequired,
+   options: PropTypes.object.isRequired
+}
+
 export default React.memo(Table, (prevProps, nextProps) => {
-   return prevProps.dataTable === nextProps.dataTable
-})
+   return prevProps.isLoading === nextProps.isLoading
+}) 

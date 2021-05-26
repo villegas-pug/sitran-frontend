@@ -24,17 +24,17 @@ export const listDistrito = () => async (dispatch) => {
    const { data: { levelLog, data, message } } = await api('/microservicio-distrito/findAll')
 
    switch (levelLog) {
-      case SUCCESS:
-         dispatch(listDistritoSuccess(data))
-         break
-      case WARNING:
-         dispatch(listDistritoError(message))
-         Noty(WARNING, message)
-         break
-      case ERROR:
-         dispatch(listDistritoError(message))
-         Noty(ERROR, message)
-         break
+   case SUCCESS:
+      dispatch(listDistritoSuccess(data))
+      break
+   case WARNING:
+      dispatch(listDistritoError(message))
+      Noty(WARNING, message)
+      break
+   case ERROR:
+      dispatch(listDistritoError(message))
+      Noty(ERROR, message)
+      break
 
    }
 }

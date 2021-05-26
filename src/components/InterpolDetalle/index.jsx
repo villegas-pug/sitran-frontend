@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {
    Card,
    CardHeader,
@@ -11,8 +12,19 @@ import {
    Grid
 } from '@material-ui/core'
 import { PersonOutline, ChevronRight } from '@material-ui/icons'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyle = makeStyles({
+   card: {
+      width: '60rem'
+   }
+}) 
 
 export default function InterpolDetalle({ data }) {
+
+   /*» HOOK'S  */
+   const classes = useStyle()
+
    const {
       nombres,
       apellidos,
@@ -29,7 +41,7 @@ export default function InterpolDetalle({ data }) {
 
    return (
       <>
-         <Card>
+         <Card className={classes.card}>
             <CardHeader
                avatar={<Avatar><PersonOutline /></Avatar>}
                title={`${nombres}, ${apellidos}`}
@@ -37,7 +49,7 @@ export default function InterpolDetalle({ data }) {
             />
             <CardContent>
                <Grid container>
-                  <Grid item item xs={3} xl={6}>
+                  <Grid item xs={3} xl={6}>
                      <List>
                         <ListItem>
                            <ListItemIcon><ChevronRight /></ListItemIcon>
@@ -95,4 +107,8 @@ export default function InterpolDetalle({ data }) {
 
       </>
    )
+}
+
+InterpolDetalle.propTypes = {
+   data: PropTypes.object.isRequired
 }

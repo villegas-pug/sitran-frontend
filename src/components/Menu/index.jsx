@@ -1,16 +1,26 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import Flash from 'react-reveal/Flash'
 
-const MyMenu = styled.div`
+const Menu = styled.body`
    display: flex;
-   height: calc(100vh - 120px);
+   height: calc(100vh - 5.5rem);
    justify-content: space-around;
    align-items: center;
    flex-wrap: wrap;
 `
 
-export default function Menu({ children }) {
+export default function MyMenu({ children }) {
    return (
-      <MyMenu>{children}</MyMenu>
+      <Flash>
+         <Menu>
+            {children}
+         </Menu>
+      </Flash>
    )
+}
+
+MyMenu.propTypes = {
+   children: PropTypes.any.isRequired
 }

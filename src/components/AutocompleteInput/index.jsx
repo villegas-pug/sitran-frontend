@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect } from 'react'
+import PropTypes from 'prop-types'
 import TextField from '@material-ui/core/TextField'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -9,8 +10,7 @@ const sleep = (delay = 0) => {
    })
 }
 
-function MenuAutocomplete(props) {
-   const { placeholder, width, variant, config, data, inputValue } = props
+function MenuAutocomplete({placeholder, width, variant, config, data, inputValue}) {
    const { selected: handleSelected, label: handleLabel, onInputChange } = config
 
    const [open, setOpen] = React.useState(false)
@@ -68,6 +68,15 @@ function MenuAutocomplete(props) {
          )}
       />
    )
+}
+
+MenuAutocomplete.propTypes = {
+   placeholder: PropTypes.string.isRequired, 
+   width: PropTypes.number.isRequired, 
+   variant: PropTypes.string.isRequired, 
+   config: PropTypes.object.isRequired, 
+   data: PropTypes.array.isRequired, 
+   inputValue: PropTypes.object.isRequired
 }
 
 export default React.memo(MenuAutocomplete)

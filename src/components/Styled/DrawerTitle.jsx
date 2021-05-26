@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { fontFamily } from 'config/font'
 
@@ -11,8 +12,7 @@ const DrawerTitle = styled.title`
    text-align: right;   
 `
 
-export default function (props) {
-   const { title, ...rest } = props
+export default function MyDrawerTitle({title, ...rest}) {
    return (
       <DrawerTitle
          {...rest}
@@ -20,4 +20,8 @@ export default function (props) {
          {title}
       </DrawerTitle>
    )
+}
+
+MyDrawerTitle.propTypes = {
+   title: PropTypes.string.isRequired
 }

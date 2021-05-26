@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Table from 'components/Table'
 import styled from 'styled-components'
 import { Button, IconButton, Tooltip } from '@material-ui/core'
@@ -6,12 +6,6 @@ import { Edit, Drafts, Update, ArrowBack, ArrowForward } from '@material-ui/icon
 import ContentTitle from 'components/Styled/ContentTitle'
 import RevisarRequisito from 'components/RevisaRequisito'
 import Slide from 'react-reveal/Slide'
-
-
-const Container = styled.div`
-   display: flex;
-   flex-direction: column;
-`
 
 const ActionBar = styled.div`
    display: flex;
@@ -38,7 +32,7 @@ export default function VerificaRequisito() {
    /*» ARGUMENT ◄► `configTable`  */
    const configTable = () => ({
       actions: [{ icon: 'Editar' }, { icon: 'Exportar Excel' }],
-      components: ({ action: { icon }, data }) => {
+      components: ({ action: { icon } }) => {
          if (icon === 'Editar')
             return (
                <Tooltip
@@ -75,7 +69,7 @@ export default function VerificaRequisito() {
                         >
                            <ArrowForward />
                            Ir a revisar requisitos
-                     </Button>
+                        </Button>
                      </ActionBar>
                      <Table configTable={configTable} dataTable={dataTable} maxBodyHeight={700} />
                   </Slide>
@@ -93,7 +87,7 @@ export default function VerificaRequisito() {
                            >
                               <ArrowBack />
                            REGRESAR
-                        </Button>
+                           </Button>
                         </ActionBar>
                         <RevisarRequisito />
                      </>

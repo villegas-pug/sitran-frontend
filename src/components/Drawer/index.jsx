@@ -1,29 +1,42 @@
-import React, { useState } from 'react'
+import React, { Suspense, useState } from 'react'
+import PropTypes from 'prop-types'
 import clsx from 'clsx'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
-import Drawer from '@material-ui/core/Drawer'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import List from '@material-ui/core/List'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import MenuIcon from '@material-ui/icons/Menu'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
-import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
+import {
+   Menu,
+   MenuItem,
+   IconButton,
+   Button,
+   Divider,
+   Tooltip,
+   ListItem,
+   ListItemIcon,
+   ListItemText,
+   Drawer,
+   AppBar,
+   Toolbar,
+   List,
+   CssBaseline, Typography
+} from '@material-ui/core'
+import {
+   AccountCircle,
+   ExitToApp,
+   Menu as MenuIcon,
+   ChevronLeft,
+   ChevronRight
+} from '@material-ui/icons'
+import { Scrollbars } from 'react-custom-scrollbars'
+
 import { useHistory } from 'react-router-dom'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
+
 import AppTitle from 'components/Styled/AppTitle'
 import DrawerTitle from 'components/Styled/DrawerTitle'
-import { Menu, MenuItem, IconButton, Button, Divider, Tooltip } from '@material-ui/core'
-import { AccountCircle, ExitToApp, Build } from '@material-ui/icons'
+import ModalLoader from 'components/Styled/ModalLoader'
+
 import { Icons } from 'helpers/icons'
-import styled from 'styled-components'
-import _ from 'lodash'
+import useAuth from 'hooks/useAuth'
 
-import { useDispatch, useSelector } from 'react-redux'
-
-const drawerWidth = 180
+const drawerWidth = 150
 
 const useStyles = makeStyles((theme) => ({
    root: {
@@ -76,36 +89,32 @@ const useStyles = makeStyles((theme) => ({
    },
    toolbar: {
       display: 'flex',
-      alignItems: 'center',
       justifyContent: 'flex-end',
+      alignItems: 'center',
       padding: theme.spacing(0, 1),
       // necessary for content to be below app bar
       ...theme.mixins.toolbar,
    },
    content: {
-      flexGrow: 1,
-      padding: theme.spacing(3),
+      position: 'relative',
+      width: '100%',
+      height: 'calc(100vh - .1rem)',
+      padding: 10
    },
 }))
-
-const Noty = styled.div`
-   flex-grow: 1;
-   display: flex;
-   justify-content: center;
-`
-
-export default function MyDrawer(props) {
+export default function MyDrawer({ children, ...rest }) {
 
    /*-> HOOK'S STORE...  */
-   const { data: moduloDb } = useSelector(store => store.modulo)
+   const { modAuthenticated } = useAuth()
 
    /*-> HOOK'S...  */
+   const [selectedItemDrawer, setSelectedItemDrawer] = useState(-1)
    const history = useHistory()
 
    /* const { userLogged, logout } = useAuth() */
 
-   const classes = useStyles(props);
-   const theme = useTheme();
+   const classes = useStyles(rest)
+   const theme = useTheme()
 
    const [anchorEl, setAnchorEl] = useState(null)
    const [open, setOpen] = React.useState(false)
@@ -113,16 +122,11 @@ export default function MyDrawer(props) {
    /*-> HANDLER'S...  */
    const handleDrawerOpen = () => setOpen(true)
    const handleDrawerClose = () => setOpen(false)
-   const handleOnClickOptSidebar = (titulo, path) => {
-      /* dispatcher(cambiarContentMainDrawer(titulo)) */
-      history.push(path)
-   }
+   const handleOnClickOptSidebar = (path, iItemDrawer) => (history.push(path), setSelectedItemDrawer(iItemDrawer))
 
    const handleOpenMenu = (e) => { setAnchorEl(e.currentTarget) }
    const handleCloseMenu = () => { setAnchorEl(null) }
-   const handleCerrarSesion = () => {
-   }
-
+   const handleCerrarSesion = () => {}
 
    return (
       <div className={classes.root}>{/*» FLEX-CONTAINER */}
@@ -130,20 +134,20 @@ export default function MyDrawer(props) {
 
          {/*» FLEX-ITEM: 01, Barra superior  */}
          <AppBar
-            position="fixed"
+            position='fixed'
             className={clsx(classes.appBar, { [classes.appBarShift]: open })}
          >
             <Toolbar>
                <IconButton
-                  color="inherit"
-                  aria-label="open drawer"
+                  color='inherit'
+                  aria-label='open drawer'
                   onClick={handleDrawerOpen}
-                  edge="start"
+                  edge='start'
                   className={clsx(classes.menuButton, { [classes.hide]: open })}
                >
                   <MenuIcon />
                </IconButton>
-               <AppTitle name="SISTEMA INTEGRAL" size='2' color='#fff' />
+               <AppTitle name='SISTEMA INTEGRADO DE LA DIRECCIÓN DE GESTIÓN TÉCNICA Y FISCALIZACIÓN MIGRATORIA' size='1.3' color='#fff'/>
 
                <div style={{ marginLeft: 'auto' }}>
                   <Button
@@ -174,7 +178,7 @@ export default function MyDrawer(props) {
 
          {/*» FLEX-ITEM: 02 */}
          <Drawer
-            variant="permanent"
+            variant='permanent'
             className={clsx(classes.drawer, {
                [classes.drawerOpen]: open,
                [classes.drawerClose]: !open,
@@ -188,23 +192,24 @@ export default function MyDrawer(props) {
          >
             <div className={classes.toolbar}>
                <IconButton onClick={handleDrawerClose}>
-                  {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                  {theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
                </IconButton>
             </div>
             <List>
                {
-                  moduloDb.map(({ nombre, path, icon, tooltip }, i) => (
+                  modAuthenticated?.map(({ idProcedimiento, nombre, informacion, icono, rutaPrincipal }) => (
                      <>
                         <Divider />
                         <ListItem
                            button
-                           key={i}
-                           onClick={() => { handleOnClickOptSidebar(nombre, path) }}
+                           selected={selectedItemDrawer === idProcedimiento}
+                           key={idProcedimiento}
+                           onClick={() => { handleOnClickOptSidebar(rutaPrincipal, idProcedimiento) }}
                         >
-                           <Tooltip arrow placement='right-end' title={tooltip}>
-                              <ListItemIcon>{(() => _.get(Icons, icon, <Build />))()}</ListItemIcon>
+                           <Tooltip arrow placement='right-end' title={<Typography variant='h6' color='initial'>{informacion}</Typography>}>
+                              <ListItemIcon>{(() => Icons[icono])()}</ListItemIcon>
                            </Tooltip>
-                           <ListItemText><DrawerTitle title={nombre} size={1} /></ListItemText>
+                           <ListItemText><DrawerTitle title={nombre} size={.8} /></ListItemText>
                         </ListItem>
                      </>
                   ))
@@ -214,9 +219,17 @@ export default function MyDrawer(props) {
 
          {/*» FLEX-ITEM: 03 ► Container dinámico...   */}
          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            {props.children}
+            <Scrollbars autoHide>
+               <div className={classes.toolbar} />
+               <Suspense fallback={<ModalLoader />}>
+                  {children}
+               </Suspense>
+            </Scrollbars>
          </main>
       </div>
    )
+}
+
+MyDrawer.propTypes = {
+   children: PropTypes.any.isRequired
 }

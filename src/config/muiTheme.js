@@ -1,6 +1,6 @@
 import { createMuiTheme } from '@material-ui/core'
 
-export const themeRoot = createMuiTheme({
+export const rootTheme = createMuiTheme({
    palette: {
       primary: {
          main: '#004795'
@@ -11,25 +11,36 @@ export const themeRoot = createMuiTheme({
    },
    typography: {
       fontFamily: 'RocknRoll One, sans-serif',
-      fontSize: 11,
+      fontSize: 10,
       h1: {
-         fontWeight: 1000,
-         fontSize: 18
-      },
-      h2: {
          fontWeight: 1000,
          fontSize: 16
       },
-      h3: {
+      h2: {
          fontWeight: 1000,
          fontSize: 14
       },
-
+      h3: {
+         fontWeight: 1000,
+         fontSize: 12
+      },
+      h4:{
+         fontWeight: 1000,
+         fontSize: 10
+      },
+      h5:{
+         fontWeight: 1000,
+         fontSize: 8
+      },
+      h6:{
+         fontWeight: 500,
+         fontSize: 10
+      },
    },
    overrides: {
       MuiTextField: {
          root: {
-            /* margin: 10 */
+            fontSize: 10
          }
       },
    },
@@ -40,7 +51,7 @@ export const themeRoot = createMuiTheme({
    }
 })
 
-export const themeInput = createMuiTheme({
+export const inputTheme = createMuiTheme({
    palette: {
       primary: {
          main: '#004795'

@@ -1,21 +1,23 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { ThemeProvider } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
 
-import { themeInput } from 'config/muiTheme'
+import { inputTheme } from 'config/muiTheme'
 
-export default function MyButton({ variant, type, color, startIcon, onClick, children }) {
+export default function MyButton({ children, ...rest}) {
+
    return (
-      <ThemeProvider theme={themeInput}>
+      <ThemeProvider theme={inputTheme}>
          <Button
-            variant={variant}
-            type={type}
-            color={color}
-            startIcon={startIcon}
-            onClick={onClick}
+            {...rest}
          >
             {children}
          </Button>
       </ThemeProvider>
    )
+}
+
+MyButton.propTypes = {
+   children: PropTypes.any.isRequired,
 }

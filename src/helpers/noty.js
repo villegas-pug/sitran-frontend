@@ -6,7 +6,7 @@ export default (type, text) => {
    new Noty({
       type: type.toLowerCase(),
       theme: 'bootstrap-v3',
-      timeout: 2000,
+      timeout: 1500,
       text,
       killer: true,
       modal: true

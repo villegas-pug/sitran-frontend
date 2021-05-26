@@ -40,7 +40,7 @@ export default function SecondStage() {
    /*» HANDLER'S  */
    const handleOnChangeRadio = ({ target: { value } }) => { setTipoRegistroSelected(value) }
 
-   const handleRender = e => {
+   const handleRender = () => {
       setComponentToRender(parseInt(tipoRegistroSelected))
    }
 
@@ -54,7 +54,7 @@ export default function SecondStage() {
                </FormLabel>
                <Divider />
                <RadioGroup name='tipoRegistro' onChange={handleOnChangeRadio} value={tipoRegistroSelected}>
-                  <FormControlLabel value='1' label='Manual' control={<Radio color='default' />} />
+                  <FormControlLabel value='1' label='Manual' control={<Radio color='default' />} disabled />
                   <FormControlLabel value='2' label='Masivo desde una hoja excel' control={<Radio color='default' />} />
                </RadioGroup>
                <FormHelperText>Seleccione para continuar...</FormHelperText>
@@ -76,7 +76,7 @@ export default function SecondStage() {
                style={{ marginLeft: 'auto', marginRight: 5 }}
             >
                REGRESAR
-               </Button>
+            </Button>
             <Button
                variant='contained'
                endIcon={<NavigateNext />}
@@ -84,7 +84,7 @@ export default function SecondStage() {
                onClick={handleRender}
             >
                SIGUIENTE
-               </Button>
+            </Button>
          </Footer>
       </Flash >
    ), [tipoRegistroSelected])

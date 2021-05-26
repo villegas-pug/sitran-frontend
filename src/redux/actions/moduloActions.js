@@ -9,25 +9,25 @@ import {
 } from 'redux/types/moduloType'
 
 
-export const obtenerModulotoCargando = () => ({ type: OBTENER_MODULO_CARGANDO })
+export const obtenerModuloCargando = () => ({ type: OBTENER_MODULO_CARGANDO })
 export const obtenerModuloExito = (payload) => ({ type: OBTENER_MODULO_ERROR, payload })
 export const obtenerModuloError = (payload) => ({ type: OBTENER_MODULO_EXITO, payload })
 
-export const obtenerModulo = () => async (dispatch, store) => {
+export const obtenerModulo = () => async (dispatch) => {
    const { data: { levelLog, message, data } } = await api.get('/microservicio-usrprocedimiento/test')
    dispatch(obtenerModuloCargando())
    switch (levelLog) {
-      case SUCCESS:
-         dispatch(obtenerModuloExito(data))
-         Noty(SUCCESS, message)
-         break
-      case WARNING:
-         dispatch(obtenerModuloError(message))
-         Noty(WARNING, message)
-         break
-      case ERROR:
-         dispatch(obtenerModuloError(message))
-         Noty(ERROR, message)
-         break
+   case SUCCESS:
+      dispatch(obtenerModuloExito(data))
+      Noty(SUCCESS, message)
+      break
+   case WARNING:
+      dispatch(obtenerModuloError(message))
+      Noty(WARNING, message)
+      break
+   case ERROR:
+      dispatch(obtenerModuloError(message))
+      Noty(ERROR, message)
+      break
    }
 }

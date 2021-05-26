@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 
@@ -11,4 +12,8 @@ export default function CapitalizeLetter({ title, ...rest }) {
    return (
       <MyCapitalizeLetter {...rest}>{title}</MyCapitalizeLetter>
    )
+}
+
+CapitalizeLetter.propTypes = {
+   title: PropTypes.string.isRequired
 }

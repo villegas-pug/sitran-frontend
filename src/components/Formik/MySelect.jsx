@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react'
+import PropTypes from 'prop-types'
 import {
    FormControl,
    InputLabel,
    Select,
    MenuItem,
-   FormHelperText
+   FormHelperText, Typography
 } from '@material-ui/core'
 
 export default function MySelect({ name, label, width, opt, handleChangeUncontrolled, ...rest }) {
@@ -24,9 +25,6 @@ export default function MySelect({ name, label, width, opt, handleChangeUncontro
       }
    }, [isValidating])
 
-   useEffect(() => {
-   }, [])
-
    const value = useMemo(() => (values[name] ?? ''), [values[name]])
 
    /*» HANDLER'S  */
@@ -34,7 +32,7 @@ export default function MySelect({ name, label, width, opt, handleChangeUncontro
       setFieldValue(name, value)
       handleChangeUncontrolled({ [name]: value })
    }
-   const handleOnBlur = e => { setTouched(true) }
+   const handleOnBlur = () => { setTouched(true) }
 
    return (
       <FormControl variant='outlined' size='small' error={Boolean(msjError)}>
@@ -49,11 +47,23 @@ export default function MySelect({ name, label, width, opt, handleChangeUncontro
          >
             {
                opt.map((item, i) => (
-                  <MenuItem key={i} value={Object.values(item)[0]}>{Object.values(item)[1]}</MenuItem>
+                  <MenuItem key={i} value={Object.values(item)[0]}>
+                     <Typography variant='h4' color='textSecondary'>
+                        {Object.values(item)[1]}
+                     </Typography>
+                  </MenuItem>
                ))
             }
          </Select>
          <FormHelperText>{msjError}</FormHelperText>
       </FormControl>
    )
+}
+
+MySelect.propTypes = {
+   name: PropTypes.string.isRequired, 
+   label: PropTypes.string.isRequired, 
+   width: PropTypes.number.isRequired, 
+   opt: PropTypes.array.isRequired, 
+   handleChangeUncontrolled: PropTypes.func.isRequired
 }

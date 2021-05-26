@@ -15,19 +15,19 @@ const initialState = {
 
 export default function procNacReducer(state = initialState, { type, payload }) {
    switch (type) {
-      case GUARDAR_PROCNAC_CARGANDO:
-         return { loading: true, data: [], error: null }
-      case GUARDAR_PROCNAC_EXITO:
-         return { loading: false, data: payload, error: null }
-      case GUARDAR_PROCNAC_ERROR:
-         return { loading: false, data: [], error: payload }
-      case OBTENER_PROCNAC_CARGANDO:
-         return { loading: true, data: [], error: null }
-      case OBTENER_PROCNAC_EXITO:
-         return { loading: false, data: payload, error: null }
-      case OBTENER_PROCNAC_ERROR:
-         return { loading: false, data: [], error: payload }
-      default:
-         return state
+   case GUARDAR_PROCNAC_CARGANDO:
+      return { loading: true, data: [], error: null }
+   case GUARDAR_PROCNAC_EXITO:
+      return { loading: false, data: payload, error: null }
+   case GUARDAR_PROCNAC_ERROR:
+      return { loading: false, data: [], error: payload }
+   case OBTENER_PROCNAC_CARGANDO:
+      return { loading: true, data: [], error: null }
+   case OBTENER_PROCNAC_EXITO:
+      return { loading: false, data: payload, error: null }
+   case OBTENER_PROCNAC_ERROR:
+      return { loading: false, data: [], error: payload }
+   default:
+      return state
    }
 }

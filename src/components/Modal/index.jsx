@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
-import { Modal, Button } from 'antd'
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Modal } from 'antd'
 
 
-export default function MyModal({ title, visible, setVisible, children, ...rest }) {
+export default function MyModal({ title, visible, setVisible, children }) {
 
-   const handleOk = e => setVisible(false)
-   const handleCancel = e => setVisible(false)
+   const handleOk = () => setVisible(false)
+   const handleCancel = () => setVisible(false)
 
    return (
       <>
@@ -19,4 +20,11 @@ export default function MyModal({ title, visible, setVisible, children, ...rest 
          </Modal>
       </>
    )
+}
+
+MyModal.propTypes = {
+   title: PropTypes.string.isRequired, 
+   visible: PropTypes.bool.isRequired, 
+   setVisible: PropTypes.func.isRequired, 
+   children: PropTypes.any.isRequired
 }

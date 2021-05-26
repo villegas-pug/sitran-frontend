@@ -15,7 +15,7 @@ const guardarProcNacCargando = () => ({ type: GUARDAR_PROCNAC_CARGANDO })
 const guardarProcNacExito = (payload) => ({ type: GUARDAR_PROCNAC_EXITO, payload })
 const guardarProcNacError = (payload) => ({ type: GUARDAR_PROCNAC_ERROR, payload })
 
-export const guardarProcNac = (payload) => async (dispatch, store) => {
+export const guardarProcNac = (payload) => async (dispatch) => {
    dispatch(guardarProcNacCargando())
    const { data: { levelLog, data, message } } = await api({
       method: 'POST',
@@ -24,18 +24,18 @@ export const guardarProcNac = (payload) => async (dispatch, store) => {
    })
 
    switch (levelLog) {
-      case SUCCESS:
-         dispatch(guardarProcNacExito(data))
-         Noty(SUCCESS, message)
-         break
-      case WARNING:
-         dispatch(guardarProcNacError(message))
-         Noty(WARNING, message)
-         break
-      case ERROR:
-         dispatch(guardarProcNacError(message))
-         Noty(ERROR, message)
-         break
+   case SUCCESS:
+      dispatch(guardarProcNacExito(data))
+      Noty(SUCCESS, message)
+      break
+   case WARNING:
+      dispatch(guardarProcNacError(message))
+      Noty(WARNING, message)
+      break
+   case ERROR:
+      dispatch(guardarProcNacError(message))
+      Noty(ERROR, message)
+      break
    }
 }
 
@@ -48,19 +48,18 @@ const obtenerProcNacCargando = () => ({ type: OBTENER_PROCNAC_CARGANDO })
 const obtenerProcNacExito = (payload) => ({ type: OBTENER_PROCNAC_EXITO, payload })
 const obtenerProcNacError = (payload) => ({ type: OBTENER_PROCNAC_ERROR, payload })
 
-export const obtenerProcNac = () => async (dispatch, store) => {
+export const obtenerProcNac = () => async (dispatch) => {
    dispatch(obtenerProcNacCargando())
    const { data: { levelLog, data, message } } = await api.get('/microservicio-procnacionalizacion/findAll')
    switch (levelLog) {
-      case SUCCESS:
-         dispatch(obtenerProcNacExito(data))
-         break
-      case WARNING:
-         dispatch(obtenerProcNacError(message))
-         break
-      case ERROR:
-         dispatch(obtenerProcNacError(message))
-         break
+   case SUCCESS:
+      dispatch(obtenerProcNacExito(data))
+      break
+   case WARNING:
+      dispatch(obtenerProcNacError(message))
+      break
+   case ERROR:
+      dispatch(obtenerProcNacError(message))
+      break
    }
 }
-

@@ -68,7 +68,7 @@ export default function Test() {
       },
    ]
 
-   const handleSubmit = (values, meta) => {
+   const handleSubmit = (values) => {
       dispatch(guardarProcNac({ procNacionalizacion: values, usuario: usuario[0] }))
    }
 
@@ -78,7 +78,7 @@ export default function Test() {
             initialValues={inputValuesProcNac}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
-            onReset={(values, meta) => {
+            onReset={(values) => {
                dispatch(limpiarInpuValuesProcNac())
                _.assign(values, firstInitValuesInput)/*» Inyecta propiedades vacias al objeto `values`... */
             }}

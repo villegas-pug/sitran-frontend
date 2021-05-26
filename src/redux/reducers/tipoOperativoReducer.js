@@ -8,12 +8,12 @@ const initialValues = {
    error: null
 }
 
-export default function tipoOperativoReducer(state = initialValues, { type, payload }) {
+export default function tipoOperativoReducer(state = initialValues, { type }) {
    switch (type) {
-      case false:
-         break
+   case false:
+      break
 
-      default:
-         return state
+   default:
+      return state
    }
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import {
    Stepper,
@@ -19,7 +20,7 @@ const useStyles = makeStyles({
    }
 })
 
-export default function SteperMui({ activeStep, steps }) {
+export default function StepperMui({ activeStep, steps }) {
    const classes = useStyles()
 
    return (
@@ -35,4 +36,9 @@ export default function SteperMui({ activeStep, steps }) {
          </Stepper>
       </div>
    )
+}
+
+StepperMui.propTypes = {
+   activeStep: PropTypes.number.isRequired, 
+   steps: PropTypes.array.isRequired
 }

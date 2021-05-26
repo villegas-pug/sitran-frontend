@@ -24,17 +24,17 @@ export const listEmpresa = () => async (dispatch) => {
    const { data: { levelLog, data, message } } = await api('/microservicio-empresa/findAll')
 
    switch (levelLog) {
-      case SUCCESS:
-         dispatch(listEmpresaSuccess(data))
-         break
-      case WARNING:
-         dispatch(listEmpresaError(message))
-         Noty(WARNING, message)
-         break
-      case ERROR:
-         dispatch(listEmpresaError(message))
-         Noty(ERROR, message)
-         break
+   case SUCCESS:
+      dispatch(listEmpresaSuccess(data))
+      break
+   case WARNING:
+      dispatch(listEmpresaError(message))
+      Noty(WARNING, message)
+      break
+   case ERROR:
+      dispatch(listEmpresaError(message))
+      Noty(ERROR, message)
+      break
 
    }
 }

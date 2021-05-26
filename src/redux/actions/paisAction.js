@@ -16,18 +16,21 @@ const obtenerPaisCargando = () => ({ type: OBTENER_PAIS_CARGANDO })
 const obtenerPaisExito = (payload) => ({ type: OBTENER_PAIS_EXITO, payload })
 const obtenerPaisError = (payload) => ({ type: OBTENER_PAIS_ERROR, payload })
 
-export const obtenerPais = () => async (dispatch, getStore) => {
+export const obtenerPais = () => async (dispatch) => {
    dispatch(obtenerPaisCargando())
-   const { data: { levelLog, data, message } } = await api.get('/microservicio-pais/findAll')
+   const { data: { levelLog, data, message } } = await api({
+      method: 'GET',
+      url: '/microservicio-pais/findAll',
+   })
    switch (levelLog) {
-      case SUCCESS:
-         dispatch(obtenerPaisExito(data))
-         break
-      case WARNING:
-         dispatch(obtenerPaisError(message))
-         break
-      case ERROR:
-         dispatch(obtenerPaisError(message))
-         break
+   case SUCCESS:
+      dispatch(obtenerPaisExito(data))
+      break
+   case WARNING:
+      dispatch(obtenerPaisError(message))
+      break
+   case ERROR:
+      dispatch(obtenerPaisError(message))
+      break
    }
 }

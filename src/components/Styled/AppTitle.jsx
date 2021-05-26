@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { fontFamily } from 'config/font'
 
@@ -10,9 +11,12 @@ const AppTitle = styled.title`
    text-align: ${({ align }) => align ?? 'center'};
 `
 
-export default function (props) {
-   const { name, ...rest } = props
+export default function MyAppTitle({name, ...rest}) {
    return (
       <AppTitle {...rest}>{name}</AppTitle>
    )
+}
+
+MyAppTitle.propTypes = {
+   name: PropTypes.string.isRequired
 }

@@ -18,6 +18,7 @@ import empresaReducer from 'redux/reducers/empresaReducer'
 import operativoReducer from 'redux/reducers/operativoReducer'
 import distritoReducer from 'redux/reducers/distritoReducer'
 import tipoInfraccionReducer from 'redux/reducers/tipoInfraccionReducer'
+import produccionReducer from 'redux/reducers/produccionReducer'
 
 /*» Manage status of the step's sub-module's...  */
 import stagesReducer from 'redux/reducers/stagesReducer'
@@ -38,6 +39,7 @@ const reducers = combineReducers({
    operativo: operativoReducer,
    distrito: distritoReducer,
    tipoInfraccion: tipoInfraccionReducer,
+   produccion: produccionReducer,
 
    stages: stagesReducer,
 })

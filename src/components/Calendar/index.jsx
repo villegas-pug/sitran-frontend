@@ -11,47 +11,47 @@ const Container = styled.div`
 `
 
 function getListData(value) {
-   let listData;
+   let listData
    switch (value.date()) {
-      case 8:
-         listData = [
-            { type: 'warning', content: 'Cita tomada.' },
-            { type: 'success', content: 'Cita tomada.' },
-         ]
-         break
-      case 13:
-         listData = [
-            { type: 'warning', content: 'Cita tomada.' },
-            { type: 'success', content: 'Cita tomada.' },
-            { type: 'error', content: 'Cita tomada.' },
-         ];
-         break
-      case 15:
-         listData = [
-            { type: 'warning', content: 'Cita tomada.' },
-            { type: 'error', content: 'Cita tomada.' },
-            { type: 'error', content: 'Cita tomada.' },
-         ];
+   case 8:
+      listData = [
+         { type: 'warning', content: 'Cita tomada.' },
+         { type: 'success', content: 'Cita tomada.' },
+      ]
+      break
+   case 13:
+      listData = [
+         { type: 'warning', content: 'Cita tomada.' },
+         { type: 'success', content: 'Cita tomada.' },
+         { type: 'error', content: 'Cita tomada.' },
+      ]
+      break
+   case 15:
+      listData = [
+         { type: 'warning', content: 'Cita tomada.' },
+         { type: 'error', content: 'Cita tomada.' },
+         { type: 'error', content: 'Cita tomada.' },
+      ]
 
-         break
-      case 16:
-         listData = [
-            { type: 'warning', content: 'Cita tomada.' },
-         ];
-         break
-      default:
+      break
+   case 16:
+      listData = [
+         { type: 'warning', content: 'Cita tomada.' },
+      ]
+      break
+   default:
    }
-   return listData || [];
+   return listData || []
 }
 
 function dateCellRender(value) {
-   const listData = getListData(value);
+   const listData = getListData(value)
    return (
       <ul style={{ paddingLeft: 0 }}>
          {
-            listData.map(item => (
+            listData.map((item, i) => (
                <li style={{ textDecoration: 'none' }}>
-                  <Badge status={item.type} text={item.content} />
+                  <Badge key={i} status={item.type} text={item.content} />
                </li>
             ))
          }
@@ -59,7 +59,7 @@ function dateCellRender(value) {
    )
 }
 
-function monthCellRender(value) {
+function monthCellRender() {
    return (
       <div className="notes-month">
          <section>Test</section>
