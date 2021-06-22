@@ -31,14 +31,14 @@ function Table(props) {
                ...options, 
                ...rest, 
                headerStyle: { textAlign: 'left', fontWeight: 700 },
-               rowStyle: { fontSize: 8, textTransform: 'uppercase' },
+               rowStyle: { fontSize: 10, textTransform: 'uppercase' },
             }}
             localization={{ 
                header: { actions: 'Acciones' }, 
                pagination: { labelDisplayedRows: '{from}-{to} de {count}' },
                body:{
                   emptyDataSourceMessage:(
-                     <Typography variant='h3' color='textSecondary'>««« No existen datos para mostrar »»»</Typography>
+                     <Typography variant='h4' color='textSecondary'>««« No existen datos para mostrar »»»</Typography>
                   )
                }
             }}

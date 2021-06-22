@@ -3,7 +3,7 @@ import {
    Paper,
    Box,
    Tooltip,
-   IconButton,
+   IconButton, Typography,
 } from '@material-ui/core'
 import {
    DeleteSweep,
@@ -27,7 +27,7 @@ import SimpleModal from 'components/SimpleModal'
 
 import useInterpol from 'hooks/useInterpol'
 import useBreakpoints from 'hooks/useBreakpoints'
-import { END_POINT_BASE } from 'constants/endpointBase'
+import { ENDPOINT_BASE } from 'constants/endpointBase'
 
 const Content = styled.div`
    margin: .5rem;
@@ -60,7 +60,8 @@ export default function BuscarInterpolSubMod(props) {
          if (icon === 'Detalle')
             return (
                <Tooltip
-                  title='Ver detalle'
+                  title={<Typography variant='h6' color='initial'>Ver detalle</Typography>}
+                  placement='right-start'
                   arrow
                >
                   <IconButton
@@ -77,7 +78,8 @@ export default function BuscarInterpolSubMod(props) {
                   arrow
                >
                   <IconButton
-                     onClick={() => { window.open(`${END_POINT_BASE}/microservicio-interpol/downloadInterpol/${record.archivo}`) }}
+                     disabled
+                     onClick={() => { window.open(`${ENDPOINT_BASE}/microservicio-interpol/downloadInterpol/${record.archivo}`) }}
                   >
                      <GetApp />
                   </IconButton>
@@ -90,7 +92,7 @@ export default function BuscarInterpolSubMod(props) {
    /*» ARGUMENT ◄► `dataTable`  */
    const dataTable = useMemo(() => ({
       columns: [
-         { title: 'Nro', field: 'idInterpol', type: 'number', width: 10 },
+         { title: 'Pasaporte', field: 'pasaporte', width: 10, render: ({pasaporte}) => pasaporte.trim() || '-' },
          {
             title: 'Ciudadano', field: 'nombres', type: 'date', width: 70,
             render: ({ nombres, apellidos }) => `${nombres}, ${apellidos}`
@@ -98,7 +100,7 @@ export default function BuscarInterpolSubMod(props) {
          { title: 'Nacionalidad', field: 'nacionalidad', width: 20 },
          {
             title: 'Fecha Emisión', field: 'fechaEmision', type: 'date', width: 15,
-            render: ({ fechaEmision }) => format(fechaEmision, 'PPPP', { locale: es })
+            render: ({ fechaEmision }) => format(new Date(fechaEmision), 'P', { locale: es })
          },
       ],
       data: interpolDb
@@ -107,12 +109,12 @@ export default function BuscarInterpolSubMod(props) {
    /*» ARGUMENT : `optSpeedDialAction`  */
    const optSpeedDialAction = [
       {
-         icon: <Search fontSize='large' />,
+         icon: <Search />,
          tooltip: 'Buscar',
          handleOnClick: () => { rSubmit.current.click() }
       },
       {
-         icon: <DeleteSweep fontSize='large'/>,
+         icon: <DeleteSweep />,
          tooltip: 'Limpiar',
          handleOnClick: () => { rReset.current.click() }
       }
@@ -126,8 +128,8 @@ export default function BuscarInterpolSubMod(props) {
          pasaporte: '',
       },
       validationSchema: Yup.object({
-         nombres: Yup.string().required('¡Campo requerido!').min(4, '¡Mínimo 4 caracteres!'),
-         apellidos: Yup.string().required('¡Campo requerido!').min(4, '¡Mínimo 4 caracteres!'),
+         nombres: Yup.string().required('¡Campo requerido!'),
+         /* apellidos: Yup.string().required('¡Campo requerido!'), */
       }),
       onSubmit: (values) => { 
          handleFindByApprox(values) 
@@ -144,7 +146,7 @@ export default function BuscarInterpolSubMod(props) {
                   {
                      ({ values: { nombres, apellidos, cedula, pasaporte } }) => (
                         <Form>
-                           <AppTitle name='» BUSCAR INTERPOL' align='left' size={1} color='#777' />
+                           {/* <AppTitle name='» BUSCAR INTERPOL' align='left' size={1} color='#777' /> */}
                            <Paper elevation={10}>
                               <Box display='flex' justifyContent='space-between' p={2} height={75} >
                                  <MyTextField name='nombres' value={nombres} label='Nombres' size={20} />

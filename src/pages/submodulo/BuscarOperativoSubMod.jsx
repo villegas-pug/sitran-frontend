@@ -27,7 +27,6 @@ import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 
 import MyTextField from 'components/Formik/MyTextField'
-import AppTitle from 'components/Styled/AppTitle'
 import Table from 'components/Table'
 import FormGroup from 'components/Styled/FormGroup'
 import SpeedDials from 'components/SpeedDial'
@@ -144,7 +143,7 @@ export default function BuscarOperativoSubMod() {
             field: 'fechaOperativo', 
             type: 'date', 
             width: 50, 
-            render: ({ fechaOperativo }) => format(fechaOperativo, 'P', { locale: es }) 
+            render: ({ fechaOperativo }) => format(new Date(fechaOperativo), 'P', { locale: es }) 
          },
          { title: 'Modalidad', field: 'modalidadOperativo', width: 60},
          { 
@@ -157,7 +156,7 @@ export default function BuscarOperativoSubMod() {
             field: 'fechaRegistro', 
             type: 'date', 
             width: 50,
-            render: ({fechaRegistro}) => format(fechaRegistro, 'P', { locale: es })
+            render: ({fechaRegistro}) => format(new Date(fechaRegistro), 'P', { locale: es })
          }
       ],
       data: operativoDb
@@ -166,17 +165,17 @@ export default function BuscarOperativoSubMod() {
    /*» ARGUMENT : `optSpeedDialAction`  */
    const optSpeedDialAction = [
       {
-         icon: <FindInPage fontSize='large' />,
+         icon: <FindInPage />,
          tooltip: 'Buscar',
          fabProps: { disabled: true },
          handleOnClick: () => { handleOnSearch() }
       }, {
          tooltip: 'Refrescar',
-         icon: <Update fontSize='large' />,
+         icon: <Update />,
          handleOnClick: () => { handleOnRefresh() }
       },{
          tooltip: 'Limpiar',
-         icon: <DeleteSweep fontSize='large' />,
+         icon: <DeleteSweep />,
          fabProps: { disabled: true },
          handleOnClick: () => { () => console.log('Limpiar...') }
       },
@@ -195,7 +194,7 @@ export default function BuscarOperativoSubMod() {
    return (
       <>
          {/* HEADER... */}
-         <AppTitle name='» BUSCAR OPERATIVO' align='left' size={1} color='#777' />
+         {/* <AppTitle name='» BUSCAR OPERATIVO' align='left' size={1} color='#777' /> */}
          <FormControlLabel
             label={ checked ? 'Ocultar filtro' : 'Mostrar filtro'}
             style={{marginLeft: 5}}

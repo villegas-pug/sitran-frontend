@@ -21,7 +21,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 /* import Fade from 'react-reveal/Fade' */
 
-import useProductionToDay from 'hooks/useProductionToDay'
+import useProduccion from 'hooks/useProduccion'
 import SimpleModal from 'components/SimpleModal'
 import ProduccionList from 'components/Produccion/ProduccionList'
 import ProduccionView from 'components/Produccion/ProduccionView'
@@ -59,7 +59,7 @@ export default function RegistrarActividad(){
       descripcionActividadDb,
       accionDesarrolladaDb,
       handleSaveProduccion
-   } = useProductionToDay()
+   } = useProduccion()
 
    /*» HANDLER'S */
    const handleOpenModalActividad = () => { setOpenModalActividad(true) }

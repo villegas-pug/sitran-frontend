@@ -5,10 +5,11 @@ import Noty from 'noty'
 export default (type, text) => {
    new Noty({
       type: type.toLowerCase(),
+      layout: 'bottomLeft',
       theme: 'bootstrap-v3',
       timeout: 1500,
       text,
       killer: true,
-      modal: true
+      modal: true,
    }).show()
 }

@@ -18,7 +18,7 @@ import {
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 
-import useProductionToDay from 'hooks/useProductionToDay'
+import useProduccion from 'hooks/useProduccion'
 
 const useStyle = makeStyles({
    paper: {
@@ -36,7 +36,7 @@ export default function MiddleAside(){
       produccionTodayDb,
       handleDeleteProduccionById,
       handleSelectedIdProduccionOnTodayList
-   } = useProductionToDay()
+   } = useProduccion()
 
    /*» HOOK'S  */
    const classes = useStyle()

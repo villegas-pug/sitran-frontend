@@ -15,7 +15,10 @@ import {
    deleteProduccionById,
    selectedIdProduccionOnTodayList,
    countActividadCurrentWeek,
-   countActividadWeek
+   countActividadWeek,
+   listActividad,
+   saveActividad,
+   deleteActividadById
 } from 'redux/actions/produccionAction'
 
 import DetalleProduccion from 'models/DetalleProduccion'
@@ -23,7 +26,7 @@ import DetalleProduccion from 'models/DetalleProduccion'
 const date = new Date()
 const currentDayOfWeek = getISODay(date)
 
-export default function useProductionToDay(){
+export default function useProduccion(){
 
    /*» HOOK'S STORE */
    const {
@@ -33,14 +36,20 @@ export default function useProductionToDay(){
          data: produccionTodayDb,
          loading: produccionTodayLoading,
          produccionCurrentWeek: {
+            loading: produccionCurrentWeekDbLoading,
             data: produccionCurrentWeekDb
          },
          produccionWeek:{
             loading: produccionWeekDbLoading
          }
       },
-      descripcionActividadDb,
-      accionDesarrolladaDb
+      actividadDb: {
+         loading: actividadDbLoading,
+         data: {
+            descripcionActividadDb,
+            accionDesarrolladaDb
+         }
+      }
    } = useSelector(store => store.produccion)
    const dispatch = useDispatch()
 
@@ -85,17 +94,24 @@ export default function useProductionToDay(){
    const handleSelectedIdProduccionOnTodayList = (idProd) => { dispatch(selectedIdProduccionOnTodayList(idProd)) }
    const handleCountActividadCurrentWeek = () => { dispatch(countActividadCurrentWeek()) }
    const handleCountProduccionWeek = (refDate) => { dispatch(countActividadWeek(refDate)) }
+   const handleListActividad = () => { dispatch(listActividad()) }
+   const handleSaveActividad = (newActividad) => { dispatch(saveActividad(newActividad)) }
+   const handleDeleteActividadById = (idActividad) => { dispatch(deleteActividadById(idActividad)) }
 
    return {
       produccionTodayDb,
       produccionTodayLoading,
       produccionWeekDbLoading,
+      produccionCurrentWeekDbLoading,
       allowRegisterProd,
       productionAdvanceByDay,
       descripcionActividadDb,
       accionDesarrolladaDb,
+      actividadDbLoading,
       listViewRightAside,
 
+      handleListActividad,
+      handleSaveActividad,
       handleAllowRegisterProd,
       handleDenyRegisterProd,
       handleRegistrarActividad,
@@ -103,6 +119,7 @@ export default function useProductionToDay(){
       handleDeleteProduccionById,
       handleSelectedIdProduccionOnTodayList,
       handleCountActividadCurrentWeek,
-      handleCountProduccionWeek
+      handleCountProduccionWeek,
+      handleDeleteActividadById
    }
 }

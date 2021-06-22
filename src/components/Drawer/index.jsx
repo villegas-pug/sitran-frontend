@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import {
@@ -15,25 +15,32 @@ import {
    AppBar,
    Toolbar,
    List,
-   CssBaseline, Typography
+   CssBaseline, 
+   Typography,
+   Box,
+   Tabs,
+   Tab
 } from '@material-ui/core'
 import {
    AccountCircle,
    ExitToApp,
    Menu as MenuIcon,
    ChevronLeft,
-   ChevronRight
+   ChevronRight,
 } from '@material-ui/icons'
 import { Scrollbars } from 'react-custom-scrollbars'
+import Fade from 'react-reveal/Fade'
 
 import { useHistory } from 'react-router-dom'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 
-import AppTitle from 'components/Styled/AppTitle'
+/* import AppTitle from 'components/Styled/AppTitle' */
 import DrawerTitle from 'components/Styled/DrawerTitle'
 import ModalLoader from 'components/Styled/ModalLoader'
 
 import { Icons } from 'helpers/icons'
+import { APP_BAR, SIDE_BAR } from 'constants/layout'
+import { modulo } from 'constants/component'
 import useAuth from 'hooks/useAuth'
 
 const drawerWidth = 150
@@ -101,132 +108,182 @@ const useStyles = makeStyles((theme) => ({
       height: 'calc(100vh - .1rem)',
       padding: 10
    },
+   tabs: {
+      width: 400
+   }
 }))
 export default function MyDrawer({ children, ...rest }) {
-
-   /*-> HOOK'S STORE...  */
-   const { modAuthenticated } = useAuth()
-
+   
    /*-> HOOK'S...  */
    const [selectedItemDrawer, setSelectedItemDrawer] = useState(-1)
+   const [anchorEl, setAnchorEl] = useState(null)
+   const [open, setOpen] = useState(false)
+   const [selectedTab, setSelectedTab] = useState(modulo.HOME)
    const history = useHistory()
 
-   /* const { userLogged, logout } = useAuth() */
-
+   /*» CUSTOM HOOK'S  */
+   const { 
+      isAuthenticated, 
+      modAuthenticated,
+      userCredentials: { nombres: usernameAuth, cargo: cargoAuth, area: areaAuth, regimenLaboral: regimenAuth },
+      handleLogout
+   } = useAuth()
    const classes = useStyles(rest)
    const theme = useTheme()
 
-   const [anchorEl, setAnchorEl] = useState(null)
-   const [open, setOpen] = React.useState(false)
+   /*» EFFECT'S */
+   useEffect(() => { 
+      selectedTab !== -1 && setSelectedItemDrawer(-1)
+   }, [selectedTab])
 
-   /*-> HANDLER'S...  */
+   useEffect(() => { 
+      selectedItemDrawer !== -1 && setSelectedTab(-1)
+   }, [selectedItemDrawer])
+
+   /*» HANDLER'S...  */
    const handleDrawerOpen = () => setOpen(true)
    const handleDrawerClose = () => setOpen(false)
+
    const handleOnClickOptSidebar = (path, iItemDrawer) => (history.push(path), setSelectedItemDrawer(iItemDrawer))
+   const handleTabs = (rutaPrincipal, value) => (setSelectedTab(value), history.push(rutaPrincipal))
 
    const handleOpenMenu = (e) => { setAnchorEl(e.currentTarget) }
    const handleCloseMenu = () => { setAnchorEl(null) }
-   const handleCerrarSesion = () => {}
+   const handleRootLogout = () => (handleCloseMenu(), handleLogout())
+
+   /*» RENDERING CONDITIONAL... */
+   if(!isAuthenticated) return <>{children}</>
 
    return (
-      <div className={classes.root}>{/*» FLEX-CONTAINER */}
-         <CssBaseline />
+      <Fade duration={2000} delay={1500}>
+         <div className={classes.root}>{/*» FLEX-CONTAINER */}
+            <CssBaseline />
 
-         {/*» FLEX-ITEM: 01, Barra superior  */}
-         <AppBar
-            position='fixed'
-            className={clsx(classes.appBar, { [classes.appBarShift]: open })}
-         >
-            <Toolbar>
-               <IconButton
-                  color='inherit'
-                  aria-label='open drawer'
-                  onClick={handleDrawerOpen}
-                  edge='start'
-                  className={clsx(classes.menuButton, { [classes.hide]: open })}
-               >
-                  <MenuIcon />
-               </IconButton>
-               <AppTitle name='SISTEMA INTEGRADO DE LA DIRECCIÓN DE GESTIÓN TÉCNICA Y FISCALIZACIÓN MIGRATORIA' size='1.3' color='#fff'/>
-
-               <div style={{ marginLeft: 'auto' }}>
-                  <Button
-                     id='user-account'
-                     style={{ color: '#fff' }}
-                     aria-controls='menu-account'
-                     aria-haspopup={true}
-                     onClick={handleOpenMenu}
+            {/*» FLEX-ITEM: 01, Barra superior  */}
+            <AppBar
+               position='fixed'
+               className={clsx(classes.appBar, { [classes.appBarShift]: open })}
+            >
+               <Toolbar>
+                  <IconButton
+                     color='inherit'
+                     aria-label='open drawer'
+                     onClick={handleDrawerOpen}
+                     edge='start'
+                     className={clsx(classes.menuButton, { [classes.hide]: open })}
                   >
-                     <AccountCircle />
-                     {/* {userLogged} */}
-                  </Button>
+                     <MenuIcon />
+                  </IconButton>
 
-                  <Menu
-                     keepMounted
-                     id='menu-account'
-                     anchorEl={anchorEl}
-                     open={!!anchorEl}
-                     onClose={handleCloseMenu}
-                  >
-                     <MenuItem onClick={handleCerrarSesion}>
-                        <ExitToApp />Cerrar sesión
-                     </MenuItem>
-                  </Menu>
-               </div>
-            </Toolbar>
-         </AppBar>
+                  {/* <AppTitle name='SISTEMA INTEGRADO DE LA DIRECCIÓN DE GESTIÓN TÉCNICA Y FISCALIZACIÓN MIGRATORIA' size='1' color='#fff'/> */}
+                  <Tabs value={selectedTab} variant='scrollable' className={classes.tabs}>
+                     {
+                        modAuthenticated
+                           .filter(({disposicion}) => disposicion === APP_BAR)
+                           .map(({idProcedimiento, nombre, icono, rutaPrincipal}) => (
+                              <Tab 
+                                 key={idProcedimiento}
+                                 value={nombre}
+                                 icon={Icons[icono]}
+                                 onClick={() => handleTabs(rutaPrincipal, nombre)}
+                              />
+                           ))
+                     }
+                  </Tabs>
 
-         {/*» FLEX-ITEM: 02 */}
-         <Drawer
-            variant='permanent'
-            className={clsx(classes.drawer, {
-               [classes.drawerOpen]: open,
-               [classes.drawerClose]: !open,
-            })}
-            classes={{
-               paper: clsx({
+                  <Box display='flex' width='50%' marginLeft='auto' justifyContent='space-between' alignItems='center'>
+                     <Typography variant='h5' color='initial'>
+                     AREA <Typography variant='h6' color='initial'>{areaAuth}</Typography>
+                     </Typography>
+                     <Typography variant='h5' color='initial'>
+                     CARGO <Typography variant='h6' color='initial'>{cargoAuth}</Typography>
+                     </Typography>
+                     <Typography variant='h5' color='initial'>
+                     REGIMEN <Typography variant='h6' color='initial'>{regimenAuth}</Typography>
+                     </Typography>
+                     <Box>
+                        <Button
+                           id='user-account'
+                           style={{ color: '#fff' }}
+                           aria-controls='menu-account'
+                           aria-haspopup={true}
+                           onClick={handleOpenMenu}
+                           startIcon={ <AccountCircle fontSize='large' /> }
+                        >
+                           <Typography variant='h5' color='initial'>{usernameAuth}</Typography>
+                        </Button>
+
+                        <Menu
+                           keepMounted
+                           id='menu-account'
+                           anchorEl={anchorEl}
+                           open={!!anchorEl}
+                           onClose={handleCloseMenu}
+                        >
+                           <MenuItem onClick={handleRootLogout}>
+                              <ExitToApp />
+                              <Typography variant='h4' color='initial'>Cerrar sesión</Typography>
+                           </MenuItem>
+                        </Menu>
+                     </Box>
+                  </Box>
+               </Toolbar>
+            </AppBar>
+
+            {/*» FLEX-ITEM: 02 */}
+            <Drawer
+               variant='permanent'
+               className={clsx(classes.drawer, {
                   [classes.drawerOpen]: open,
                   [classes.drawerClose]: !open,
-               }),
-            }}
-         >
-            <div className={classes.toolbar}>
-               <IconButton onClick={handleDrawerClose}>
-                  {theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
-               </IconButton>
-            </div>
-            <List>
-               {
-                  modAuthenticated?.map(({ idProcedimiento, nombre, informacion, icono, rutaPrincipal }) => (
-                     <>
-                        <Divider />
-                        <ListItem
-                           button
-                           selected={selectedItemDrawer === idProcedimiento}
-                           key={idProcedimiento}
-                           onClick={() => { handleOnClickOptSidebar(rutaPrincipal, idProcedimiento) }}
-                        >
-                           <Tooltip arrow placement='right-end' title={<Typography variant='h6' color='initial'>{informacion}</Typography>}>
-                              <ListItemIcon>{(() => Icons[icono])()}</ListItemIcon>
-                           </Tooltip>
-                           <ListItemText><DrawerTitle title={nombre} size={.8} /></ListItemText>
-                        </ListItem>
-                     </>
-                  ))
-               }
-            </List>
-         </Drawer>
+               })}
+               classes={{
+                  paper: clsx({
+                     [classes.drawerOpen]: open,
+                     [classes.drawerClose]: !open,
+                  }),
+               }}
+            >
+               <div className={classes.toolbar}>
+                  <IconButton onClick={handleDrawerClose}>
+                     {theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
+                  </IconButton>
+               </div>
+               <List>
+                  {
+                     modAuthenticated
+                        .filter(({disposicion}) => disposicion === SIDE_BAR)
+                        .map(({ idProcedimiento, nombre, informacion, icono, rutaPrincipal }) => (
+                           <>
+                              <Divider />
+                              <ListItem
+                                 button
+                                 selected={selectedItemDrawer === idProcedimiento}
+                                 key={idProcedimiento}
+                                 onClick={() => { handleOnClickOptSidebar(rutaPrincipal, idProcedimiento) }}
+                              >
+                                 <Tooltip arrow placement='right-end' title={<Typography variant='h6' color='initial'>{informacion}</Typography>}>
+                                    <ListItemIcon>{Icons[icono]}</ListItemIcon>
+                                 </Tooltip>
+                                 <ListItemText><DrawerTitle title={nombre} size={.6} /></ListItemText>
+                              </ListItem>
+                           </>
+                        ))
+                  }
+               </List>
+            </Drawer>
 
-         {/*» FLEX-ITEM: 03 ► Container dinámico...   */}
-         <main className={classes.content}>
-            <Scrollbars autoHide>
-               <div className={classes.toolbar} />
-               <Suspense fallback={<ModalLoader />}>
-                  {children}
-               </Suspense>
-            </Scrollbars>
-         </main>
-      </div>
+            {/*» FLEX-ITEM: 03 ► Container dinámico...   */}
+            <main className={classes.content}>
+               <Scrollbars autoHide>
+                  <div className={classes.toolbar} />
+                  <Suspense fallback={<ModalLoader />}>
+                     {children}
+                  </Suspense>
+               </Scrollbars>
+            </main>
+         </div>
+      </Fade>
    )
 }
 

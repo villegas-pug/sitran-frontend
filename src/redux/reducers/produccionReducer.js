@@ -6,18 +6,24 @@ import {
    COUNT_ACTIVIDAD_WEEK_BY_USER_ERROR, 
    COUNT_ACTIVIDAD_WEEK_BY_USER_LOADING, 
    COUNT_ACTIVIDAD_WEEK_BY_USER_SUCCESS, 
+   DELETE_ACTIVIDAD_BY_ID_ERROR, 
+   DELETE_ACTIVIDAD_BY_ID_LOADING, 
+   DELETE_ACTIVIDAD_BY_ID_SUCCESS, 
    DELETE_PRODUCCION_BY_ID_ERROR, 
    DELETE_PRODUCCION_BY_ID_LOADING, 
    DELETE_PRODUCCION_BY_ID_SUCCESS, 
    DENY_TO_REGISTER_PRODUCCION_SDFM, 
+   LIST_ACTIVIDAD_ERROR, 
+   LIST_ACTIVIDAD_LOADING, 
+   LIST_ACTIVIDAD_SUCCESS, 
+   SAVE_ACTIVIDAD_ERROR, 
+   SAVE_ACTIVIDAD_LOADING, 
+   SAVE_ACTIVIDAD_SUCCESS, 
    SAVE_PRODUCCION_SDFM_ERROR, 
    SAVE_PRODUCCION_SDFM_LOADING,
    SAVE_PRODUCCION_SDFM_SUCCESS,
    SELECTED_ID_PRODUCCION_ON_TODAY_LIST
 } from 'redux/types/produccionType'
-import { produccionDb } from 'helpers/hardcodeCollections'
-
-const { accionDesarrolladaDb, descripcionActividadDb } = produccionDb
 
 const initialValues = {
    loading: false,
@@ -40,8 +46,14 @@ const initialValues = {
          error: null,
       }
    },
-   descripcionActividadDb,
-   accionDesarrolladaDb
+   actividadDb: {
+      loading: false,
+      data: {
+         descripcionActividadDb: [],
+         accionDesarrolladaDb: []
+      },
+      error: null
+   }
 }
 
 export default function produccionReducer(state = initialValues, { type, payload }){
@@ -76,6 +88,26 @@ export default function produccionReducer(state = initialValues, { type, payload
       return { ...state, sdfm: { ...state.sdfm, produccionWeek: { loading: false, data: [], error: null } } }
    case COUNT_ACTIVIDAD_WEEK_BY_USER_ERROR:
       return { ...state, sdfm: { ...state.sdfm, produccionWeek: { loading: false, data: [], error: payload } } }
+
+   case LIST_ACTIVIDAD_LOADING:
+   case SAVE_ACTIVIDAD_LOADING:
+   case DELETE_ACTIVIDAD_BY_ID_LOADING:
+      return { ...state, actividadDb: { loading: true, data: [], error: null } }
+   case LIST_ACTIVIDAD_SUCCESS:
+   case SAVE_ACTIVIDAD_SUCCESS:
+   case DELETE_ACTIVIDAD_BY_ID_SUCCESS:
+      return { ...state, actividadDb: { 
+         loading: false, 
+         data: {
+            descripcionActividadDb: payload.filter(({tipo}) => tipo === 'ACTIVIDAD'),
+            accionDesarrolladaDb: payload.filter(({tipo}) => tipo === 'ACCION')
+         }, 
+         error: null 
+      }}
+   case LIST_ACTIVIDAD_ERROR:
+   case SAVE_ACTIVIDAD_ERROR:
+   case DELETE_ACTIVIDAD_BY_ID_ERROR:
+      return { ...state, actividadDb: { loading: false, data: [], error: payload } }
    default:
       return state
    }

@@ -1,33 +1,28 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter, Switch } from 'react-router-dom'
-import DashboardRouters from './DashboardRoutes'
 import Drawer from 'components/Drawer'
-import useEmpresa from 'hooks/useEmpresa'
-import usePais from 'hooks/usePais'
-import useDistrito from 'hooks/useDistrito'
+
+import PrivateRoutes from 'routers/PrivateRoutes'
+import useAuth from 'hooks/useAuth'
+import PublicRoutes from './PublicRoutes'
+import Portal from 'pages/Portal'
+
+import DashboardRouters from 'routers/DashboardRoutes'
 
 export default function AppRouter() {
 
-   /*» HOOK'S...  */
-   const { handleListEmpresa } = useEmpresa()
-   const { handleListDistrito } = useDistrito()
-   const { handleListPais } = usePais()
+   /*» CUSTOM HOOK'S...  */
+   const { isAuthenticated, token, handleFindUserByLogin } = useAuth()
 
-   /*» EFFECT'S  */
-   /*» Load: Empresa...  */
-   useEffect(() => { handleListEmpresa() }, [])
-
-   /*» Load: Distrito...  */
-   useEffect(() => { handleListDistrito() }, [])
-
-   /*» Load: Pais...  */
-   useEffect(() => { handleListPais() }, [])
+   /*» EFFECT'S:  */
+   useEffect(() => { handleFindUserByLogin() }, [token])
 
    return (
       <BrowserRouter basename='/sidtefim'>
          <Drawer>
             <Switch>
-               <DashboardRouters />
+               <PublicRoutes isAuthenticated={isAuthenticated} component={Portal} path='/portal' exact />
+               <PrivateRoutes isAuthenticated={isAuthenticated} component={DashboardRouters} path='/' />
             </Switch>
          </Drawer>
       </BrowserRouter>

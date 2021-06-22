@@ -23,8 +23,17 @@ import {
    Settings,
    Person,
    SupervisorAccount,
-   Home
+   Home,
+   AddCircle,
+   FindInPage,
+   TrendingUp
 } from '@material-ui/icons'
+
+const classes = {
+   subModIcon: {
+      fontSize: 60
+   }
+}
 
 export const Icons = {
    Export: SaveAlt,
@@ -40,15 +49,19 @@ export const Icons = {
    ViewColumn: ViewColumn,
 
    /*» MOD'S...  */
-   Home: <Home fontSize='large' />,
-   Person: <Person fontSize='large' />,
-   SupervisorAccount: <SupervisorAccount fontSize='large' />,
-   AddBox: <AddBox fontSize='large' />,
-   Settings: <Settings fontSize='large' />,
-   LiveHelp: <LiveHelp fontSize='large' />,
-   BarChartRounded: <BarChartRounded fontSize='large' />,
+   Home: <Home fontSize='small' />,
+   Person: <Person fontSize='small' />,
+   SupervisorAccount: <SupervisorAccount fontSize='small' />,
+   AddBox: <AddBox fontSize='small' />,
+   Settings: <Settings fontSize='small' />,
+   LiveHelp: <LiveHelp fontSize='small' />,
+   BarChartRounded: <BarChartRounded fontSize='small' />,
 
    /*» SUB-MOD'S...  */
+   Create: <AddCircle color='action' style={classes.subModIcon} />,
+   FindInPage: <FindInPage color='action' style={classes.subModIcon} />,
+   TrendingUp: <TrendingUp color='action' style={classes.subModIcon} />,
+   
    Test: <Build />,
    Cloud: <Cloud />,
    Check: <Check />,
@@ -58,3 +71,4 @@ export const Icons = {
    Edit: <Edit />,
    PageviewRounded: <PageviewRounded />,
 }
+

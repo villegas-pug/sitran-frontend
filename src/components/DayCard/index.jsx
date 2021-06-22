@@ -18,7 +18,7 @@ import {
 
 import { makeStyles } from '@material-ui/styles'
 
-import useProductionToDay from 'hooks/useProductionToDay'
+import useProduccion from 'hooks/useProduccion'
 import useAuth from 'hooks/useAuth'
 
 import { subModulo } from 'constants/component'
@@ -41,7 +41,7 @@ export default function DayCard({dayOfWeek, date, enableToday, progress}){
    const classes = useStyle()
 
    /*» CUSTOM HOOK'S  */
-   const { handleRegistrarActividad } = useProductionToDay()
+   const { handleRegistrarActividad } = useProduccion()
    const { pathAuthenticated } = useAuth()
 
    /*» HANDLERS...  */

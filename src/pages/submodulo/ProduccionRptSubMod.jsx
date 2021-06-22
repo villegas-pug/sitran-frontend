@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core'
 import { Print, DeleteSweep } from '@material-ui/icons'
 import Fade from 'react-reveal/Fade'
-import useProductionToDay from 'hooks/useProductionToDay'
+import useProduccion from 'hooks/useProduccion'
 
 const MARGIN_TOP = 10
 
@@ -48,7 +48,7 @@ export default function ProduccionRptSubMod() {
    const [refDate, setRefDate] = useState('')
 
    /*» CUSTOM-HOOK'S  */
-   const { produccionWeekDbLoading, handleCountProduccionWeek } = useProductionToDay()
+   const { produccionWeekDbLoading, handleCountProduccionWeek } = useProduccion()
 
    /*» HANDLER'S  */
    const handleChangeRefDate = ({target: { value }}) => {setRefDate(value)}

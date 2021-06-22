@@ -1,6 +1,6 @@
-export const OBTENER_INTERPOL_CARGANDO = 'OBTENER_INTERPOL_CARGANDO'
-export const OBTENER_INTERPOL_EXITO = 'OBTENER_INTERPOL_EXITO'
-export const OBTENER_INTERPOL_ERROR = 'OBTENER_INTERPOL_ERROR'
+export const OBTENER_INTERPOL_CARGANDO = '[Interpol] List interpol loading'
+export const OBTENER_INTERPOL_EXITO = '[Interpol] List interpol success'
+export const OBTENER_INTERPOL_ERROR = '[Interpol] List interpol error'
 
 export const SAVE_INTERPOL_PDF_LOADING = '[Interpol] Save file interpol loading'
 export const SAVE_INTERPOL_PDF_SUCCESS = '[Interpol] Save file interpol success'

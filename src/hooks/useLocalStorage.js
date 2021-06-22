@@ -6,7 +6,7 @@ import { ERROR } from 'constants/levelLog'
 export default function useLocalStorage(key){
 
    /*» HOOK'S  */
-   const [item, setItem] = useState(() => {
+   const [value, setValue] = useState(() => {
       try {
          return window.localStorage.getItem(key) 
             ? JSON.stringify(window.localStorage.getItem(key)) 
@@ -18,14 +18,14 @@ export default function useLocalStorage(key){
    })
 
    /*» HANDLER'S  */
-   const setItemFromLocalStorage = (newItem) => (window.localStorage.setItem(key, newItem), setItem(newItem))
-   const removeItemFromLocalStorage = () => { window.localStorage.removeItem(key) }
-   const removeAllFromLocalStorage = () => { window.localStorage.clear() }
+   const setValueToLocalStorage = (newItem) => (window.localStorage.setItem(key, newItem), setValue(newItem))
+   const removeItemInLocalStorage = () => { window.localStorage.removeItem(key) }
+   const removeAllLocalStorage = () => { window.localStorage.clear() }
 
    return [
-      item,
-      setItemFromLocalStorage,
-      removeItemFromLocalStorage,
-      removeAllFromLocalStorage
+      value,
+      setValueToLocalStorage,
+      removeItemInLocalStorage,
+      removeAllLocalStorage
    ]
 }

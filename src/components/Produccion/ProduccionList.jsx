@@ -51,7 +51,7 @@ export default function ProduccionList({ data, handleSelection, title }) {
    const [refData, setRefData] = useState(data)
    const [idChecked, setIdChecked] = useState('')
    const [filter, setFilter] = useState('')
-   const [debounceFilter] = useDebounce(filter, 700)
+   const [debounceFilter] = useDebounce(filter, 500)
 
    /*» EFFECT'S  */
    useEffect(() => {
@@ -64,7 +64,7 @@ export default function ProduccionList({ data, handleSelection, title }) {
 
 
    /*» HANDLER'S  */
-   const handleToggle = (selectedId) => (shoppingCart.current = data.find(({id}) => id === selectedId), setIdChecked(selectedId))
+   const handleToggle = (selectedId) => (shoppingCart.current = data.find(({idActividad}) => idActividad === selectedId), setIdChecked(selectedId))
    const handleFinishSelection = () => { handleSelection(shoppingCart.current)}
    const handleChangeFilter = ({target:{ value }}) => { setFilter(value) }
 
@@ -87,18 +87,18 @@ export default function ProduccionList({ data, handleSelection, title }) {
          </FormControl>
          <List dense className={classes.root}>
             {
-               refData.map(({id, descripcion}) => (
-                  <ListItem key={id} button>
+               refData.map(({idActividad, descripcion}) => (
+                  <ListItem key={idActividad} button>
                      <ListItemAvatar>
                         <AddShoppingCart /> 
                      </ListItemAvatar>
-                     <ListItemText id={id} primary={descripcion} />
+                     <ListItemText id={idActividad} primary={descripcion} />
                      <ListItemSecondaryAction>
                         <Checkbox
                            color='primary'
                            edge='end'
-                           onChange={() => handleToggle(id)}
-                           checked={idChecked === id}
+                           onChange={() => handleToggle(idActividad)}
+                           checked={idChecked === idActividad}
                         />
                      </ListItemSecondaryAction>
                   </ListItem>

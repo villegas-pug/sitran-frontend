@@ -8,7 +8,7 @@ import Fade from 'react-reveal/Fade'
 import AccessDenied from 'components/AccessDenied'
 import LeftAside from 'components/Produccion/LeftAside'
 
-import useProductionToDay from 'hooks/useProductionToDay'
+import useProduccion from 'hooks/useProduccion'
 import MiddelAside from 'components/Produccion/MiddleAside'
 import RigthAside from 'components/Produccion/RigthAside'
 
@@ -26,7 +26,7 @@ export default function RegistrarActividad(){
    const { 
       allowRegisterProd,
       handleDenyRegisterProd,
-   } = useProductionToDay()
+   } = useProduccion()
 
    /*» EFFECT'S  */
    useEffect(() => {

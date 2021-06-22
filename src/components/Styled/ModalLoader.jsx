@@ -20,6 +20,7 @@ const useStyle = makeStyles({
 
 
 export default function ModalLoader(){
+   
    /*» HOOK'S  */
    const clasess = useStyle()
 

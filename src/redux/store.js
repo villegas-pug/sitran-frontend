@@ -1,6 +1,5 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
 import { devToolsEnhancer } from 'redux-devtools-extension'
-import moduloReducer from 'redux/reducers/moduloReducer'
 import procNacReducer from 'redux/reducers/procNacReducer'
 import tipoDocumentoReducer from 'redux/reducers/tipoDocumentoReducer'
 import paisReducer from 'redux/reducers/paisReducer'
@@ -19,12 +18,12 @@ import operativoReducer from 'redux/reducers/operativoReducer'
 import distritoReducer from 'redux/reducers/distritoReducer'
 import tipoInfraccionReducer from 'redux/reducers/tipoInfraccionReducer'
 import produccionReducer from 'redux/reducers/produccionReducer'
+import nacionalizacionReducer from 'redux/reducers/nacionalizacionReducer'
 
 /*» Manage status of the step's sub-module's...  */
 import stagesReducer from 'redux/reducers/stagesReducer'
 
 const reducers = combineReducers({
-   modulo: moduloReducer,
    procNacionalizacion: procNacReducer,
    tipoDocumento: tipoDocumentoReducer,
    pais: paisReducer,
@@ -40,13 +39,13 @@ const reducers = combineReducers({
    distrito: distritoReducer,
    tipoInfraccion: tipoInfraccionReducer,
    produccion: produccionReducer,
+   nacionalizacion: nacionalizacionReducer,
 
    stages: stagesReducer,
 })
 
 export default createStore(
    reducers,
-   /* applyMiddleware(thunk) */
    compose(
       applyMiddleware(thunk),
       devToolsEnhancer()

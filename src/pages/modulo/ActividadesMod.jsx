@@ -1,20 +1,25 @@
 import React, { useEffect } from 'react'
 import DayCard from 'components/DayCard'
 import Menu from 'components/Menu'
-import useProductionToDay from 'hooks/useProductionToDay'
+import useProduccion from 'hooks/useProduccion'
+import ModalLoader from 'components/Styled/ModalLoader'
 
 export default function ActividadesMod(){
 
    /*» CUSTOM HOOK'S... */
-   const { 
+   const {
+      produccionCurrentWeekDbLoading,
       productionAdvanceByDay,
-      handleCountActividadCurrentWeek
-   } = useProductionToDay()
+      handleCountActividadCurrentWeek,
+      handleListActividad
+   } = useProduccion()
 
    /*» EFFECT'S  */
-   useEffect(() => {
-      handleCountActividadCurrentWeek()
-   }, [])
+   useEffect(() => { handleCountActividadCurrentWeek() }, [])
+   useEffect(() => { handleListActividad() }, [])
+
+   /*» RENDERING CONDITIONAL:  */
+   if(produccionCurrentWeekDbLoading) return <ModalLoader />
 
    return (
       <>

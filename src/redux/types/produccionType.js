@@ -18,3 +18,15 @@ export const COUNT_ACTIVIDAD_CURRENT_WEEK_BY_USER_ERROR = '[Produccion] Count ac
 export const COUNT_ACTIVIDAD_WEEK_BY_USER_LOADING = '[Produccion] Count actividades by week loading'
 export const COUNT_ACTIVIDAD_WEEK_BY_USER_SUCCESS = '[Produccion] Count actividades by week success'
 export const COUNT_ACTIVIDAD_WEEK_BY_USER_ERROR = '[Produccion] Count actividades by week error'
+
+export const LIST_ACTIVIDAD_LOADING = '[Produccion] List actividades loading'
+export const LIST_ACTIVIDAD_SUCCESS = '[Produccion] List actividades success'
+export const LIST_ACTIVIDAD_ERROR = '[Produccion] List actividades error'
+
+export const SAVE_ACTIVIDAD_LOADING = '[Produccion] Save actividad loading'
+export const SAVE_ACTIVIDAD_SUCCESS = '[Produccion] Save actividad success'
+export const SAVE_ACTIVIDAD_ERROR = '[Produccion] Save actividad error'
+
+export const DELETE_ACTIVIDAD_BY_ID_LOADING = '[Produccion] Delete actividad loading'
+export const DELETE_ACTIVIDAD_BY_ID_SUCCESS = '[Produccion] Delete actividad success'
+export const DELETE_ACTIVIDAD_BY_ID_ERROR = '[Produccion] Delete actividad error'

@@ -48,6 +48,8 @@ import getBlob from 'helpers/blob'
 
 import {resetStagesNuevoOperativo} from 'redux/actions/stagesAction'
 
+import { AUTHORIZATION } from 'constants/localStorage'
+
 /*» INPUT'S  */
 export const handleInputOnChange = (payload) => ({ type: INPUT_CHANGE, payload })
 export const handleInputsReset = () => ({ type: INPUTS_RESET })
@@ -103,259 +105,371 @@ const toListOpePivotedByModalidadError = (payload) => ({ type: LIST_OPE_PIVOTED_
 const toListOpeByFilterToExcelLoading = () => ({ type: LIST_OPE_BY_FILTER_TO_EXCEL_LOADING })
 const toListOpeByFilterToExcelSuccess = (payload) => ({ type: LIST_OPE_BY_FILTER_TO_EXCEL_SUCCESS, payload })
 const toListOpeByFilterToExcelError = (payload) => ({ type: LIST_OPE_BY_FILTER_TO_EXCEL_ERROR, payload })
+
 export const resetListOpeByFilterToExcel = () => ({ type: RESET_OPE_BY_FILTER_TO_EXCEL })
 
-export const saveOperativo = () => async (dispatch, getStore) => {
-   dispatch(saveOperativoLoading())
-
-   const { operativo: { inputValues } } = getStore()
-   const { file, ...rest } = inputValues
-
-   const frmData = new FormData()
-   frmData.append('operativo', getBlob(rest))
-   frmData.append('file', file)
-   const { data: { levelLog, data, message } } = await api({
-      method: 'POST',
-      url: '/microservicio-operativo/save',
-      data: frmData,
-   })
-   switch (levelLog) {
-   case SUCCESS:
-      dispatch(saveOperativoSuccess(data))
-      dispatch(handleInputsReset())
-      dispatch(resetStagesNuevoOperativo())
-      Noty(SUCCESS, message)
-      break
-   case WARNING:
-      dispatch(saveOperativoError(message))
-      Noty(WARNING, message)
-      break
-   case ERROR:
-      dispatch(saveOperativoError(message))
-      Noty(ERROR, message)
-      break
-   }
-}
-
 /*» ASYNC ACTION'S  */
-export const toListOperativo = () => async (dispatch) => {
-   dispatch(toListOperativoLoading())
-   const { data: { levelLog, data, message } } = await api('/microservicio-operativo/findAll')
-   switch (levelLog) {
-   case SUCCESS:
-      dispatch(toListOperativoSuccess(data))
-      break
-   case WARNING:
-      dispatch(toListOperativoError(message))
-      Noty(WARNING, message)
-      break
-   case ERROR:
-      dispatch(toListOperativoError(message))
-      Noty(ERROR, message)
-      break
+export const saveOperativo = () => async (dispatch, getStore) => {
+   try {
+      dispatch(saveOperativoLoading())
+      const { operativo: { inputValues }, usuario: { token } } = getStore()
+      const { file, ...rest } = inputValues
+      const frmData = new FormData()
+      frmData.append('operativo', getBlob(rest))
+      frmData.append('file', file)
+      const { data: { levelLog, data, message } } = await api({
+         method: 'POST',
+         url: '/microservicio-operativo/save',
+         data: frmData,
+         headers: {
+            [AUTHORIZATION]: token
+         }
+      })
+      switch (levelLog) {
+      case SUCCESS:
+         dispatch(saveOperativoSuccess(data))
+         dispatch(handleInputsReset())
+         dispatch(resetStagesNuevoOperativo())
+         Noty(SUCCESS, message)
+         break
+      case WARNING:
+         dispatch(saveOperativoError(message))
+         Noty(WARNING, message)
+         break
+      case ERROR:
+         dispatch(saveOperativoError(message))
+         Noty(ERROR, message)
+         break
+      }
+   } catch (err) {
+      dispatch(saveOperativoError(err))
+      Noty(ERROR, err)
    }
 }
 
-export const toListOpeAnualPivoted = () => async (dispatch) => {
-   dispatch(toListOpeAnualPivotedLoading())
-   const { data: { levelLog, data, message } } = await api('/microservicio-operativo/countPivotedByOpeAnual')
-   switch (levelLog) {
-   case SUCCESS:
-      dispatch(toListOpeAnualPivotedSuccess(data))
-      break
-   case WARNING:
-      dispatch(toListOpeAnualPivotedError(message))
-      Noty(WARNING, message)
-      break
-   case ERROR:
-      dispatch(toListOpeAnualPivotedError(message))
-      Noty(ERROR, message)
-      break
+export const toListOperativo = () => async (dispatch, getStore) => {
+   try {
+      dispatch(toListOperativoLoading())
+      const { usuario: { token } } = getStore()
+      const { data: { levelLog, data, message } } = await api({
+         method: 'GET',
+         url: '/microservicio-operativo/findAll',
+         headers: {
+            [AUTHORIZATION]: token
+         }
+      })
+      switch (levelLog) {
+      case SUCCESS:
+         dispatch(toListOperativoSuccess(data))
+         break
+      case WARNING:
+         dispatch(toListOperativoError(message))
+         Noty(WARNING, message)
+         break
+      case ERROR:
+         dispatch(toListOperativoError(message))
+         Noty(ERROR, message)
+         break
+      }  
+   } catch (err) {
+      dispatch(toListOperativoError(err))
+      Noty(ERROR, err)
    }
 }
 
-export const toListIntervenidosPivoted = (payload) => async (dispatch) => {
-   dispatch(toListIntervenidosPivotedLoading())
-   const { data: { levelLog, data, message } } = await api({
-      method: 'GET',
-      url: '/microservicio-operativo/countPivotedByIntervenidos',
-      params: payload
-   })
-   switch (levelLog) {
-   case SUCCESS:
-      dispatch(toListIntervenidosPivotedSuccess(data))
-      break
-   case WARNING:
-      dispatch(toListIntervenidosPivotedError(message))
-      Noty(WARNING, message)
-      break
-   case ERROR:
-      dispatch(toListIntervenidosPivotedError(message))
-      Noty(ERROR, message)
-      break
+export const toListOpeAnualPivoted = () => async (dispatch, getStore) => {
+   try {
+      dispatch(toListOpeAnualPivotedLoading())
+      const { usuario: { token } } = getStore()
+      const { data: { levelLog, data, message } } = await api({
+         method: 'GET',
+         url: '/microservicio-operativo/countPivotedByOpeAnual',
+         headers: {
+            [AUTHORIZATION]: token
+         }
+      })
+      switch (levelLog) {
+      case SUCCESS:
+         dispatch(toListOpeAnualPivotedSuccess(data))
+         break
+      case WARNING:
+         dispatch(toListOpeAnualPivotedError(message))
+         Noty(WARNING, message)
+         break
+      case ERROR:
+         dispatch(toListOpeAnualPivotedError(message))
+         Noty(ERROR, message)
+         break
+      }   
+   } catch (err) {
+      dispatch(toListOpeAnualPivotedError(err))
+      Noty(ERROR, err)
    }
 }
 
-export const toListTipoOpePivoted = (payload) => async (dispatch) => {
-   dispatch(toListTipoOpePivotedLoading())
-   const { data: { levelLog, data, message } } = await api({
-      method: 'GET',
-      url: '/microservicio-operativo/countPivotedByTipoOperativo',
-      params: payload
-   })
-   switch (levelLog) {
-   case SUCCESS:
-      dispatch(toListTipoOpePivotedSuccess(data))
-      break
-   case WARNING:
-      dispatch(toListTipoOpePivotedError(message))
-      break
-   case ERROR:
-      dispatch(toListTipoOpePivotedError(message))
-      break
+export const toListIntervenidosPivoted = (payload) => async (dispatch, getStore) => {
+   try {
+      dispatch(toListIntervenidosPivotedLoading())
+      const { usuario: { token } } = getStore()
+      const { data: { levelLog, data, message } } = await api({
+         method: 'GET',
+         url: '/microservicio-operativo/countPivotedByIntervenidos',
+         params: payload,
+         headers: {
+            [AUTHORIZATION]: token
+         }
+      })
+      switch (levelLog) {
+      case SUCCESS:
+         dispatch(toListIntervenidosPivotedSuccess(data))
+         break
+      case WARNING:
+         dispatch(toListIntervenidosPivotedError(message))
+         Noty(WARNING, message)
+         break
+      case ERROR:
+         dispatch(toListIntervenidosPivotedError(message))
+         Noty(ERROR, message)
+         break
+      }   
+   } catch (err) {
+      dispatch(toListIntervenidosPivotedError(err))
+      Noty(ERROR, err)
    }
 }
 
-export const toListTipoInfraccionPivoted = (payload) => async (dispatch) => {
-   dispatch(toListTipoInfraccionPivotedLoading())
-
-   const { data: { levelLog, data, message } } = await api({
-      method: 'GET',
-      url: '/microservicio-operativo/countPivotedByTipoInfraccion',
-      params: payload
-   })
-   switch (levelLog) {
-   case SUCCESS:
-      dispatch(toListTipoInfraccionPivotedSuccess(data))
-      break
-   case WARNING:
-      dispatch(toListTipoInfraccionPivotedError(message))
-      Noty(WARNING, message)
-      break
-   case ERROR:
-      dispatch(toListTipoInfraccionPivotedError(message))
-      Noty(ERROR, message)
-      break
+export const toListTipoOpePivoted = (payload) => async (dispatch, getStore) => {
+   try {
+      dispatch(toListTipoOpePivotedLoading())
+      const { usuario: { token } } = getStore()
+      const { data: { levelLog, data, message } } = await api({
+         method: 'GET',
+         url: '/microservicio-operativo/countPivotedByTipoOperativo',
+         params: payload,
+         headers: {
+            [AUTHORIZATION]: token
+         }
+      })
+      switch (levelLog) {
+      case SUCCESS:
+         dispatch(toListTipoOpePivotedSuccess(data))
+         break
+      case WARNING:
+         dispatch(toListTipoOpePivotedError(message))
+         break
+      case ERROR:
+         dispatch(toListTipoOpePivotedError(message))
+         break
+      }   
+   } catch (err) {
+      dispatch(toListTipoOpePivotedError(err))
    }
 }
 
-export const toListOpePivoted = () => async (dispatch) => {
-   dispatch(toListOpePivotedLoading())
-   const { data: { levelLog, data, message } } = await api('/microservicio-operativo/countPivotedOpe')
-   switch (levelLog) {
-   case SUCCESS:
-      dispatch(toListOpePivotedSuccess(data))
-      break
-   case WARNING:
-      dispatch(toListOpePivotedError(message))
-      break
-   case ERROR:
-      dispatch(toListOpePivotedError(message))
-      Noty(ERROR, message)
-      break
+export const toListTipoInfraccionPivoted = (payload) => async (dispatch, getStore) => {
+   try {
+      dispatch(toListTipoInfraccionPivotedLoading())
+      const { usuario: { token } } = getStore()
+      const { data: { levelLog, data, message } } = await api({
+         method: 'GET',
+         url: '/microservicio-operativo/countPivotedByTipoInfraccion',
+         params: payload,
+         headers: {
+            [AUTHORIZATION]: token
+         }
+      })
+      switch (levelLog) {
+      case SUCCESS:
+         dispatch(toListTipoInfraccionPivotedSuccess(data))
+         break
+      case WARNING:
+         dispatch(toListTipoInfraccionPivotedError(message))
+         Noty(WARNING, message)
+         break
+      case ERROR:
+         dispatch(toListTipoInfraccionPivotedError(message))
+         Noty(ERROR, message)
+         break
+      }   
+   } catch (err) {
+      dispatch(toListTipoInfraccionPivotedError(err))
+      Noty(ERROR, err)
    }
 }
 
-export const toListOpePivotedByNacionalidad = (payload) => async (dispatch) => {
-   dispatch(toListOpePivotedByNacionalidadLoading())
-   const { data: { levelLog, data, message } } = await api({
-      method: 'GET',
-      url: '/microservicio-operativo/countPivotedOpeByNacionalidad',
-      params: payload
-   })
-   switch (levelLog) {
-   case SUCCESS:
-      dispatch(toListOpePivotedByNacionalidadSuccess(data))
-      break
-   case WARNING:
-      dispatch(toListOpePivotedByNacionalidadError(message))
-      break
-   case ERROR:
-      dispatch(toListOpePivotedByNacionalidadError(message))
-      Noty(ERROR, message)
+export const toListOpePivoted = () => async (dispatch, getStore) => {
+   try {
+      dispatch(toListOpePivotedLoading())
+      const { usuario: { token } } = getStore()
+      const { data: { levelLog, data, message } } = await api({
+         method: 'GET',
+         url: '/microservicio-operativo/countPivotedOpe',
+         headers: {
+            [AUTHORIZATION]: token
+         }
+      })
+      switch (levelLog) {
+      case SUCCESS:
+         dispatch(toListOpePivotedSuccess(data))
+         break
+      case WARNING:
+         dispatch(toListOpePivotedError(message))
+         break
+      case ERROR:
+         dispatch(toListOpePivotedError(message))
+         Noty(ERROR, message)
+         break
+      }   
+   } catch (err) {
+      dispatch(toListOpePivotedError(err))
+      Noty(ERROR, err)
    }
 }
 
-export const toListOpePivotedBySexo = (payload) => async (dispatch) => {
-   dispatch(toListOpePivotedBySexoLoading())
-   const { data: { levelLog, data, message } } = await api({
-      method: 'GET',
-      url: '/microservicio-operativo/countPivotedOpeBySexo',
-      params: payload
-   })
-   switch (levelLog) {
-   case SUCCESS:
-      dispatch(toListOpePivotedBySexoSuccess(data))
-      break
-   case WARNING:
-      dispatch(toListOpePivotedBySexoError(message))
-      break
-   case ERROR:
-      dispatch(toListOpePivotedBySexoError(message))
-      Noty(ERROR, message)
+export const toListOpePivotedByNacionalidad = (payload) => async (dispatch, getStore) => {
+   try {
+      dispatch(toListOpePivotedByNacionalidadLoading())
+      const { usuario: { token } } = getStore()
+      const { data: { levelLog, data, message } } = await api({
+         method: 'GET',
+         url: '/microservicio-operativo/countPivotedOpeByNacionalidad',
+         params: payload,
+         headers: {
+            [AUTHORIZATION]: token
+         }
+      })
+      switch (levelLog) {
+      case SUCCESS:
+         dispatch(toListOpePivotedByNacionalidadSuccess(data))
+         break
+      case WARNING:
+         dispatch(toListOpePivotedByNacionalidadError(message))
+         break
+      case ERROR:
+         dispatch(toListOpePivotedByNacionalidadError(message))
+         Noty(ERROR, message)
+      }
+   } catch (err) {
+      dispatch(toListOpePivotedByNacionalidadError(err))
+      Noty(ERROR, err)
    }
 }
 
-export const toListOpePivotedByModalidad = (payload) => async (dispatch) => {
-   dispatch(toListOpePivotedByModalidadLoading())
-   const { data: { levelLog, data, message } } = await api({
-      method: 'GET',
-      url: '/microservicio-operativo/countPivotedOpeByModalidad',
-      params: payload
-   })
-   switch (levelLog) {
-   case SUCCESS:
-      dispatch(toListOpePivotedByModalidadSuccess(data))
-      break
-   case WARNING:
-      dispatch(toListOpePivotedByModalidadError(message))
-      break
-   case ERROR:
-      dispatch(toListOpePivotedByModalidadError(message))
-      Noty(ERROR, message)
+export const toListOpePivotedBySexo = (payload) => async (dispatch, getStore) => {
+   try {
+      dispatch(toListOpePivotedBySexoLoading())
+      const { usuario: { token } } = getStore()
+      const { data: { levelLog, data, message } } = await api({
+         method: 'GET',
+         url: '/microservicio-operativo/countPivotedOpeBySexo',
+         params: payload,
+         headers: {
+            [AUTHORIZATION]: token
+         }
+      })
+      switch (levelLog) {
+      case SUCCESS:
+         dispatch(toListOpePivotedBySexoSuccess(data))
+         break
+      case WARNING:
+         dispatch(toListOpePivotedBySexoError(message))
+         break
+      case ERROR:
+         dispatch(toListOpePivotedBySexoError(message))
+         Noty(ERROR, message)
+      }   
+   } catch (err) {
+      dispatch(toListOpePivotedBySexoError(err))
+      Noty(ERROR, err)
    }
 }
 
-export const toListOpeByFilterToExcel = (payload) => async (dispatch) => {
-   console.log(payload)
-   dispatch(toListOpeByFilterToExcelLoading())
-   const { data: { levelLog, data, message } } = await api({
-      method: 'POST',
-      url: '/microservicio-operativo/findOpeByCustomFilterToExcel',
-      data: payload
-   })
-   switch (levelLog) {
-   case SUCCESS:
-      dispatch(toListOpeByFilterToExcelSuccess(data))
-      break
-   case WARNING:
-      dispatch(toListOpeByFilterToExcelError(message))
-      Noty(WARNING, message)
-      break
-   case ERROR:
-      dispatch(toListOpeByFilterToExcelError(message))
-      Noty(ERROR, message)
+export const toListOpePivotedByModalidad = (payload) => async (dispatch, getStore) => {
+   try {
+      dispatch(toListOpePivotedByModalidadLoading())
+      const { usuario: { token } } = getStore()
+      const { data: { levelLog, data, message } } = await api({
+         method: 'GET',
+         url: '/microservicio-operativo/countPivotedOpeByModalidad',
+         params: payload,
+         headers: {
+            [AUTHORIZATION]: token
+         }
+      })
+      switch (levelLog) {
+      case SUCCESS:
+         dispatch(toListOpePivotedByModalidadSuccess(data))
+         break
+      case WARNING:
+         dispatch(toListOpePivotedByModalidadError(message))
+         break
+      case ERROR:
+         dispatch(toListOpePivotedByModalidadError(message))
+         Noty(ERROR, message)
+      }
+   } catch (err) {
+      dispatch(toListOpePivotedByModalidadError(err))
+      Noty(ERROR, err)
    }
 }
 
-export const toUpdateOpeById = (idOpe, numeroInforme) => async (dispatch) => {
-   dispatch(toUpdateOpeByIdLoading())
-   const {data: { levelLog, data, message }} = await api({
-      method: 'PUT',
-      url: `/microservicio-operativo/updateOpeById/${idOpe}/${numeroInforme}`
-   })
-   switch (levelLog) {
-   case SUCCESS:
-      dispatch(toUpdateOpeByIdSuccess(data))
-      Noty(SUCCESS, message)
-      break
-   case WARNING:
-      dispatch(toUpdateOpeByIdError(message))
-      Noty(WARNING, message)
-      break
-   case ERROR:
-      dispatch(toUpdateOpeByIdError(message))
-      Noty(ERROR, message)
-      break
+export const toListOpeByFilterToExcel = (payload) => async (dispatch, getStore) => {
+   try {
+      dispatch(toListOpeByFilterToExcelLoading())
+      const { usuario: { token } } = getStore()
+      const { data: { levelLog, data, message } } = await api({
+         method: 'POST',
+         url: '/microservicio-operativo/findOpeByCustomFilterToExcel',
+         data: payload,
+         headers: {
+            [AUTHORIZATION]: token
+         }
+      })
+      switch (levelLog) {
+      case SUCCESS:
+         dispatch(toListOpeByFilterToExcelSuccess(data))
+         break
+      case WARNING:
+         dispatch(toListOpeByFilterToExcelError(message))
+         Noty(WARNING, message)
+         break
+      case ERROR:
+         dispatch(toListOpeByFilterToExcelError(message))
+         Noty(ERROR, message)
+      }
+   } catch (err) {
+      dispatch(toListOpeByFilterToExcelError(err))
+      Noty(ERROR, err)
+   }
+}
+
+export const toUpdateOpeById = (idOpe, numeroInforme) => async (dispatch, getStore) => {
+   try {
+      dispatch(toUpdateOpeByIdLoading())
+      const { usuario: { token } } = getStore()
+      const {data: { levelLog, data, message }} = await api({
+         method: 'PUT',
+         url: `/microservicio-operativo/updateOpeById/${idOpe}/${numeroInforme}`,
+         headers: {
+            [AUTHORIZATION]: token
+         }
+      })
+      switch (levelLog) {
+      case SUCCESS:
+         dispatch(toUpdateOpeByIdSuccess(data))
+         Noty(SUCCESS, message)
+         break
+      case WARNING:
+         dispatch(toUpdateOpeByIdError(message))
+         Noty(WARNING, message)
+         break
+      case ERROR:
+         dispatch(toUpdateOpeByIdError(message))
+         Noty(ERROR, message)
+         break
+      }
+   } catch (err) {
+      dispatch(toUpdateOpeByIdError(err))
+      Noty(ERROR, err)
    }
 }

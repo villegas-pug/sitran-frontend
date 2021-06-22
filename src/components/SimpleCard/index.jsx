@@ -50,10 +50,10 @@ export default function SimpleCard({ nombre, descripcion, icono, rutaPrincipal }
                }
             </CardMedia>
             <CardContent>
-               <Typography variant='subtitle2' component='h1' color='textPrimary'>
+               <Typography variant='h4' color='textPrimary'>
                   {nombre.toUpperCase()}
                </Typography>
-               <Typography variant='body2' color='textSecondary' component='p' align='justify'>
+               <Typography variant='h6' color='textSecondary' component='p' align='justify'>
                   {descripcion}
                </Typography>
             </CardContent>

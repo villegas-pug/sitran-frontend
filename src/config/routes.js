@@ -1,5 +1,5 @@
 /* import BuscarInterpolSubMod from 'pages/submodulo/BuscarInterpolSubMod' */
-import {lazy} from 'react'
+import { lazy } from 'react'
 
 /*» MOD'S  */
 const HomeMod = lazy(() => import('pages/modulo/HomeMod'))
@@ -15,66 +15,71 @@ const BuscarInterpolSubMod = lazy(() => import('pages/submodulo/BuscarInterpolSu
 const RptMesaDigitalSubMod = lazy(() => import('pages/submodulo/MesaDigitalRptSubMod'))
 const NuevoOperativoSubMod = lazy(() => import('pages/submodulo/NuevoOperativoSubMod'))
 const NuevoInterpolSubMod = lazy(() => import('pages/submodulo/NuevoInterpolSubMod'))
+const NuevaActividadSubMod = lazy(() => import('pages/submodulo/NuevaActividadSubMod'))
 const BuscarOperativoSubMod = lazy(() => import('pages/submodulo/BuscarOperativoSubMod'))
 const DashboardOperativoSubMod = lazy(() => import('pages/submodulo/OperativoRptSubMod'))
 const RegistrarActividad = lazy(() => import('pages/submodulo/RegistrarActividad'))
 const ProduccionRptSubMod = lazy(() => import('pages/submodulo/ProduccionRptSubMod'))
+const NacionalizacionRptSubMod = lazy(() => import('pages/submodulo/NacionalizacionRptSubMod'))
 
-/* const Normativa = lazy(() => import('components/Normativa'))
-const CrearNormativa = lazy(() => import('components/Normativa/CrearNormativa'))
-const EvaluarNormativa = lazy(() => import('components/Normativa/EvaluarNormativa')) */
-
+import { modulo as modName, subModulo as subModName } from 'constants/component'
 
 const modulo = [
    {
-      name: 'HOME',
+      name: modName.HOME,
       component: HomeMod
    }, {
-      name: 'PERFIL' ,
+      name: modName.PERFIL,
       component: PerfilMod
    }, {
-      name: 'ACTIVIDADES',
+      name: modName.ACTIVIDADES,
       component: ActividadesMod
    }, {
-      name: 'LINEAMIENTOS',
+      name: modName.LINEAMIENTOS,
       component: LineamientoMod
    }, {
-      name: 'PROCESOS',
+      name: modName.PROCESOS,
       component: ProcesosMod
    }, {
-      name: 'UTILIDADES',
+      name: modName.UTILIDADES,
       component: UtilidadesMod
    },  {
-      name: 'REPORTES',
+      name: modName.REPORTES,
       component: ReporteMod
    },
 ]
 
 const subModulo = [
    {
-      name: 'NUEVO OPERATIVO',
+      name: subModName.NUEVO_OPERATIVO,
       component: NuevoOperativoSubMod
    }, {
-      name: 'NUEVO INTERPOL',
+      name: subModName.NUEVO_INTERPOL,
       component: NuevoInterpolSubMod
    }, {
-      name: 'BUSCAR OPERATIVO',
+      name: subModName.NUEVA_ACTIVIDAD,
+      component: NuevaActividadSubMod
+   }, {
+      name: subModName.BUSCAR_OPERATIVO,
       component: BuscarOperativoSubMod
    }, {
-      name: 'BUSCAR INTERPOL',
+      name: subModName.BUSCAR_INTERPOL,
       component: BuscarInterpolSubMod
    }, {
-      name: 'REPORTE MESA DIGITAL',
+      name: subModName.REGISTRAR_PRODUCCION,
+      component: RegistrarActividad
+   }, {
+      name: subModName.REPORTE_MESA_DIGITAL,
       component: RptMesaDigitalSubMod
    }, {
-      name: 'REPORTE OPERATIVOS',
+      name: subModName.REPORTE_OPERATIVOS,
       component: DashboardOperativoSubMod
    }, {
-      name: 'REPORTE PRODUCCION',
+      name: subModName.REPORTE_PRODUCCION,
       component: ProduccionRptSubMod
    }, {
-      name: 'REGISTRAR PRODUCCION',
-      component: RegistrarActividad
+      name: subModName.REPORTE_NACIONALIZACION,
+      component: NacionalizacionRptSubMod
    }
 ]
 

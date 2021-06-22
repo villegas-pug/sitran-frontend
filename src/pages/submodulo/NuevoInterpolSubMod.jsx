@@ -21,7 +21,7 @@ import { useState } from 'react'
 import useInterpol from 'hooks/useInterpol'
 import { useEffect } from 'react'
 
-const Content = styled.div`
+const Body = styled.body`
    height: calc(100% - 5rem);
    display: flex;
    justify-content: center;
@@ -62,7 +62,7 @@ export default function NuevoInterpolSubMod() {
    const handleChangeAppendFile = ({ target: { files } }) => { setFile(files[0]) }
 
    return (
-      <Content>
+      <Body>
          <Fade>
             <Card className={classes.root}>
                <CardActionArea>
@@ -112,6 +112,6 @@ export default function NuevoInterpolSubMod() {
                />
             </Card>
          </Fade>
-      </Content>
+      </Body>
    )
 }

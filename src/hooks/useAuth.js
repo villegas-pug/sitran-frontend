@@ -1,15 +1,24 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { findUserByLogin } from 'redux/actions/usuarioAction'
+import { 
+   findUserByLogin,
+   login,
+   logout,
+   updatePasswordByLogin
+} from 'redux/actions/usuarioAction'
 
 export default function useAuth(){
 
    /*» STORE-HOOK'S  */
-   const { loading: authLoading, data: userAuthenticated } = useSelector(store => store.usuario)
+   const { 
+      loading: authLoading,
+      token,
+      userCredentials,
+   } = useSelector(store => store.usuario)
    const dispatch = useDispatch()
 
-   /*» HOOK'S  */
+   /*» HOOK'S... */
    const [procedimientoAuthenticated, setProcedimientoAuthenticated] = useState([])
    const [modAuthenticated, setModAuthenticated] = useState([])
    const [submodAuthenticated, setSubmodAuthenticated] = useState([])
@@ -18,12 +27,9 @@ export default function useAuth(){
    /*» EFFECT'S */
    useEffect(() => {
       let procedimientoDb = []
-      userAuthenticated?.length > 0 
-         && userAuthenticated.map(({usrProcedimiento}) => (
-            usrProcedimiento.map(({procedimiento}) => { procedimientoDb.push(procedimiento) })
-         ))
+      userCredentials?.usrProcedimiento?.map(({procedimiento}) => { procedimientoDb.push(procedimiento) })
       setProcedimientoAuthenticated(procedimientoDb)
-   }, [userAuthenticated])
+   }, [userCredentials])
    
    useEffect(() => {
       setPathAuthenticated(
@@ -37,31 +43,39 @@ export default function useAuth(){
 
    useEffect(() => {
       let submod = {}
-      modAuthenticated.map(({ nombre, rutaMod: rutaModFromMap }) => {
+      modAuthenticated.map(({ nombre: nombreMod, rutaMod: rutaModFromMap }) => {
          procedimientoAuthenticated
             .filter(({tipo}) => tipo === 'SUB_MODULO')
-            .filter(({rutaMod}) => rutaMod === rutaModFromMap)
-            .map(({...rest}) => { 
-               submod[nombre] = typeof(submod[nombre]) !== 'undefined' 
-                  ? [...submod[nombre], rest] 
-                  : [rest] 
+            .filter(({rutaMod}) => rutaModFromMap === rutaMod)
+            .map((record) => { 
+               submod[nombreMod] = typeof(submod[nombreMod]) !== 'undefined' 
+                  ? [...submod[nombreMod], record] 
+                  : [record] 
             })
       }) 
-      
       setSubmodAuthenticated(submod)
    }, [modAuthenticated])
 
    /*» HANDLER'S  */
    const handleFindUserByLogin = () => { dispatch(findUserByLogin()) }
+   const handleLogin = (cred) => { dispatch(login(cred)) }
+   const handleLogout = () => { dispatch(logout()) }
+   const handleUpdatePasswordByLogin = (cred) => { dispatch(updatePasswordByLogin(cred)) }
 
    return {
+      isAuthenticated: Boolean(Object.values(userCredentials).length),
+      token,
       authLoading,
-      userAuthenticated,
+      userCredentials,
+
       procedimientoAuthenticated,
       modAuthenticated,
       submodAuthenticated,
       pathAuthenticated,
 
-      handleFindUserByLogin
+      handleFindUserByLogin,
+      handleUpdatePasswordByLogin,
+      handleLogin,
+      handleLogout
    }
 }

@@ -10,37 +10,42 @@ export const rootTheme = createMuiTheme({
       },
    },
    typography: {
-      fontFamily: 'RocknRoll One, sans-serif',
-      fontSize: 10,
+      fontFamily: 'Ubuntu Condensed, sans-serif',
+      fontSize: 12,
       h1: {
          fontWeight: 1000,
-         fontSize: 16
+         fontSize: 20
       },
       h2: {
          fontWeight: 1000,
-         fontSize: 14
+         fontSize: 18
       },
       h3: {
          fontWeight: 1000,
-         fontSize: 12
+         fontSize: 16
       },
       h4:{
          fontWeight: 1000,
-         fontSize: 10
+         fontSize: 14
       },
       h5:{
          fontWeight: 1000,
-         fontSize: 8
+         fontSize: 12
       },
       h6:{
          fontWeight: 500,
-         fontSize: 10
+         fontSize: 12
       },
    },
    overrides: {
       MuiTextField: {
          root: {
-            fontSize: 10
+            fontSize: 12
+         }
+      },
+      MuiTabs:{
+         indicator:{
+            backgroundColor: '#fff'
          }
       },
    },
@@ -52,6 +57,7 @@ export const rootTheme = createMuiTheme({
 })
 
 export const inputTheme = createMuiTheme({
+   ...rootTheme,
    palette: {
       primary: {
          main: '#004795'
@@ -60,7 +66,4 @@ export const inputTheme = createMuiTheme({
          main: '#DD5145'
       },
    },
-   typography: {
-      fontSize: 11
-   }
 })
