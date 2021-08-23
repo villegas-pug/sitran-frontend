@@ -5,7 +5,7 @@ import Menu from 'components/Menu'
 
 import useAuth from 'hooks/useAuth'
 
-import { modulo } from 'constants/component'
+import { modulo } from 'constants/components'
 
 const { UTILIDADES } = modulo
 

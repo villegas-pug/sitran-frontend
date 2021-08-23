@@ -1,242 +1,124 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import {
-   TreeView,
-   TreeItem,
-} from '@material-ui/lab'
-import { makeStyles } from '@material-ui/core/styles'
-import { 
-   Remove, 
-   Add,
-   GetApp
-} from '@material-ui/icons'
-import { 
+   Grid,
    Box,
+   ButtonGroup,
+   Button,
    IconButton,
-   Tooltip,
-   Paper,
-   Divider,
-   Typography
+   Avatar
 } from '@material-ui/core'
+import { 
+   SkipPrevious, 
+   SkipNext,
+   Home
+} from '@material-ui/icons'
+import { makeStyles } from '@material-ui/core/styles'
 import styled from 'styled-components'
-import uuid from 'short-uuid'
-import { Scrollbars } from 'react-custom-scrollbars'
-import Fade from 'react-reveal/Fade'
 
-import useNacionalizacion from 'hooks/useNacionalizacion'
-import ModalLoader from 'components/Styled/ModalLoader'
-import MyAppTitle from 'components/Styled/AppTitle'
+import useItem from 'hooks/useItem'
+import useAuth from 'hooks/useAuth'
 
-const hPapper = '70vh'
-const wPapper = '85vw'
+import { modulo } from 'constants/components'
+
+import PendientesRptList from 'components/Nacionalizacion/PendientesRptList'
 
 const Body = styled.body`
-   height: calc(100% - 5rem);
+   height: 85vh;
    display: flex;
    justify-content: center;
    align-items: center;
 `
 
 const useStyle = makeStyles({
-   paper: {
-      padding: '1rem 3rem',
+   gridContainer: {
+      height: '100%',
    },
-   divider: {
-      marginBottom: 15
-   },
-   dividerTree: {
-      /* marginTop: 2,
-      marginBottom: 2 */
-   },
-   treeView: {
-      height: hPapper,
-      width: wPapper,
-   },
-   typographyRoot:{
-      fontSize: 27
-   },
-   iconButton: {
-      height: 30,
-      width: 30,
+   gridAside: {
+      borderRight: '1px solid #999'
    }
 })
 
-const scrollbarsStyle = {
-   height: hPapper,
-   width: wPapper,
-}
+export default function NacionalizacionRptSubMod({ history }) {
 
-export default function NacionalizacionRptSubMod() {
-   
    /*» HOOK'S */
-   const [expanded, setExpanded] = useState([])
-   const [selected, setSelected] = useState([])
+   const [item, setItem] = useState(null)
+
 
    /*» CUSTOM-HOOK'S  */
    const classes = useStyle()
-   const {
-      procnacDbLoading,
-      tipoProcNacDistinct,
-      etapaProcNacDistinct,
-      añoProcNacDistinct,
-      filterProcNacByAñoAndTipoProc,
-      filterProcNacByAñoAndTipoProcAndEtapa,
-      mapCountProcNacByAño,
-      handleToListProcPNac,
-      handleDownloadProcByCustomFilter
-   } = useNacionalizacion()
-
+   const { items, renderItem } = useItem()
+   const { pathAuthenticated } = useAuth()
+   
    /*» EFFECT'S  */
-   useEffect(() => { handleToListProcPNac() }, [])
 
    /*» HANDLER'S  */
-   const handleToggle = (e, idItem) => { setExpanded(idItem) }
-   const handleSelected = (e, idItem) => { setSelected(idItem) }
+   const handlePrevNav = () => setItem(null)
+   const handleRedirectMain = () => {history.push(pathAuthenticated[modulo.REPORTES])}
 
    /*» RENDERING CONDITIONAL  */
-   if(procnacDbLoading) return <ModalLoader />
-
+   
    return (
       <Body>
-         <Fade>
-            <Paper variant='outlined' className={classes.paper}>
-               <MyAppTitle name='» TRÁMITES PENDIENTES DE NACIONALIZACIÓN' align='left' size={.9} color='#000' />
-               <Divider className={classes.divider} />
-               <Scrollbars autoHide style={scrollbarsStyle}>
-                  <TreeView
-                     expanded={expanded}
-                     selected={selected}
-                     defaultCollapseIcon={<Remove fontSize='large' />}
-                     defaultExpandIcon={<Add fontSize='large' />}
-                     className={classes.treeView}
-                     onNodeToggle={handleToggle}
-                     onNodeSelect={handleSelected}
+         <Grid 
+            container 
+            spacing={5} 
+            className={classes.gridContainer}
+         >
+
+            {/*» ASIDE  */}
+            <Grid 
+               item 
+               container 
+               xs={2} 
+               justify='center' 
+               alignItems='flex-start'
+               className={classes.gridAside}
+            >
+               <Box 
+                  display='flex' 
+                  height={80} 
+                  flexDirection='column' 
+                  alignItems='center' 
+                  justifyContent='space-between'
+               >
+                  <Avatar>
+                     <IconButton
+                        onClick={() => handleRedirectMain()}
+                     >
+                        <Home fontSize='large' />
+                     </IconButton>
+                  </Avatar>
+                  <ButtonGroup
+                     color='primary' 
+                     variant='contained'
                   >
-                     {
-                        [...añoProcNacDistinct].map((año) => (
-                           <>
-                              <TreeItem
-                                 key={año} 
-                                 nodeId={año}
-                                 label={
-                                    <Box m={1} display='flex' justifyContent='space-between'>
-                                       <Box>
-                                          <Typography 
-                                             variant='h1' 
-                                             color='textSecondary' 
-                                             className={classes.typographyRoot}
-                                          >
-                                             {año}
-                                          </Typography>
-                                          <Typography 
-                                             variant='h4' 
-                                             color='error'
-                                          >
-                                             PENDIENTES: {mapCountProcNacByAño[año].toString().padStart(4, '0')}
-                                          </Typography>
-                                       </Box>
-                                       <Tooltip title='Descargar' placement='right-start' arrow>
-                                          <IconButton 
-                                             onClick={() => handleDownloadProcByCustomFilter({año})}
-                                          >
-                                             <GetApp />
-                                          </IconButton>
-                                       </Tooltip>
-                                    </Box>
-                                 }
-                              >
-                                 {
-                                    [...tipoProcNacDistinct].map((tipo) => (
-                                       filterProcNacByAñoAndTipoProc(año, tipo)
-                                          .map(({nro, tipoTramite, contarPendiente}) => (
-                                             <TreeItem 
-                                                key={nro}
-                                                nodeId={nro}
-                                                label={
-                                                   <Box 
-                                                      p={1} 
-                                                      display='flex' 
-                                                      justifyContent='space-between'
-                                                   >
-                                                      <Box 
-                                                         display='flex' 
-                                                         alignItems='center' 
-                                                         justifyContent='space-between' 
-                                                         width={370}
-                                                      >
-                                                         <Typography 
-                                                            variant='h5' 
-                                                            color='textPrimary'
-                                                         >
-                                                            {tipoTramite}
-                                                         </Typography>
-                                                         <Typography 
-                                                            variant='h5' 
-                                                            color='error'
-                                                         >
-                                                            P: {contarPendiente.toString().padStart(3, '0')}
-                                                         </Typography>
-                                                      </Box>
-                                                      <Tooltip title='Descargar'  placement='right-start' arrow>
-                                                         <IconButton 
-                                                            className={classes.iconButton}
-                                                            onClick={() => handleDownloadProcByCustomFilter({año, tipo})}
-                                                         >
-                                                            <GetApp />
-                                                         </IconButton>
-                                                      </Tooltip>
-                                                   </Box>
-                                                }
-                                             >
-                                                {
-                                                   [...etapaProcNacDistinct].map(etapa => (
-                                                      filterProcNacByAñoAndTipoProcAndEtapa(año, tipo, etapa)
-                                                         .map(({nro, etapaTramite, contarPendiente}) => (
-                                                            <TreeItem 
-                                                               key={nro}
-                                                               nodeId={uuid.generate()}
-                                                               label={
-                                                                  <Box 
-                                                                     p={1} 
-                                                                     display='flex' 
-                                                                     justifyContent='space-between'
-                                                                  >
-                                                                     <Box 
-                                                                        display='flex' 
-                                                                        alignItems='center' 
-                                                                        justifyContent='space-between' 
-                                                                        width={270}
-                                                                     >
-                                                                        <Typography variant='h5' color='textPrimary'>{etapaTramite}</Typography>
-                                                                        <Typography variant='h6' color='error'>P: {contarPendiente.toString().padStart(3, '0')}</Typography>
-                                                                     </Box>
-                                                                     <Tooltip title='Descargar'  placement='right-start' arrow>
-                                                                        <IconButton 
-                                                                           className={classes.iconButton}
-                                                                           onClick={() => handleDownloadProcByCustomFilter({año, tipo, etapa})}
-                                                                        >
-                                                                           <GetApp />
-                                                                        </IconButton>
-                                                                     </Tooltip>
-                                                                  </Box>
-                                                               }
-                                                            />
-                                                         )) 
-                                                   ))
-                                                }
-                                             </TreeItem>
-                                          ))
-                                    ))
-                                 }
-                              </TreeItem>
-                              <Divider className={classes.dividerTree} />
-                           </>
-                        ))
-                     }
-            
-                  </TreeView>
-               </Scrollbars>
-            </Paper>
-         </Fade>
+                     <Button
+                        disabled={!item}
+                        startIcon={<SkipPrevious />}
+                        onClick={() => handlePrevNav()}
+                     ></Button>
+                     <Button endIcon={<SkipNext />} disabled></Button>
+                  </ButtonGroup>
+               </Box>
+            </Grid>
+
+            {/*» CONTENT  */}
+            <Grid 
+               item 
+               xs={10}
+            >
+               {
+                  item 
+                     ? renderItem(item)
+                     : <PendientesRptList items={items} setItem={setItem} />
+               }
+            </Grid>
+         </Grid>
       </Body>
    )
+}
+
+NacionalizacionRptSubMod.propTypes = {
+   history: PropTypes.object.isRequired
 }

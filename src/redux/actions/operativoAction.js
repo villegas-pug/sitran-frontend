@@ -38,13 +38,17 @@ import {
    LIST_OPE_PIVOTED_MODALIDAD_LOADING,
    LIST_OPE_PIVOTED_MODALIDAD_ERROR,
    LIST_OPE_PIVOTED_MODALIDAD_SUCCESS,
+   LIST_OPE_JZ_LOADING,
+   LIST_OPE_JZ_SUCCESS,
+   LIST_OPE_JZ_ERROR,
 } from 'redux/types/operativoType'
+import fileDownload from 'js-file-download'
 
 import { SUCCESS, WARNING, ERROR } from 'constants/levelLog'
 import Noty from 'helpers/noty'
 
 import { api } from 'config/axios'
-import getBlob from 'helpers/blob'
+import convertBlob from 'helpers/blob'
 
 import {resetStagesNuevoOperativo} from 'redux/actions/stagesAction'
 
@@ -63,6 +67,10 @@ const saveOperativoError = (payload) => ({ type: SAVE_OPERATIVO_ERROR, payload }
 const toListOperativoLoading = () => ({ type: LIST_OPERATIVO_LOADING })
 const toListOperativoSuccess = (payload) => ({ type: LIST_OPERATIVO_SUCCESS, payload })
 const toListOperativoError = (payload) => ({ type: LIST_OPERATIVO_ERROR, payload })
+
+const toListOperativoJZLoading = () => ({ type: LIST_OPE_JZ_LOADING })
+const toListOperativoJZSuccess = (payload) => ({ type: LIST_OPE_JZ_SUCCESS, payload })
+const toListOperativoJZError = (payload) => ({ type: LIST_OPE_JZ_ERROR, payload })
 
 /*» ACTION'S UPDATE  */
 const toUpdateOpeByIdLoading = () => ({ type: UPDATE_OPE_NRO_INFO_LOADING })
@@ -115,7 +123,7 @@ export const saveOperativo = () => async (dispatch, getStore) => {
       const { operativo: { inputValues }, usuario: { token } } = getStore()
       const { file, ...rest } = inputValues
       const frmData = new FormData()
-      frmData.append('operativo', getBlob(rest))
+      frmData.append('operativo', convertBlob(rest))
       frmData.append('file', file)
       const { data: { levelLog, data, message } } = await api({
          method: 'POST',
@@ -413,33 +421,38 @@ export const toListOpePivotedByModalidad = (payload) => async (dispatch, getStor
    }
 }
 
-export const toListOpeByFilterToExcel = (payload) => async (dispatch, getStore) => {
+export const toListOpeByFilterToExcel = (filter) => async (dispatch, getStore) => {
+   const MESSAGE_ERROR = '¡No se encontraron registros!'
+
    try {
       dispatch(toListOpeByFilterToExcelLoading())
       const { usuario: { token } } = getStore()
-      const { data: { levelLog, data, message } } = await api({
+      const { data, status, headers } = await api({
          method: 'POST',
          url: '/microservicio-operativo/findOpeByCustomFilterToExcel',
-         data: payload,
+         data: {...filter},
          headers: {
             [AUTHORIZATION]: token
-         }
+         },
+         responseType: 'blob'
       })
-      switch (levelLog) {
-      case SUCCESS:
-         dispatch(toListOpeByFilterToExcelSuccess(data))
+
+      let fileName
+      
+      switch (status) {
+      case 200:
+         fileName = headers['content-disposition'].split('filename=')[1].replaceAll('"', '')
+         fileDownload(data, fileName)
+         dispatch(toListOpeByFilterToExcelSuccess())
          break
-      case WARNING:
-         dispatch(toListOpeByFilterToExcelError(message))
-         Noty(WARNING, message)
+      case 204:
+         dispatch(toListOpeByFilterToExcelError(MESSAGE_ERROR))
+         Noty(ERROR, MESSAGE_ERROR)
          break
-      case ERROR:
-         dispatch(toListOpeByFilterToExcelError(message))
-         Noty(ERROR, message)
       }
    } catch (err) {
       dispatch(toListOpeByFilterToExcelError(err))
-      Noty(ERROR, err)
+      Noty(ERROR, MESSAGE_ERROR)
    }
 }
 
@@ -471,5 +484,29 @@ export const toUpdateOpeById = (idOpe, numeroInforme) => async (dispatch, getSto
    } catch (err) {
       dispatch(toUpdateOpeByIdError(err))
       Noty(ERROR, err)
+   }
+}
+
+export const toListOperativoJZ = () => async (dispatch, getStore) => {
+   dispatch(toListOperativoJZLoading())
+   const { usuario: { token } } = getStore()
+   const { data: { levelLog, data, message } } = await api({
+      method: 'GET',
+      url: '/microservicio-operativo/findAllOpeJZ',
+      headers: {
+         [AUTHORIZATION]: token
+      }
+   })
+
+   switch (levelLog) {
+   case SUCCESS:
+      dispatch(toListOperativoJZSuccess(data))
+      break
+   case WARNING:
+      dispatch(toListOperativoJZError(message))
+      break
+   case ERROR:
+      dispatch(toListOperativoJZError(message))
+      break
    }
 }

@@ -25,7 +25,7 @@ const Container = styled.div`
 const styles = {
    barLabel: {
       /* position: 'top',  */
-      fontSize: 9,
+      fontSize: 14,
       formatter: (value) => value.toLocaleString('es-PE')
    }
 }
@@ -47,8 +47,8 @@ export default function ChartByRefugiados({ title, data }) {
             >
                <CartesianGrid strokeDasharray='1 1' />
                <Tooltip
-                  labelStyle={{fontSize: 9, fontWeight: 1000}} 
-                  contentStyle={{fontSize: 8}}
+                  labelStyle={{fontSize: 12, fontWeight: 1000}} 
+                  contentStyle={{fontSize: 12}}
                   formatter={(value) => value.toLocaleString('es-PE') } 
                />
                <YAxis 

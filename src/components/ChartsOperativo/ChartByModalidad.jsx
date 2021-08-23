@@ -41,7 +41,7 @@ export default function ChartByModalidad({data, title}) {
                   cx='50%'
                   cy='50%'
                   outerRadius={80}
-                  label={{fontSize: 12}}
+                  label={{fontSize: 18}}
                   isAnimationActive={false}
                >
                   <Cell name='Presencial' key='0' fill='#004795' />

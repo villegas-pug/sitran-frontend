@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
    handleInputOnChange,
@@ -14,14 +15,17 @@ import {
    toListTipoInfraccionPivoted,
    toListTipoOpePivoted,
    toUpdateOpeById,
-   resetListOpeByFilterToExcel
+   resetListOpeByFilterToExcel,
+   toListOperativoJZ
 } from 'redux/actions/operativoAction'
+import useAuth from './useAuth'
 
 export default function useOperativo() {
 
    /*» STORE HOOK'S  */
    const dispatch = useDispatch()
 
+   /*»CUSTOM HOOK'S  */
    const { 
       loading: operativoLoading, 
       data: operativoDb, 
@@ -37,6 +41,9 @@ export default function useOperativo() {
       },
       pivotedTipoOperativo:{
          data: tipoOpePivotedDb
+      },
+      operativoJZ:{
+         data: operativoJZDb
       },
       pivotedOpe: {
          data: opePivotedDb
@@ -55,7 +62,10 @@ export default function useOperativo() {
          data: opeByCustomFilterToExcelDb
       }
    } = useSelector(store => store.operativo)
+   const { userCredentials: { dependencia } } = useAuth()
 
+   /*» EFFECT'S  */
+   useEffect(() => { dispatch(handleInputOnChange({ dependencia })) }, [dependencia])/*» Si, usuario pertenece a JZLima ... */
 
    /*» HANDLER'S */
    /*» Input's ... */
@@ -68,6 +78,7 @@ export default function useOperativo() {
    const handleSaveOperativo = () => { dispatch(saveOperativo()) }
    const handleFindByApprox = (payload) => { console.log(payload) }
    const handleFindAllOperativo = () => { dispatch(toListOperativo()) }
+   const handleFindAllOpeJZ = () => { dispatch(toListOperativoJZ()) }
    const handleFindAllOpeAnualPivoted = () => { dispatch(toListOpeAnualPivoted()) }
    const handleFindOpeByFilterToExcel = ({distrito = {}, tipoOperativo = {}, ...rest }) => { 
       dispatch(toListOpeByFilterToExcel({ ...rest, distrito: distrito || {}, tipoOperativo: tipoOperativo || {} })) 
@@ -87,6 +98,7 @@ export default function useOperativo() {
       operativoLoading,
       opeAnualPivotedDb,
       opePivotedDb,
+      operativoJZDb,
       opePivotedByNacionalidadDb,
       opePivotedBySexoDb,
       opePivotedByModalidadDb,
@@ -102,6 +114,7 @@ export default function useOperativo() {
       handleChangeInputUncontrolled,
       handleInputsOnReset,
       handleSaveOperativo,
+      handleFindAllOpeJZ,
       handleFindByApprox,
       handleFindAllOpeAnualPivoted,
       handleFindAllOperativo,

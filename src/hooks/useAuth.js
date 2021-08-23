@@ -8,6 +8,13 @@ import {
    updatePasswordByLogin
 } from 'redux/actions/usuarioAction'
 
+import { 
+   ITEM, 
+   MODULO, 
+   SUB_ITEM, 
+   SUB_MODULO 
+} from 'constants/componentType'
+
 export default function useAuth(){
 
    /*» STORE-HOOK'S  */
@@ -19,33 +26,42 @@ export default function useAuth(){
    const dispatch = useDispatch()
 
    /*» HOOK'S... */
-   const [procedimientoAuthenticated, setProcedimientoAuthenticated] = useState([])
+   const [componentsAuth, setComponentsAuth] = useState([])
+   const [redirectComponentsAuth, setRedirectComponentsAuth] = useState([])
    const [modAuthenticated, setModAuthenticated] = useState([])
    const [submodAuthenticated, setSubmodAuthenticated] = useState([])
    const [pathAuthenticated, setPathAuthenticated] = useState([])
 
    /*» EFFECT'S */
    useEffect(() => {
-      let procedimientoDb = []
-      userCredentials?.usrProcedimiento?.map(({procedimiento}) => { procedimientoDb.push(procedimiento) })
-      setProcedimientoAuthenticated(procedimientoDb)
+      Object.keys(userCredentials).length
+         && setComponentsAuth(userCredentials.usrProcedimiento.map(({procedimiento}) => procedimiento))
+   }, [userCredentials])
+
+   useEffect(() => {
+      Object.keys(userCredentials).length
+         && setRedirectComponentsAuth(
+            userCredentials.usrProcedimiento
+               .filter(({procedimiento: { tipo }}) => tipo !== ITEM && tipo !== SUB_ITEM)
+               .map(({procedimiento}) => procedimiento)
+         )
    }, [userCredentials])
    
    useEffect(() => {
       setPathAuthenticated(
-         procedimientoAuthenticated.reduce((map, { nombre, rutaPrincipal }) => (map[nombre] = rutaPrincipal, map), {})
+         componentsAuth?.reduce((map, { nombre, rutaPrincipal }) => (map[nombre] = rutaPrincipal, map), {})
       )
-   }, [procedimientoAuthenticated])
+   }, [componentsAuth])
 
    useEffect(() => {
-      setModAuthenticated(procedimientoAuthenticated.filter(({ tipo }) => tipo === 'MODULO'))
-   }, [procedimientoAuthenticated])
+      setModAuthenticated(componentsAuth?.filter(({ tipo }) => tipo === MODULO))
+   }, [componentsAuth])
 
    useEffect(() => {
       let submod = {}
-      modAuthenticated.map(({ nombre: nombreMod, rutaMod: rutaModFromMap }) => {
-         procedimientoAuthenticated
-            .filter(({tipo}) => tipo === 'SUB_MODULO')
+      modAuthenticated?.map(({ nombre: nombreMod, rutaMod: rutaModFromMap }) => {
+         componentsAuth
+            .filter(({tipo}) => tipo === SUB_MODULO)
             .filter(({rutaMod}) => rutaModFromMap === rutaMod)
             .map((record) => { 
                submod[nombreMod] = typeof(submod[nombreMod]) !== 'undefined' 
@@ -68,7 +84,8 @@ export default function useAuth(){
       authLoading,
       userCredentials,
 
-      procedimientoAuthenticated,
+      componentsAuth,
+      redirectComponentsAuth,
       modAuthenticated,
       submodAuthenticated,
       pathAuthenticated,

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { 
    Button, 
@@ -71,17 +71,20 @@ export default function OperativoGridRpt({handleCurrentNav}) {
    const classes = useStyle()
    const { opeByCustomFilterToExcelLoading, handleFindOpeByFilterToExcel } = useOperativo()
    const { distritoDb } = useDistrito()
-   const { entidadSolicitaOpeDb } = useEmpresa()
+   const { handleListEmpresa, entidadSolicitaOpeDb } = useEmpresa()
    
    /*» HANDLER'S  */
    const handleChangeUncontrolled = (payload) => {console.log(payload)}
+
+   /*» EFFECT'S  */
+   useEffect(() => { handleListEmpresa() }, [])
 
    /*» DEPENDENCY'S */
    const optForm = {
       initialValues: {
          fecIni: '',
          fecFin: '',
-         distrito: '',
+         dependencia: '',
          tipoOperativo: '',
          sexo: '',
          modalidad: ''
@@ -101,7 +104,7 @@ export default function OperativoGridRpt({handleCurrentNav}) {
       <>
          <DashboardCharts>
             <DashboardFilter>
-               <ButtonGroup color='inherit' variant='contained' style={{marginBottom: 20}} >
+               <ButtonGroup color='inherit' variant='contained' style={{marginBottom: 20, alignSelf: 'center'}} >
                   <Button 
                      startIcon={<SkipPrevious fontSize='large' />} 
                      onClick={() => handleCurrentNav(null)} 
@@ -139,7 +142,7 @@ export default function OperativoGridRpt({handleCurrentNav}) {
                                           type='date' 
                                           name='fecFin' 
                                           size={13} 
-                                          label='Fecha Inicio' 
+                                          label='Fecha Fin' 
                                        />
                                     </MyFormGroup>
 
@@ -167,8 +170,8 @@ export default function OperativoGridRpt({handleCurrentNav}) {
 
                                     <MyFormGroup>
                                        <MyAutocomplete 
-                                          name='distrito'
-                                          label='Distrito'
+                                          name='dependencia'
+                                          label='¿Dónde se realizó el Operativo?'
                                           width={32}
                                           opt={distritoDb}
                                           handleChangeUncontrolled={handleChangeUncontrolled}

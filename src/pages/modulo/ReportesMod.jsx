@@ -5,7 +5,7 @@ import useAuth from 'hooks/useAuth'
 import SimpleCard from 'components/SimpleCard'
 import Menu from 'components/Menu'
 
-import { modulo } from 'constants/component'
+import { modulo } from 'constants/components'
 
 const { REPORTES } = modulo
 

@@ -21,7 +21,7 @@ import { makeStyles } from '@material-ui/styles'
 import useProduccion from 'hooks/useProduccion'
 import useAuth from 'hooks/useAuth'
 
-import { subModulo } from 'constants/component'
+import { subModulo } from 'constants/components'
 
 const { REGISTRAR_PRODUCCION } = subModulo
 
@@ -30,7 +30,7 @@ const useStyle = makeStyles({
       display: 'inline-block',
    },
    grid: {
-      width: '22rem',
+      width: 500,
       padding: 10
    }
 })

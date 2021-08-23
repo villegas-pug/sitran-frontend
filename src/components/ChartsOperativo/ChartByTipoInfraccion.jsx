@@ -42,16 +42,16 @@ export default function ChartByTipoInfraccion({title, data}) {
             >
                <CartesianGrid stroke='#ccc' strokeDasharray='1 1' />
                <Tooltip
-                  labelStyle={{fontSize: 9, fontWeight: 1000}} 
-                  contentStyle={{fontSize: 8}}
+                  labelStyle={{fontSize: 12, fontWeight: 1000}} 
+                  contentStyle={{fontSize: 12}}
                   formatter={(value) => value.toLocaleString('es-PE') } 
                />
                <YAxis 
                   type='category' 
                   dataKey='tipoInfraccion' 
                   scale='band'
-                  fontSize={7}
-                  width={400}
+                  fontSize={10}
+                  width={600}
                   tickLine={false}
                   axisLine={false}
                   fontWeight={1000}
@@ -78,7 +78,7 @@ export default function ChartByTipoInfraccion({title, data}) {
                   label={{
                      position: 'top', 
                      fill: '#333',
-                     fontSize: 9,
+                     fontSize: 14,
                      fontWeight: 1000,
                      formatter: (value) => value.toLocaleString('es-PE')
                   }} 

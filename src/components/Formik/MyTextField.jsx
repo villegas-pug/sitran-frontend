@@ -9,8 +9,8 @@ export default function MyTextField({ type, size, label, focused, ...rest }) {
 
    return (
       <TextField
-         {...rest}
          {...fieldProps}
+         {...rest}
          type={type}
          color='primary'
          variant='outlined'

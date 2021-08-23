@@ -46,24 +46,24 @@ export default function ChartByQuantity({title, data}) {
                   dataKey='monthOpe' 
                   tickLine={false}
                   axisLine={false}
-                  fontSize={7}
+                  fontSize={12}
                />
                <YAxis 
                   tickLine={false}
                   axisLine={false}
                   tickFormatter={(value) => value.toLocaleString('es-PE') }
                   tickCount={12}
-                  fontSize={7}
+                  fontSize={12}
                />
                <Tooltip
-                  labelStyle={{fontSize: 9, fontWeight: 1000}} 
-                  contentStyle={{fontSize: 8}}
+                  labelStyle={{fontSize: 12, fontWeight: 1000}} 
+                  contentStyle={{fontSize: 12}}
                   formatter={(value) => value.toLocaleString('es-PE')}
                />
                <Legend 
                   iconType='star' 
-                  iconSize={8}
-                  wrapperStyle={{fontSize: 8}}
+                  iconSize={14}
+                  wrapperStyle={{fontSize: 12}}
                />
                <Line type='monotone' dataKey='2019' line stroke='#2BC2D5' />
                <Line type='monotone' dataKey='2020' line stroke='#0680D7' />

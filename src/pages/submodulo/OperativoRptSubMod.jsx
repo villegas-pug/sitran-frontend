@@ -1,4 +1,4 @@
-import React, {useState, useMemo} from 'react'
+import React, {useState, useMemo, useEffect} from 'react'
 import { 
    GridOn,
    MultilineChart
@@ -16,6 +16,8 @@ import styled from 'styled-components'
 import OperativoChartRpt from 'components/NavOperativoRptSubMod/OperativoChartRpt'
 import OperativoGridRpt from 'components/NavOperativoRptSubMod/OperativoGridRpt'
 
+import useDistrito from 'hooks/useDistrito'
+
 const Nav = styled.nav`
    height: 85%;
    display: flex;
@@ -27,6 +29,12 @@ export default function DashboardOperativoSubMod() {
 
    /*» HOOK'S */
    const [currentNavigation, setCurrentNavigation] = useState(null)
+
+   /*» CUSTOM-HOOK'S  */
+   const { handleListDistrito } = useDistrito()
+
+   /*» EFFECT'S  */
+   useEffect(() => { handleListDistrito() }, [])
 
    /*» DEPENDENCY'S  */
    const typeNavigation = useMemo(() => ([

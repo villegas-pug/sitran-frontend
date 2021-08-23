@@ -42,17 +42,17 @@ export default function ChartByTipoOpe({title, data}) {
             >
                <CartesianGrid stroke='#ccc' strokeDasharray='1 1' />
                <Tooltip
-                  labelStyle={{fontSize: 9, fontWeight: 1000}} 
-                  contentStyle={{fontSize: 8}}
+                  labelStyle={{fontSize: 12, fontWeight: 1000}} 
+                  contentStyle={{fontSize: 12}}
                   formatter={(value) => value.toLocaleString('es-PE') } 
                />
                <YAxis 
                   type='category' 
                   dataKey='tipoOperativo' 
                   scale='band'
-                  fontSize={7}
+                  fontSize={11}
                   fontWeight={1000}
-                  width={500}
+                  width={600}
                   tickLine={false}
                   axisLine={false}
                   mirror
@@ -78,7 +78,7 @@ export default function ChartByTipoOpe({title, data}) {
                   label={{
                      position: 'top', 
                      fill: '#333',
-                     fontSize: 9,
+                     fontSize: 14,
                      fontWeight: 1000,
                      formatter: (value) => value.toLocaleString('es-PE')
                   }} 

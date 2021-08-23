@@ -11,7 +11,7 @@ export const rootTheme = createMuiTheme({
    },
    typography: {
       fontFamily: 'Ubuntu Condensed, sans-serif',
-      fontSize: 12,
+      fontSize: 14,
       h1: {
          fontWeight: 1000,
          fontSize: 20
@@ -29,18 +29,18 @@ export const rootTheme = createMuiTheme({
          fontSize: 14
       },
       h5:{
-         fontWeight: 1000,
+         fontWeight: 500,
          fontSize: 12
       },
       h6:{
          fontWeight: 500,
-         fontSize: 12
+         fontSize: 10
       },
    },
    overrides: {
       MuiTextField: {
          root: {
-            fontSize: 12
+            fontSize: 14
          }
       },
       MuiTabs:{

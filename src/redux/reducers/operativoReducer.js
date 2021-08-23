@@ -37,7 +37,10 @@ import {
    RESET_OPE_BY_FILTER_TO_EXCEL,
    LIST_OPE_PIVOTED_MODALIDAD_LOADING,
    LIST_OPE_PIVOTED_MODALIDAD_SUCCESS,
-   LIST_OPE_PIVOTED_MODALIDAD_ERROR
+   LIST_OPE_PIVOTED_MODALIDAD_ERROR,
+   LIST_OPE_JZ_SUCCESS,
+   LIST_OPE_JZ_LOADING,
+   LIST_OPE_JZ_ERROR,
 } from 'redux/types/operativoType'
 
 const initialValues = {
@@ -51,7 +54,7 @@ const initialValues = {
       modalidadOperativo: '',
       numeroInforme: '',
       entidadSolicitaOperativo: '',
-      distrito: '',
+      dependencia: '',
       nombres: '',
       tipoDocumento: '',
       numeroDocumento: '',
@@ -68,6 +71,11 @@ const initialValues = {
       file: null
    },
    pivotedOpeAnual:{
+      loading: false,
+      data: [],
+      error: null
+   },
+   operativoJZ:{
       loading: false,
       data: [],
       error: null
@@ -162,7 +170,6 @@ export default function operativoReducer(state = initialValues, { type, payload 
       return { ...state, loading: false, data: payload, error: null }
    case UPDATE_OPE_NRO_INFO_ERROR:
       return { ...state, loading: false, data: [], error: payload }
-      
    case LIST_OPE_PIVOTED_LOADING:
       return { ...state, pivotedOpe: { loading: true, data: [], error: null } }
    case LIST_OPE_PIVOTED_SUCCESS:
@@ -190,11 +197,17 @@ export default function operativoReducer(state = initialValues, { type, payload 
    case LIST_OPE_BY_FILTER_TO_EXCEL_LOADING:
       return { ...state, opeByCustomFilterToExcel: { loading: true, data: [], error: null } }
    case LIST_OPE_BY_FILTER_TO_EXCEL_SUCCESS:
-      return { ...state, opeByCustomFilterToExcel: { loading: false, data: payload, error: null } }
+      return { ...state, opeByCustomFilterToExcel: { loading: false, data: [], error: null } }
    case LIST_OPE_BY_FILTER_TO_EXCEL_ERROR:
       return { ...state, opeByCustomFilterToExcel: { loading: false, data: [], error: payload } }
    case RESET_OPE_BY_FILTER_TO_EXCEL:
       return { ...state, opeByCustomFilterToExcel: { loading: false, data: [], error: null } }
+   case LIST_OPE_JZ_LOADING:
+      return { ...state, operativoJZ: { loading: true, data: [], error: null } }
+   case LIST_OPE_JZ_SUCCESS:
+      return { ...state, operativoJZ: { loading: false, data: payload, error: null } }
+   case LIST_OPE_JZ_ERROR:
+      return { ...state, operativoJZ: { loading: false, data: [], error: payload } }
    default:
       return state
    }

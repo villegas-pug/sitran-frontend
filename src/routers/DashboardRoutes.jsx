@@ -1,17 +1,17 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
-import { components } from 'config/routes'
+import { components } from 'config/components'
 import useAuth from 'hooks/useAuth'
 
 export default function DashboardRouters(){
 
    /*» CUSTOM HOOK'S  */
-   const { procedimientoAuthenticated } = useAuth()
+   const { redirectComponentsAuth } = useAuth()
 
    return (
       <>
          {
-            procedimientoAuthenticated?.map(({ idProcedimiento, nombre, rutaPrincipal }) => (
+            redirectComponentsAuth?.map(({ idProcedimiento, nombre, rutaPrincipal }) => (
                <Route 
                   key={idProcedimiento} 
                   path={rutaPrincipal}

@@ -1,7 +1,6 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState } from 'react'
 import {
    FormControl,
-   FormLabel,
    RadioGroup,
    Radio,
    FormControlLabel,
@@ -17,7 +16,7 @@ import MyButton from 'components/MuiButton'
 
 import useStages from 'hooks/useStages'
 import SecondStageOpt02 from './SecondStageOpt02'
-import SecondStageOpt01 from './SecondStageOpt01'
+import useOperativo from 'hooks/useOperativo'
 
 const Body = styled.div`
    display: flex;
@@ -30,32 +29,51 @@ const Footer = styled.div`
    display: flex;
    justify-content: space-around;
 `
+
+const SUBSTAGE_DEFAULT = 'Stage principal'
+const SUBSTAGE_NO_REGISTRA_INTERVENIDOS = 'Operativo no registra intervenidos.'
+const SUBSTAGE_A_PARTIR_HOJA_EXCEL = 'A partir de una hoja excel.'
+
 export default function SecondStage() {
 
    /*» HOOK'S */
    const { handleResetStages, handlePrevStage } = useStages()
    const [tipoRegistroSelected, setTipoRegistroSelected] = useState('')
-   const [componentToRender, setComponentToRender] = useState(0)
+   const [currentSubStage, setCurrentSubStage] = useState(SUBSTAGE_DEFAULT)
+
+   /*» CUSTOM-HOOK'S  */
+   const { handleSaveOperativo } = useOperativo()
 
    /*» HANDLER'S  */
    const handleOnChangeRadio = ({ target: { value } }) => { setTipoRegistroSelected(value) }
-
-   const handleRender = () => {
-      setComponentToRender(parseInt(tipoRegistroSelected))
+   const handleRenderOrSave = () => {
+      if (tipoRegistroSelected === SUBSTAGE_NO_REGISTRA_INTERVENIDOS) handleSaveOperativo()
+      else setCurrentSubStage(tipoRegistroSelected)
    }
 
    /*» COMPONENT'S ENVIROMENT  */
-   const DefaultComponent = useMemo(() => (
+   const renderDefaultComponent = () => (
       <Flash>
          <Body>
             <FormControl>
-               <FormLabel>
-                  <Typography variant="h6" color="primary">» TIPO DE REGISTRO</Typography>
-               </FormLabel>
+               <Typography gutterBottom variant='h4' color='primary'>TIPO DE REGISTRO</Typography>
                <Divider />
-               <RadioGroup name='tipoRegistro' onChange={handleOnChangeRadio} value={tipoRegistroSelected}>
-                  <FormControlLabel value='1' label='Manual' control={<Radio color='default' />} disabled />
-                  <FormControlLabel value='2' label='Masivo desde una hoja excel' control={<Radio color='default' />} />
+
+               <RadioGroup 
+                  name='tipoRegistro' 
+                  onChange={handleOnChangeRadio} 
+                  value={tipoRegistroSelected}
+               >
+                  <FormControlLabel 
+                     value={SUBSTAGE_NO_REGISTRA_INTERVENIDOS}
+                     label={SUBSTAGE_NO_REGISTRA_INTERVENIDOS}
+                     control={<Radio color='default' />} 
+                  />
+                  <FormControlLabel 
+                     value={SUBSTAGE_A_PARTIR_HOJA_EXCEL}
+                     label={SUBSTAGE_A_PARTIR_HOJA_EXCEL}
+                     control={<Radio color='default' />} 
+                  />
                </RadioGroup>
                <FormHelperText>Seleccione para continuar...</FormHelperText>
             </FormControl>
@@ -81,21 +99,20 @@ export default function SecondStage() {
                variant='contained'
                endIcon={<NavigateNext />}
                disabled={!tipoRegistroSelected}
-               onClick={handleRender}
+               onClick={handleRenderOrSave}
             >
-               SIGUIENTE
+               {
+                  tipoRegistroSelected === SUBSTAGE_NO_REGISTRA_INTERVENIDOS  ? 'GUARDAR' : 'SIGUIENTE'
+               }
             </Button>
          </Footer>
       </Flash >
-   ), [tipoRegistroSelected])
-
-
-
+   )
+      
    return (
       <>
-         {componentToRender === 0 && DefaultComponent}
-         {componentToRender === 1 && <SecondStageOpt01 />}
-         {componentToRender === 2 && <SecondStageOpt02 />}
+         {currentSubStage === SUBSTAGE_DEFAULT && renderDefaultComponent()}
+         {currentSubStage === SUBSTAGE_A_PARTIR_HOJA_EXCEL && <SecondStageOpt02 />}
       </>
    )
 }

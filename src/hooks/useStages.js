@@ -33,9 +33,7 @@ export default function useStages(subModName) {/*» SUB-MODULE... */
 
    /*» HANDLER'S  */
    const handleNextStage = () => { dispatch(nextStageNuevoOperativo()) }
-
    const handlePrevStage = () => { dispatch(prevStageNuevoOperativo()) }
-
    const handleResetStages = () => {
       dispatch(resetStagesNuevoOperativo())
       dispatch(handleInputsReset())

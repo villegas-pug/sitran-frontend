@@ -44,7 +44,7 @@ export default function ChartBySexo({title, data}) {
                   cx='50%'
                   cy='50%'
                   label={({percent, value, name}) => (`${name}: ${value.toLocaleString('es-PE')} | ${(percent * 100).toFixed(0)}%`)}
-                  outerRadius={50}
+                  outerRadius={30}
                   dataKey ='totalIntervenidos'
                   isAnimationActive={false}
                >

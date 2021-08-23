@@ -18,15 +18,19 @@ import {
    CssBaseline, 
    Typography,
    Box,
+   Grid,
    Tabs,
    Tab
 } from '@material-ui/core'
 import {
-   AccountCircle,
+   Person,
    ExitToApp,
    Menu as MenuIcon,
    ChevronLeft,
    ChevronRight,
+   Business,
+   Work,
+   LocationCity
 } from '@material-ui/icons'
 import { Scrollbars } from 'react-custom-scrollbars'
 import Fade from 'react-reveal/Fade'
@@ -40,7 +44,7 @@ import ModalLoader from 'components/Styled/ModalLoader'
 
 import { Icons } from 'helpers/icons'
 import { APP_BAR, SIDE_BAR } from 'constants/layout'
-import { modulo } from 'constants/component'
+import { modulo } from 'constants/components'
 import useAuth from 'hooks/useAuth'
 
 const drawerWidth = 150
@@ -110,6 +114,9 @@ const useStyles = makeStyles((theme) => ({
    },
    tabs: {
       width: 400
+   },
+   headerCard: {
+      width: '11rem',
    }
 }))
 export default function MyDrawer({ children, ...rest }) {
@@ -125,7 +132,12 @@ export default function MyDrawer({ children, ...rest }) {
    const { 
       isAuthenticated, 
       modAuthenticated,
-      userCredentials: { nombres: usernameAuth, cargo: cargoAuth, area: areaAuth, regimenLaboral: regimenAuth },
+      userCredentials: { 
+         nombres: usernameAuth, 
+         cargo: cargoAuth, 
+         area: areaAuth, 
+         dependencia: { nombre: dependenciaAuth } = {}
+      },
       handleLogout
    } = useAuth()
    const classes = useStyles(rest)
@@ -190,17 +202,42 @@ export default function MyDrawer({ children, ...rest }) {
                            ))
                      }
                   </Tabs>
+                  
+                  <Box display='flex' width='60%' marginLeft='auto' justifyContent='space-between' alignItems='center'>
+                     
+                     <Grid container className={classes.headerCard}>
+                        <Grid item xs={2} alignItems='stretch'>
+                           <Business fontSize='small' style={{marginTop: 5}} />
+                        </Grid>
+                        <Grid item xs={10}>
+                           <Typography variant='h4' color='initial'>
+                              UNIDAD ORGÁNICA <Typography variant='h5' color='initial'>{areaAuth}</Typography>
+                           </Typography>
+                        </Grid>
+                     </Grid>
 
-                  <Box display='flex' width='50%' marginLeft='auto' justifyContent='space-between' alignItems='center'>
-                     <Typography variant='h5' color='initial'>
-                     AREA <Typography variant='h6' color='initial'>{areaAuth}</Typography>
-                     </Typography>
-                     <Typography variant='h5' color='initial'>
-                     CARGO <Typography variant='h6' color='initial'>{cargoAuth}</Typography>
-                     </Typography>
-                     <Typography variant='h5' color='initial'>
-                     REGIMEN <Typography variant='h6' color='initial'>{regimenAuth}</Typography>
-                     </Typography>
+                     <Grid container className={classes.headerCard}>
+                        <Grid item xs={2} alignItems='stretch'>
+                           <Work fontSize='small' style={{marginTop: 5}} />
+                        </Grid>
+                        <Grid item xs={10}>
+                           <Typography variant='h4' color='initial'>
+                           CARGO <Typography variant='h5' color='initial'>{cargoAuth}</Typography>
+                           </Typography>
+                        </Grid>
+                     </Grid>
+
+                     <Grid container className={classes.headerCard}>
+                        <Grid item xs={2} alignItems='stretch'>
+                           <LocationCity fontSize='small' style={{marginTop: 5}} />
+                        </Grid>
+                        <Grid item xs={10}>
+                           <Typography variant='h4' color='initial'>
+                           DEPENDENCIA <Typography variant='h5' color='initial'>{dependenciaAuth}</Typography>
+                           </Typography>
+                        </Grid>
+                     </Grid>
+
                      <Box>
                         <Button
                            id='user-account'
@@ -208,9 +245,9 @@ export default function MyDrawer({ children, ...rest }) {
                            aria-controls='menu-account'
                            aria-haspopup={true}
                            onClick={handleOpenMenu}
-                           startIcon={ <AccountCircle fontSize='large' /> }
+                           startIcon={ <Person fontSize='large' /> }
                         >
-                           <Typography variant='h5' color='initial'>{usernameAuth}</Typography>
+                           <Typography variant='h4' color='initial'>{usernameAuth}</Typography>
                         </Button>
 
                         <Menu
@@ -265,7 +302,7 @@ export default function MyDrawer({ children, ...rest }) {
                                  <Tooltip arrow placement='right-end' title={<Typography variant='h6' color='initial'>{informacion}</Typography>}>
                                     <ListItemIcon>{Icons[icono]}</ListItemIcon>
                                  </Tooltip>
-                                 <ListItemText><DrawerTitle title={nombre} size={.6} /></ListItemText>
+                                 <ListItemText><DrawerTitle title={nombre} size={.8} /></ListItemText>
                               </ListItem>
                            </>
                         ))

@@ -50,3 +50,7 @@ export const RESET_OPE_BY_FILTER_TO_EXCEL = '[Operativo] Resetear lista de filtr
 export const UPDATE_OPE_NRO_INFO_LOADING = '[Operativo] Update Nro.Info loading'
 export const UPDATE_OPE_NRO_INFO_SUCCESS = '[Operativo] Update Nro.Info success'
 export const UPDATE_OPE_NRO_INFO_ERROR = '[Operativo] Update Nro.Info error'
+
+export const LIST_OPE_JZ_LOADING = '[Operativo] List operativo-JZ loading'
+export const LIST_OPE_JZ_SUCCESS = '[Operativo] List operativo-JZ success'
+export const LIST_OPE_JZ_ERROR = '[Operativo] List operativo-JZ error'

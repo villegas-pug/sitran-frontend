@@ -63,14 +63,19 @@ export default function ChartByOpeAnual({ title, data }) {
                <YAxis 
                   axisLine={false} 
                   tickLine={false} 
-                  /* tickCount='auto'  */
                />
                <Tooltip 
-                  labelStyle={{fontSize: 9, fontWeight: 1000}} 
-                  contentStyle={{fontSize: 8}}
+                  labelStyle={{fontSize: 12, fontWeight: 1000}} 
+                  contentStyle={{fontSize: 12}}
                   formatter={(value) => value.toLocaleString('es-PE')}
                />
-               <Bar name='Intervenidos' dataKey='totalOpe' fill='#004795' shape={<TriangleBar />} />
+               <Bar 
+                  name='Intervenidos' 
+                  dataKey='totalOpe' 
+                  fill='#004795'
+                  label={{position: 'center', fontSize: 14, fill:'#fff' }}
+                  minPointSize={5}
+               />
             </BarChart>
          </ResponsiveContainer>
       </Container>

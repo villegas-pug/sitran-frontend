@@ -41,10 +41,12 @@ export default function BuscarInterpolSubMod(props) {
 
    /*» CUSTOM HOOK'S ... */
    const { interpolLoading, interpolDb, handleFindByApprox } = useInterpol()
-   const { currentScreen, breakpoints, unsuscribeScreenResizeListener } = useBreakpoints() 
+   const { currentScreen, screens, unsuscribeScreenResizeListener } = useBreakpoints() 
 
    /*» EFFECT'S ... */
    useEffect(() => () => { unsuscribeScreenResizeListener() }, [])
+   useEffect(() => { console.log({currentScreen}) }, [currentScreen])
+   useEffect(() => { console.log({screens}) }, [])
 
    /*» HANDLER'S ...  */
    const handleActionDetalle = (rowData) => {
@@ -131,10 +133,7 @@ export default function BuscarInterpolSubMod(props) {
          nombres: Yup.string().required('¡Campo requerido!'),
          /* apellidos: Yup.string().required('¡Campo requerido!'), */
       }),
-      onSubmit: (values) => { 
-         handleFindByApprox(values) 
-         console.log(values)
-      },
+      onSubmit: (values) => { handleFindByApprox(values) },
    }
 
    return (
@@ -148,7 +147,7 @@ export default function BuscarInterpolSubMod(props) {
                         <Form>
                            {/* <AppTitle name='» BUSCAR INTERPOL' align='left' size={1} color='#777' /> */}
                            <Paper elevation={10}>
-                              <Box display='flex' justifyContent='space-between' p={2} height={75} >
+                              <Box display='flex' justifyContent='space-between' p={2} height={85} >
                                  <MyTextField name='nombres' value={nombres} label='Nombres' size={20} />
                                  <MyTextField name='apellidos' value={apellidos} label='Apellidos' size={20} />
                                  <MyTextField name='cedula' value={cedula} label='N° Cédula' size={10} />
@@ -169,11 +168,7 @@ export default function BuscarInterpolSubMod(props) {
                      dataTable={dataTable}
                      configTable={configTable}
                      pageSize={ 
-                        currentScreen === breakpoints.desktop 
-                           ? 6 
-                           : currentScreen === breakpoints.desktopLarge
-                              ? 11 
-                              : 6 
+                        currentScreen === screens.desktopWide ? 12 : 6
                      }
                   />
                </Box>

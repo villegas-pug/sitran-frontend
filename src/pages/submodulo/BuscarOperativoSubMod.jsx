@@ -30,7 +30,6 @@ import MyTextField from 'components/Formik/MyTextField'
 import Table from 'components/Table'
 import FormGroup from 'components/Styled/FormGroup'
 import SpeedDials from 'components/SpeedDial'
-import OperativoToExcel from 'components/OperativoToExcel'
 
 import useOperativo from 'hooks/useOperativo'
 import useBreakpoints from 'hooks/useBreakpoints'
@@ -38,13 +37,13 @@ import SimpleModal from 'components/SimpleModal'
 
 import Noty from 'helpers/noty'
 import { WARNING } from 'constants/levelLog'
+import ModalLoader from 'components/Styled/ModalLoader'
 
 export default function BuscarOperativoSubMod() {
 
    /*» HOOK'S...*/
    const [openModal, setOpenModal] = useState(true)
    const [checked, setChecked] = useState(false)
-   /* const [initDownload, setInitDownload] = useState(false) */
 
    const rIdOpe = useRef(0)
    const rSearch = useRef()
@@ -55,6 +54,8 @@ export default function BuscarOperativoSubMod() {
    const { 
       operativoLoading,
       operativoDb,
+      opeByCustomFilterToExcelLoading,
+
       handleFindByApprox, 
       handleFindAllOperativo,
       handleUpdateOpeById,
@@ -63,7 +64,7 @@ export default function BuscarOperativoSubMod() {
 
    const { 
       currentScreen,
-      breakpoints,
+      screens,
       unsuscribeScreenResizeListener 
    } = useBreakpoints()
    
@@ -106,7 +107,6 @@ export default function BuscarOperativoSubMod() {
                   arrow
                >
                   <IconButton
-                     /* onClick={() => {handleDownload()}} */
                      onClick={() => {handleFindOpeByFilterToExcel({idOpe: idOperativo})}}
                   >
                      <GetApp/>
@@ -137,7 +137,7 @@ export default function BuscarOperativoSubMod() {
             render: ({idOperativo}) => idOperativo.toString().padStart(7, '0')
          },
          { title: 'Nro Informe', field: 'numeroInforme', width: 20, type: 'number' },
-         { title: 'Distrito', field: 'distrito', width: 80, render: ({distrito: {nombre}}) => nombre },
+         { title: 'Dependencia', field: 'dependencia', width: 80, render: ({dependencia: {nombre}}) => nombre },
          { 
             title: 'Fecha Operativo', 
             field: 'fechaOperativo', 
@@ -246,9 +246,9 @@ export default function BuscarOperativoSubMod() {
                   dataTable={dataTable}
                   configTable={configTable}
                   pageSize={ 
-                     currentScreen === breakpoints.desktop 
+                     currentScreen === screens.desktop 
                         ? 7 
-                        : currentScreen === breakpoints.desktopLarge
+                        : currentScreen === screens.desktopLarge
                            ? 13 
                            : 7 
                   }
@@ -292,9 +292,9 @@ export default function BuscarOperativoSubMod() {
             )
          }
 
-         {/*» FILE DOWNLOAD */}
+         {/*» Modal-Loader  */}
          {
-            <OperativoToExcel />
+            opeByCustomFilterToExcelLoading && <ModalLoader />
          }
       </>
    )

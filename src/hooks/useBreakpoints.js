@@ -1,43 +1,23 @@
-import { useState, useEffect } from 'react'
-import { breakpoints as breakpointsDb } from 'constants/breakpoints'
+import { useState, useRef, useEffect } from 'react'
+import { breakpoints, screens as screenDb } from 'constants/breakpoints'
+
+const findScreen = (outerWidth) => breakpoints.find(({ measure }) => outerWidth >= measure)?.name
 
 export default function useBreakpoints() {
 
-   const [breakpoints, setBreakpoints] = useState({})
-   const [currentScreen, setCurrentScreen] = useState('')
+   const screens = useRef(screenDb)
+   const [currentScreen, setCurrentScreen] = useState(findScreen(window.screen.width))
 
    /*» EFFECT'S  */
-   useEffect(() => {
-      findScreenByBreakPoint({
-         target: { outerWidth: window.screen.width}
-      })
-   }, [])
+   useEffect(() => { window.addEventListener('resize', findScreenByBreakPoint)}, [])
 
-   useEffect(() => {
-      window.addEventListener('resize', findScreenByBreakPoint)
-   }, [])
-
-   useEffect(() => {
-      setBreakpoints(
-         breakpointsDb.reduce((map, { name }) => (map[name] = name, map), {})
-      )
-   }, [])
-
-   /*» PRIVATE - HANDLER'S   */
-   const findScreenByBreakPoint = ({ target: { outerWidth } }) => {
-      setCurrentScreen(
-         breakpointsDb.find(({ measure }) => outerWidth >= measure)?.name
-      )
-   }
-
-   /*» HOF - HANDLER'S   */
-   const unsuscribeScreenResizeListener = () => {
-      window.removeEventListener('resize', findScreenByBreakPoint)
-   }
+   /*» HANDLER'S   */
+   const unsuscribeScreenResizeListener = () => { window.removeEventListener('resize', findScreenByBreakPoint)}
+   const findScreenByBreakPoint = ({ target: { outerWidth } }) => { setCurrentScreen(findScreen(outerWidth)) }
 
    return {
       currentScreen,
-      breakpoints,
+      screens: screens.current,
 
       unsuscribeScreenResizeListener
    }

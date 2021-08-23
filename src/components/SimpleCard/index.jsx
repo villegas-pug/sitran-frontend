@@ -18,7 +18,7 @@ import {Icons} from 'helpers/icons'
 
 const useStyles = makeStyles({
    root: {
-      width: 250,
+      width: 300,
    },
    media: {
       margin: 'auto',
@@ -53,7 +53,7 @@ export default function SimpleCard({ nombre, descripcion, icono, rutaPrincipal }
                <Typography variant='h4' color='textPrimary'>
                   {nombre.toUpperCase()}
                </Typography>
-               <Typography variant='h6' color='textSecondary' component='p' align='justify'>
+               <Typography variant='h5' color='textSecondary' component='p' align='justify'>
                   {descripcion}
                </Typography>
             </CardContent>

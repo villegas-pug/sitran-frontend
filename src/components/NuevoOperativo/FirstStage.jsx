@@ -3,7 +3,7 @@ import {
    Paper,
    Box,
    Divider,
-   Button, Typography,
+   Button, Typography, TextField,
 } from '@material-ui/core'
 import { NavigateNext, Cancel } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
@@ -16,14 +16,16 @@ import FormGroup from 'components/Styled/FormGroup'
 import MyTextField from 'components/Formik/MyTextField'
 import MyAutocomplete from 'components/Formik/Autocomplete'
 import MyButton from 'components/MuiButton'
+import MySelect from 'components/Formik/MySelect'
+
 
 import useEmpresa from 'hooks/useEmpresa'
 import useOperativo from 'hooks/useOperativo'
 import useDistrito from 'hooks/useDistrito'
 import useStages from 'hooks/useStages'
-import MySelect from 'components/Formik/MySelect'
 import useBreakpoints from 'hooks/useBreakpoints'
 import { useEffect } from 'react'
+import useAuth from 'hooks/useAuth'
 
 const Container = styled.div`
    display: flex;
@@ -38,28 +40,35 @@ const optModalidadOperativo = [
 
 const useStyles = makeStyles({
    paper: {
-      width: ({ currentScreen, breakpoints }) => currentScreen == breakpoints.desktop ? 700 : 600,
+      width: ({ currentScreen, screens }) => currentScreen == screens.desktop ? 700 : 600,
       padding: '12px 25px',
    },
    box: {
-      flexWrap: ({ currentScreen, breakpoints }) => currentScreen == breakpoints.desktop && 'wrap',
-      flexDirection: ({ currentScreen, breakpoints }) => currentScreen == breakpoints.desktop && 'row',
-      justifyContent: ({ currentScreen, breakpoints }) => currentScreen == breakpoints.desktop && 'space-between'
+      flexWrap: ({ currentScreen, screens }) => currentScreen == screens.desktop && 'wrap',
+      flexDirection: ({ currentScreen, screens }) => currentScreen == screens.desktop && 'row',
+      justifyContent: ({ currentScreen, screens }) => currentScreen == screens.desktop && 'space-between'
+   },
+   textField: {
+      width: '27rem'
    }
+
 })
 
-export default function FirstStage() {
+const DEPENDENCIA_LIMA = 'LIMA'
 
-   /*» HOOK'S STORE...  */
-   const { entidadSolicitaOpeDb } = useEmpresa()
+export default function FirstStage() {
+   
+   /*» HOOKS  */
+   const { currentScreen, screens, unsuscribeScreenResizeListener } = useBreakpoints()
+   const classes = useStyles({ currentScreen, screens })
+
+   /*» CUSTOM HOOK'S  */
    const { inputValues, handleChangeInputControlled, handleChangeInputUncontrolled, handleInputOnReset } = useOperativo()
    const { distritoDb } = useDistrito()
-
+   const { entidadSolicitaOpeDb } = useEmpresa()
    const { handleNextStage } = useStages('NuevoOperativoSubMod')
+   const { userCredentials: { dependencia: { nombre: dependenciaAuth } } } = useAuth()
 
-   /*» HOOKS  */
-   const { currentScreen, breakpoints, unsuscribeScreenResizeListener } = useBreakpoints()
-   const classes = useStyles({ currentScreen, breakpoints })
 
    /*» EFFECT'S  */
    useEffect(() => () => { unsuscribeScreenResizeListener() }, [])
@@ -69,10 +78,8 @@ export default function FirstStage() {
       initialValues: inputValues,
       validationSchema: Yup.object({
          fechaOperativo: Yup.string().required('¡Requerido!'),
-         distrito: Yup.string().required('¡Requerido!').nullable(),
-         numeroOperativo: Yup.string().required('¡Requerido!'),
+         dependencia: Yup.string().required('¡Requerido!').nullable(),
          modalidadOperativo: Yup.string().required('¡Requerido!'),
-         /* numeroInforme: Yup.string().required('¡Requerido!'), */
          entidadSolicitaOperativo: Yup.string().required('¡Requerido!').nullable(),
       }),
       onSubmit: () => { handleNextStage() }
@@ -91,21 +98,37 @@ export default function FirstStage() {
                            <Typography gutterBottom variant="h4" color='primary'>NUEVO OPERATIVO</Typography>
                            <Divider style={{ marginBottom: 20 }} />
                            <Box display='flex' flexDirection='column' className={classes.box}>
+
                               <FormGroup>
                                  <MyTextField type='date' name='fechaOperativo' size={10} label="Fecha operativo" focused />
                               </FormGroup>
-                              <FormGroup>
-                                 <MyAutocomplete
-                                    name='distrito'
-                                    label='Distrito'
-                                    width={27}
-                                    opt={distritoDb}
-                                    handleChangeUncontrolled={handleChangeInputUncontrolled}
-                                    {...rest} />
-                              </FormGroup>
-                              <FormGroup>
-                                 <MyTextField type='text' name='numeroOperativo' size={12} label="Número operativo" />
-                              </FormGroup>
+
+                              {
+                                 dependenciaAuth === DEPENDENCIA_LIMA
+                                    ? (
+                                       <FormGroup>
+                                          <MyAutocomplete
+                                             name='dependencia'
+                                             label='¿Dónde se realizó el Operativo?'
+                                             width={27}
+                                             opt={distritoDb}
+                                             handleChangeUncontrolled={handleChangeInputUncontrolled}
+                                             {...rest} />
+                                       </FormGroup>
+                                    )
+                                    :(
+                                       <FormGroup>
+                                          <TextField
+                                             label='¿Dónde se realiza el Operativo?'
+                                             value={dependenciaAuth}
+                                             color='primary'
+                                             disabled
+                                             className={classes.textField}
+                                          />
+                                       </FormGroup>
+
+                                    )
+                              }
 
                               <FormGroup>
                                  <MySelect
@@ -117,9 +140,11 @@ export default function FirstStage() {
                                     {...rest}
                                  />
                               </FormGroup>
+
                               <FormGroup>
                                  <MyTextField type='text' name='numeroInforme' size={8} label="Número Informe" />
                               </FormGroup>
+
                               <FormGroup>
                                  <MyAutocomplete
                                     name='entidadSolicitaOperativo'
@@ -130,6 +155,7 @@ export default function FirstStage() {
                                     {...rest} 
                                  />
                               </FormGroup>
+
                            </Box>
                            <Divider style={{ margin: '10px 0' }} />
                            <Box display='flex' justifyContent='space-between'>

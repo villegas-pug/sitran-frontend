@@ -25,7 +25,7 @@ export const listDistrito = () => async (dispatch, getStore) => {
       const { usuario: { token } } = getStore()
       const { data: { levelLog, data, message } } = await api({
          method: 'GET',
-         url: '/microservicio-distrito/findAll',
+         url: '/microservicio-dependencia/findAll',
          headers: {
             [AUTHORIZATION]: token
          }

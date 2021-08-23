@@ -79,7 +79,7 @@ export default function PerfilMod(){
                         <Paper elevation={1} className={classes.paper}>
                            <Typography 
                               gutterBottom
-                              variant='h5' 
+                              variant='h4' 
                               color='primary' 
                            >
                               ACTUALIZAR CREDENCIALES

@@ -27,7 +27,6 @@ import { useEffect } from 'react'
 import useTipoInfraccion from 'hooks/useTipoInfraccion'
 import usePais from 'hooks/usePais'
 
-
 const Container = styled.div`
    display: flex;
    justify-content: center;
@@ -45,7 +44,7 @@ const optConfirm = [
 
 const useStyles = makeStyles({
    paper: {
-      width: ({ screen, breakpoints }) => screen != breakpoints.desktop && 600,
+      width: ({ currentScreen, screens }) => currentScreen != screens.desktop && 600,
       padding: 20
    }
 })
