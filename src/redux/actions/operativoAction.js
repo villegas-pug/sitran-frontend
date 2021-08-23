@@ -54,6 +54,8 @@ import {resetStagesNuevoOperativo} from 'redux/actions/stagesAction'
 
 import { AUTHORIZATION } from 'constants/localStorage'
 
+const MESSAGE_ERROR = '¡Ocurrió un error inesperado, intentelo de nuevo!'
+
 /*» INPUT'S  */
 export const handleInputOnChange = (payload) => ({ type: INPUT_CHANGE, payload })
 export const handleInputsReset = () => ({ type: INPUTS_RESET })
@@ -151,7 +153,7 @@ export const saveOperativo = () => async (dispatch, getStore) => {
       }
    } catch (err) {
       dispatch(saveOperativoError(err))
-      Noty(ERROR, err)
+      Noty(ERROR, MESSAGE_ERROR)
    }
 }
 
@@ -181,7 +183,7 @@ export const toListOperativo = () => async (dispatch, getStore) => {
       }  
    } catch (err) {
       dispatch(toListOperativoError(err))
-      Noty(ERROR, err)
+      Noty(ERROR, MESSAGE_ERROR)
    }
 }
 
