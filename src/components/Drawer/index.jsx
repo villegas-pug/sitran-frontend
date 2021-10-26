@@ -23,7 +23,7 @@ import {
    Tab
 } from '@material-ui/core'
 import {
-   Person,
+   AccountCircle,
    ExitToApp,
    Menu as MenuIcon,
    ChevronLeft,
@@ -116,7 +116,7 @@ const useStyles = makeStyles((theme) => ({
       width: 400
    },
    headerCard: {
-      width: '11rem',
+      width: '12rem',
    }
 }))
 export default function MyDrawer({ children, ...rest }) {
@@ -203,7 +203,7 @@ export default function MyDrawer({ children, ...rest }) {
                      }
                   </Tabs>
                   
-                  <Box display='flex' width='60%' marginLeft='auto' justifyContent='space-between' alignItems='center'>
+                  <Box display='flex' width='65%' marginLeft='auto' justifyContent='space-between' alignItems='center'>
                      
                      <Grid container className={classes.headerCard}>
                         <Grid item xs={2} alignItems='stretch'>
@@ -245,7 +245,7 @@ export default function MyDrawer({ children, ...rest }) {
                            aria-controls='menu-account'
                            aria-haspopup={true}
                            onClick={handleOpenMenu}
-                           startIcon={ <Person fontSize='large' /> }
+                           startIcon={ <AccountCircle fontSize='large' /> }
                         >
                            <Typography variant='h4' color='initial'>{usernameAuth}</Typography>
                         </Button>

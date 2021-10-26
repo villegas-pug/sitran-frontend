@@ -20,7 +20,7 @@ const useStyle = makeStyles({
    }
 }) 
 
-export default function InterpolDetalle({ data }) {
+export default function FichaInterpolDetalle({ data }) {
 
    /*» HOOK'S  */
    const classes = useStyle()
@@ -109,6 +109,6 @@ export default function InterpolDetalle({ data }) {
    )
 }
 
-InterpolDetalle.propTypes = {
+FichaInterpolDetalle.propTypes = {
    data: PropTypes.object.isRequired
 }

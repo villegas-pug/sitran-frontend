@@ -23,8 +23,8 @@ import {
 import Fade from 'react-reveal/Fade'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
-import { format } from 'date-fns'
-import { es } from 'date-fns/locale'
+/* import { format } from 'date-fns'
+import { es } from 'date-fns/locale' */
 
 import MyTextField from 'components/Formik/MyTextField'
 import Table from 'components/Table'
@@ -72,6 +72,9 @@ export default function BuscarOperativoSubMod() {
    /*» EFFECT'S ... */
    useEffect(() => () => { unsuscribeScreenResizeListener() }, [])/*» Clean up... */
    useEffect(() => { !operativoLoading && setOpenModal(false) }, [operativoLoading])
+   useEffect(() => {
+      console.log(currentScreen)
+   }, [currentScreen])
 
    /*» HANDLER'S ...  */
    const handleOnChecked = ({ target: { checked } }) => { setChecked(checked) }
@@ -136,27 +139,36 @@ export default function BuscarOperativoSubMod() {
             width: 5,
             render: ({idOperativo}) => idOperativo.toString().padStart(7, '0')
          },
-         { title: 'Nro Informe', field: 'numeroInforme', width: 20, type: 'number' },
-         { title: 'Dependencia', field: 'dependencia', width: 80, render: ({dependencia: {nombre}}) => nombre },
+         { title: 'N°Informe', field: 'numeroInforme', width: 15, type: 'number' },
          { 
-            title: 'Fecha Operativo', 
-            field: 'fechaOperativo', 
-            type: 'date', 
-            width: 50, 
-            render: ({ fechaOperativo }) => format(new Date(fechaOperativo), 'P', { locale: es }) 
+            title: 'T.Intervenidos', 
+            field: 'detOperativo', 
+            type: 'number', 
+            width: 60,
+            render: ({detOperativo}) => detOperativo.length
          },
-         { title: 'Modalidad', field: 'modalidadOperativo', width: 60},
+         { 
+            title: 'T.Infractores', 
+            field: 'detOperativo', 
+            width: 60,
+            type: 'number', render: ({detOperativo}) => detOperativo?.filter(({infraccion}) => infraccion === 'SI').length
+         },
+         { title: 'Dependencia', field: 'dependencia', width: 70, render: ({dependencia: {nombre}}) => nombre },
+         { 
+            title: 'FecOperativo', 
+            field: 'fechaOperativo', 
+            type: 'date',
+            width: 60, 
+            /* render: ({ fechaOperativo }) => format(new Date(fechaOperativo), 'P', { locale: es })  */
+            render: ({ fechaOperativo }) => 
+               new Intl.DateTimeFormat('es-PE', { dateStyle: 'short', timeZone: 'America/Lima' }).format(Date.parse(fechaOperativo))
+         },
+         { title: 'Modalidad', field: 'modalidadOperativo', width: 40},
          { 
             title: 'Tipo Operativo', 
             field: 'entidadSolicitaOperativo', 
             width: 200,
             render: ({entidadSolicitaOperativo: { descripcion }}) => descripcion
-         },{ 
-            title: 'Fecha Registro', 
-            field: 'fechaRegistro', 
-            type: 'date', 
-            width: 50,
-            render: ({fechaRegistro}) => format(new Date(fechaRegistro), 'P', { locale: es })
          }
       ],
       data: operativoDb
@@ -248,9 +260,9 @@ export default function BuscarOperativoSubMod() {
                   pageSize={ 
                      currentScreen === screens.desktop 
                         ? 7 
-                        : currentScreen === screens.desktopLarge
+                        : currentScreen === screens.desktopWide
                            ? 13 
-                           : 7 
+                           : 7
                   }
                />
             </Fade>

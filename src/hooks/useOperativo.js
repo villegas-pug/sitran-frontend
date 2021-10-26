@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
    handleInputOnChange,
@@ -18,7 +17,6 @@ import {
    resetListOpeByFilterToExcel,
    toListOperativoJZ
 } from 'redux/actions/operativoAction'
-import useAuth from './useAuth'
 
 export default function useOperativo() {
 
@@ -62,10 +60,10 @@ export default function useOperativo() {
          data: opeByCustomFilterToExcelDb
       }
    } = useSelector(store => store.operativo)
-   const { userCredentials: { dependencia } } = useAuth()
-
+   
    /*» EFFECT'S  */
-   useEffect(() => { dispatch(handleInputOnChange({ dependencia })) }, [dependencia])/*» Si, usuario pertenece a JZLima ... */
+   /*» Si, usuario pertenece a JZLima ... */
+   /* useEffect(() => { dispatch(handleInputOnChange({ dependencia })) }, [dependencia]) */
 
    /*» HANDLER'S */
    /*» Input's ... */
@@ -127,7 +125,6 @@ export default function useOperativo() {
       handleFindAllIntervenidosPivoted,
       handleFindTipoInfraccionPivoted,
       handleFindTipoOpePivoted,
-
       handleUpdateOpeById
    }
 }

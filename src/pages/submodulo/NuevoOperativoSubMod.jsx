@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 
 import SteperMui from 'components/StepperMui'
 
@@ -20,13 +20,10 @@ export default function NuevoOperativoSubMod() {
    useEffect(() => { handleListDistrito() }, [])
    useEffect(() => { handleListPais() }, [])
 
-   /*» DEP'S  */
-   const steps = useMemo(() => stages ?? [], [stages])
-
    return (
       <>
          <>
-            <SteperMui activeStep={currentStage} steps={steps} />
+            <SteperMui activeStep={currentStage} steps={stages} />
          </>
          {
             componentByCurrentStage

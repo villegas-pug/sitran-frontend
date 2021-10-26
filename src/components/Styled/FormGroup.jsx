@@ -5,7 +5,7 @@ import styled from 'styled-components'
 const FormGroup = styled.div`
    display: inline-block;
    padding: .5rem;
-   height: 4rem;
+   min-height: 4rem;
 `
 export default function MyFormGroup({ children }) {
    return (

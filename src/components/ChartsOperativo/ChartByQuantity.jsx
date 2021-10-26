@@ -60,10 +60,11 @@ export default function ChartByQuantity({title, data}) {
                   contentStyle={{fontSize: 12}}
                   formatter={(value) => value.toLocaleString('es-PE')}
                />
-               <Legend 
+               <Legend
                   iconType='star' 
                   iconSize={14}
                   wrapperStyle={{fontSize: 12}}
+                  height={1}
                />
                <Line type='monotone' dataKey='2019' line stroke='#2BC2D5' />
                <Line type='monotone' dataKey='2020' line stroke='#0680D7' />

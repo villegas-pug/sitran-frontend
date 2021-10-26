@@ -35,12 +35,11 @@ export default function SimpleCard({ nombre, descripcion, icono, rutaPrincipal }
    const history = useHistory()
 
    /*» HANDLER'S */
-   const handleOnClick = (path) => { history.push(path) }
-
+   const handleRedirect = (path) => { history.push(path) }
 
    return (
       <Card className={classes.root} >
-         <CardActionArea>
+         <CardActionArea onClick={() => handleRedirect(rutaPrincipal)}>
             <CardMedia
                className={classes.media}
                title={nombre}
@@ -63,7 +62,7 @@ export default function SimpleCard({ nombre, descripcion, icono, rutaPrincipal }
                size='small'
                color='primary'
                variant='text'
-               onClick={() => { handleOnClick(rutaPrincipal) }}
+               onClick={() => { handleRedirect(rutaPrincipal) }}
             >
                <ArrowForward color='action' />
             </Button>

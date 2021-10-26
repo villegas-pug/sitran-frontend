@@ -25,11 +25,10 @@ export default function useStages(subModName) {/*» SUB-MODULE... */
          .map(submod => {
             Object.values(submod).map((item) => {
                const resultSubmod = Object.values(item).find(({ submodName }) => submodName === subModName)
-
                if (resultSubmod) setCurrentSubmod(resultSubmod)
             })
          })
-   }, [subModName, stagesDb])
+   }, [stagesDb])
 
    /*» HANDLER'S  */
    const handleNextStage = () => { dispatch(nextStageNuevoOperativo()) }
@@ -39,11 +38,8 @@ export default function useStages(subModName) {/*» SUB-MODULE... */
       dispatch(handleInputsReset())
    }
 
-
    /*» DEPENDENCY'S  */
    const componentByCurrentStage = useMemo(() => stages?.find(({ stage }) => stage === currentStage).component, [currentStage])
-
-
 
    return {
       stages,

@@ -53,6 +53,7 @@ import convertBlob from 'helpers/blob'
 import {resetStagesNuevoOperativo} from 'redux/actions/stagesAction'
 
 import { AUTHORIZATION } from 'constants/localStorage'
+import { currentHttpStatus } from './httpStatusAction'
 
 const MESSAGE_ERROR = '¡Ocurrió un error inesperado, intentelo de nuevo!'
 
@@ -153,7 +154,7 @@ export const saveOperativo = () => async (dispatch, getStore) => {
       }
    } catch (err) {
       dispatch(saveOperativoError(err))
-      Noty(ERROR, MESSAGE_ERROR)
+      dispatch(currentHttpStatus(err.response.status))
    }
 }
 

@@ -2,22 +2,19 @@ import { useSelector, useDispatch } from 'react-redux'
 import { 
    obtenerInterpolApprox, 
    obtenerInterpol, 
-   saveInterpoPdf 
+   saveOnInterpol,
+   saveAllInterpol,
+   getScreenshot
 } from 'redux/actions/interpolAction'
 
-import Noty from 'helpers/noty'
-import { WARNING } from 'constants/levelLog'
+import convertBlob from 'helpers/blob'
 
 export default function useInterpol() {
    /*» STORE ...  */
    const { interpol: { 
-      loading: interpolLoading, 
-      error, 
+      loading: interpolLoadingDb, 
+      error: errorInterpolDb, 
       data: interpolDb,
-      interpolPdf: {
-         loading: interpolPdfLoading,
-         data: interpolPdfDb
-      }
    } } = useSelector(store => store)
    const dispatch = useDispatch()
 
@@ -27,21 +24,30 @@ export default function useInterpol() {
    /*» HANDLER'S  */
    const handleFindByApprox = (payload) => { dispatch(obtenerInterpolApprox(payload)) }
    const handleFindAll = () => { dispatch(obtenerInterpol()) }
-   const handleSaveFile = (file) => { 
-      if (interpolPdfLoading) Noty(WARNING, '¡Hay otro proceso en curso!')
-      else dispatch(saveInterpoPdf(file)) 
+   const handleSaveOneInterpol = (values, files) => {
+      const formData = new FormData()
+      formData.append('interpol', convertBlob(values))
+      formData.append('file', files[0])
+      dispatch(saveOnInterpol(formData))
    }
 
-   return {
-      interpolLoading,
-      interpolDb,
-      interpolPdfLoading,
-      interpolPdfDb,
+   const handleSaveAllInterpol = (files) => {
+      const formData = new FormData()
+      formData.append('file', files[0])
+      dispatch(saveAllInterpol(formData))
+   }
 
-      error,
+   const handleDownloadScreenshot = (idInterpol) => {dispatch(getScreenshot(idInterpol))}
+
+   return {
+      interpolLoadingDb,
+      interpolDb,
+      errorInterpolDb,
 
       handleFindAll,
       handleFindByApprox,
-      handleSaveFile
+      handleSaveOneInterpol,
+      handleSaveAllInterpol,
+      handleDownloadScreenshot,
    }
 }

@@ -10,16 +10,19 @@ const LineamientoMod = lazy(() => import('pages/modulo/LineamientosMod'))
 const ProcesosMod = lazy(() => import('pages/modulo/ProcesosMod'))
 
 /*» SUBMOD'S  */
-const BuscarInterpolSubMod = lazy(() => import('pages/submodulo/BuscarInterpolSubMod'))  
 const RptMesaDigitalSubMod = lazy(() => import('pages/submodulo/MesaDigitalRptSubMod'))
 const NuevoOperativoSubMod = lazy(() => import('pages/submodulo/NuevoOperativoSubMod'))
 const NuevoInterpolSubMod = lazy(() => import('pages/submodulo/NuevoInterpolSubMod'))
 const NuevaActividadSubMod = lazy(() => import('pages/submodulo/NuevaActividadSubMod'))
+const BuscarInterpolSubMod = lazy(() => import('pages/submodulo/BuscarInterpolSubMod'))  
 const BuscarOperativoSubMod = lazy(() => import('pages/submodulo/BuscarOperativoSubMod'))
+const BuscarPreInscripcionSubMod = lazy(() => import('pages/submodulo/BuscarPreInscripcionSubMod'))
+const BuscarRefugiadoSubMod = lazy(() => import('pages/submodulo/BuscarRefugiadoSubMod'))
 const DashboardOperativoSubMod = lazy(() => import('pages/submodulo/OperativoRptSubMod'))
 const RegistrarActividad = lazy(() => import('pages/submodulo/RegistrarActividad'))
 const ProduccionRptSubMod = lazy(() => import('pages/submodulo/ProduccionRptSubMod'))
 const NacionalizacionRptSubMod = lazy(() => import('pages/submodulo/NacionalizacionRptSubMod'))
+
 
 /*» ITEM'S */
 const PendientesRptItem = lazy(() => import('components/Nacionalizacion/Item/PendientesRptItem'))
@@ -67,6 +70,12 @@ const subModulo = [
    }, {
       name: subModName.BUSCAR_INTERPOL,
       component: BuscarInterpolSubMod
+   }, {
+      name: subModName.BUSCAR_PRE_INSCRIPCION,
+      component: BuscarPreInscripcionSubMod
+   }, {
+      name: subModName.BUSCAR_REFUGIADO,
+      component: BuscarRefugiadoSubMod
    }, {
       name: subModName.REGISTRAR_PRODUCCION,
       component: RegistrarActividad

@@ -54,6 +54,7 @@ const initialValues = {
       modalidadOperativo: '',
       numeroInforme: '',
       entidadSolicitaOperativo: '',
+      establecimientoVisitado: '',
       dependencia: '',
       nombres: '',
       tipoDocumento: '',

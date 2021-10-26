@@ -1,5 +1,8 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
 import { devToolsEnhancer } from 'redux-devtools-extension'
+import thunk from 'redux-thunk'
+
+import httpStatusReducer from './reducers/httpStatusReducer'
 import procNacReducer from 'redux/reducers/procNacReducer'
 import tipoDocumentoReducer from 'redux/reducers/tipoDocumentoReducer'
 import paisReducer from 'redux/reducers/paisReducer'
@@ -7,9 +10,6 @@ import tipoSolicitudReducer from 'redux/reducers/tipoSolicitudReducer'
 import tipoTramiteReducer from 'redux/reducers/tipoTramiteReducer'
 import usuarioReducer from 'redux/reducers/usuarioReducer'
 import formsReducer from 'redux/reducers/formsReducer'
-import thunk from 'redux-thunk'
-
-/*» Last reducer's added... */
 import lineamientoReducer from 'redux/reducers/lineamientoReducer'
 import interpolReducer from 'redux/reducers/interpolReducer'
 import tipoOperativoReducer from 'redux/reducers/tipoOperativoReducer'
@@ -19,11 +19,14 @@ import distritoReducer from 'redux/reducers/distritoReducer'
 import tipoInfraccionReducer from 'redux/reducers/tipoInfraccionReducer'
 import produccionReducer from 'redux/reducers/produccionReducer'
 import nacionalizacionReducer from 'redux/reducers/nacionalizacionReducer'
+import preInscripcionReducer from 'redux/reducers/preInscripcionReducer'
+import refugiadoReducer from 'redux/reducers/refugiadoReducer'
 
 /*» Manage status of the step's sub-module's...  */
 import stagesReducer from 'redux/reducers/stagesReducer'
 
 const reducers = combineReducers({
+   httpStatus: httpStatusReducer,
    procNacionalizacion: procNacReducer,
    tipoDocumento: tipoDocumentoReducer,
    pais: paisReducer,
@@ -40,6 +43,8 @@ const reducers = combineReducers({
    tipoInfraccion: tipoInfraccionReducer,
    produccion: produccionReducer,
    nacionalizacion: nacionalizacionReducer,
+   preInscripcion: preInscripcionReducer,
+   refugiado: refugiadoReducer,
 
    stages: stagesReducer,
 })

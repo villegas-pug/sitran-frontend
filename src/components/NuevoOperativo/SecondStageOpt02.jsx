@@ -128,7 +128,7 @@ export default function SecondStageOpt02() {
                         >
                            {
                               operativoLoading 
-                                 ? <CircularProgress size={18} color='inherit'  /> 
+                                 ? <CircularProgress size={34} color='inherit'  /> 
                                  : <Publish fontSize='large' />
                            }
                         </IconButton>

@@ -8,7 +8,7 @@ import {
    Button,
    Divider, Typography
 } from '@material-ui/core'
-import { Cancel, NavigateNext, NavigateBefore } from '@material-ui/icons'
+import { Save, Cancel, NavigateNext, NavigateBefore } from '@material-ui/icons'
 import Flash from 'react-reveal/Flash'
 
 import styled from 'styled-components'
@@ -93,17 +93,21 @@ export default function SecondStage() {
                onClick={handlePrevStage}
                style={{ marginLeft: 'auto', marginRight: 5 }}
             >
-               REGRESAR
+               <Typography variant='h4' color='initial'>REGRESAR</Typography>
             </Button>
             <Button
                variant='contained'
-               endIcon={<NavigateNext />}
+               endIcon={tipoRegistroSelected !== SUBSTAGE_NO_REGISTRA_INTERVENIDOS && <NavigateNext />}
+               startIcon={ tipoRegistroSelected === SUBSTAGE_NO_REGISTRA_INTERVENIDOS 
+                              && <Save size='small' color='inherit' /> }
                disabled={!tipoRegistroSelected}
                onClick={handleRenderOrSave}
             >
-               {
-                  tipoRegistroSelected === SUBSTAGE_NO_REGISTRA_INTERVENIDOS  ? 'GUARDAR' : 'SIGUIENTE'
-               }
+               <Typography variant='h4' color='initial'>
+                  {
+                     tipoRegistroSelected === SUBSTAGE_NO_REGISTRA_INTERVENIDOS  ? 'GUARDAR' : 'SIGUIENTE'
+                  }
+               </Typography>
             </Button>
          </Footer>
       </Flash >

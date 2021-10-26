@@ -1,117 +1,87 @@
-import React, {useRef} from 'react'
+import React, { useState } from 'react'
 import {
-   Card, 
-   CardContent,
-   CardMedia,
-   CardActions,
-   CardActionArea,
-   Typography,
-   IconButton,
-   CircularProgress
+   Grid,
+   ButtonGroup,
+   Button, 
+   Typography
 } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
 import { 
+   PanTool, 
    Storage,
-   AttachFile,
-   Publish
+   ArrowBackIos
 } from '@material-ui/icons'
-import styled from 'styled-components'
+import { makeStyles } from '@material-ui/core/styles'
 import { Fade } from 'react-reveal'
-import { useState } from 'react'
-import useInterpol from 'hooks/useInterpol'
-import { useEffect } from 'react'
 
-const Body = styled.body`
-   height: calc(100% - 5rem);
-   display: flex;
-   justify-content: center;
-   align-items: center;
-`
+import SaveAllInterpol from 'components/Interpol/SaveAllInterpol'
+import SaveOneInterpol from 'components/Interpol/SaveOneInterpol'
 
-const useStyles = makeStyles({
-   root: {
-      margin: 'auto',
-      maxWidth: 345,
-   },
-   media: {
-      height: 140,
-      display: 'flex'
-   },
-   icon:{
-      margin: 'auto',
-      fontSize: 150,
-      textAlign: 'center',
+const INTERPOL_VIEWS = 'INTERPOL_VIEWS'
+const SAVE_ONE_INTERPOL_VIEW = 'SAVE_ONE_INTERPOL_VIEW'
+const SAVE_ALL_INTERPOL_VIEW = 'SAVE_ALL_INTERPOL_VIEW'
+
+const useStyle = makeStyles({
+   gridContainer: {
+      height: '85%',
    }
 })
 
 export default function NuevoInterpolSubMod() {
 
-   /*» HOOK'S  */
-   const rFile = useRef()
-   const classes = useStyles()
-   const [file, setFile] = useState(null)
-   
-   /*» CUSTOM HOOK'S  */
-   const { interpolPdfLoading, handleSaveFile } = useInterpol()
+   /*» HOOK'S  */  
+   const [view, setView] = useState(INTERPOL_VIEWS)
+   const classes = useStyle()
 
+   /*» CUSTOM HOOK'S  */
    /*»  EFFECT'S */
-   useEffect(() => { !interpolPdfLoading && setFile(null) }, [interpolPdfLoading])
 
    /*» HANDLER'S  */
-   const handleClickAppendFile = () => { rFile.current.click() }
-   const handleChangeAppendFile = ({ target: { files } }) => { setFile(files[0]) }
+   const handleChangeView = (view) => { setView(view) }
 
    return (
-      <Body>
-         <Fade>
-            <Card className={classes.root}>
-               <CardActionArea>
-                  <CardMedia
-                     className={classes.media}
-                     title='Archivo'
-                  >
-                     <Storage color='primary' className={classes.icon} />
-                  </CardMedia>
-                  <CardContent>
-                     <Typography gutterBottom variant='h5' component='h2'>
-                        Archivo Interpol
-                     </Typography>
-                     <Typography variant='body2' color='textSecondary' component='p'>
-                        El archivo adjunto debe estar en formato pdf.
-                     </Typography>
-                  </CardContent>
-               </CardActionArea>
-               <CardActions>
-                  <IconButton
-                     size='large' 
-                     color='primary'
-                     onClick={handleClickAppendFile}
-                     disabled={interpolPdfLoading}
-                  >
-                     <AttachFile fontSize='large' />
-                  </IconButton>
-                  <IconButton
-                     size='large' 
-                     color='primary'
-                     disabled={!file}
-                     onClick={() => {handleSaveFile(file)}}
-                  >
-                     {
-                        interpolPdfLoading
-                           ? <CircularProgress size={20} />
-                           : <Publish fontSize='large' />
-                     } 
-                  </IconButton>
-               </CardActions>
-               <input 
-                  ref={rFile} 
-                  type='file' 
-                  accept='application/pdf' 
-                  onChange={handleChangeAppendFile}
-                  hidden 
-               />
-            </Card>
-         </Fade>
-      </Body>
+      <Grid container className={classes.gridContainer} >
+         {
+            view !== INTERPOL_VIEWS
+            && (
+               <Grid item xs={1}>
+                  <Fade>
+                     <Button 
+                        variant='contained' 
+                        color='inherit'
+                        startIcon={<ArrowBackIos fontSize='small' color='action'/>}
+                        onClick={() => handleChangeView(INTERPOL_VIEWS)}
+                     >
+                        <Typography variant='h4' color='initial'>Regresar</Typography>
+                     </Button>
+                  </Fade>
+               </Grid>
+            )
+         }
+         <Grid item container xs={11} justify='center' alignItems='center'>
+            {
+               view === INTERPOL_VIEWS
+                  && (
+                     <Fade>
+                        <ButtonGroup variant='contained' color='primary'>
+                           <Button 
+                              startIcon={<PanTool Storage='large' />} 
+                              onClick={() => handleChangeView(SAVE_ONE_INTERPOL_VIEW)}
+                           >
+                              <Typography variant='h4' color='initial'>MANUAL</Typography>
+                           </Button>
+                           <Button 
+                              startIcon={<Storage fontSize='large' />} 
+                              onClick={() => handleChangeView(SAVE_ALL_INTERPOL_VIEW)}
+                           >
+                              <Typography variant='h4' color='initial'>ORIGEN DE DATOS</Typography>
+                           </Button>
+                        </ButtonGroup>
+                     </Fade>
+                  ) 
+            }
+            { view === SAVE_ONE_INTERPOL_VIEW && <SaveOneInterpol /> }
+            { view === SAVE_ALL_INTERPOL_VIEW && <SaveAllInterpol /> }
+         </Grid>
+      </Grid>
    )
 }

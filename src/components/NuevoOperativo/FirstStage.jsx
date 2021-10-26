@@ -3,7 +3,10 @@ import {
    Paper,
    Box,
    Divider,
-   Button, Typography, TextField,
+   Button, 
+   Typography, 
+   TextField,
+   Tooltip
 } from '@material-ui/core'
 import { NavigateNext, Cancel } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
@@ -63,12 +66,11 @@ export default function FirstStage() {
    const classes = useStyles({ currentScreen, screens })
 
    /*» CUSTOM HOOK'S  */
-   const { inputValues, handleChangeInputControlled, handleChangeInputUncontrolled, handleInputOnReset } = useOperativo()
+   const { inputValues, handleChangeInputControlled, handleChangeInputUncontrolled, handleInputsOnReset } = useOperativo()
    const { distritoDb } = useDistrito()
    const { entidadSolicitaOpeDb } = useEmpresa()
    const { handleNextStage } = useStages('NuevoOperativoSubMod')
    const { userCredentials: { dependencia: { nombre: dependenciaAuth } } } = useAuth()
-
 
    /*» EFFECT'S  */
    useEffect(() => () => { unsuscribeScreenResizeListener() }, [])
@@ -102,7 +104,6 @@ export default function FirstStage() {
                               <FormGroup>
                                  <MyTextField type='date' name='fechaOperativo' size={10} label="Fecha operativo" focused />
                               </FormGroup>
-
                               {
                                  dependenciaAuth === DEPENDENCIA_LIMA
                                     ? (
@@ -115,8 +116,7 @@ export default function FirstStage() {
                                              handleChangeUncontrolled={handleChangeInputUncontrolled}
                                              {...rest} />
                                        </FormGroup>
-                                    )
-                                    :(
+                                    ):(
                                        <FormGroup>
                                           <TextField
                                              label='¿Dónde se realiza el Operativo?'
@@ -156,6 +156,20 @@ export default function FirstStage() {
                                  />
                               </FormGroup>
 
+                              <FormGroup>
+                                 <Tooltip 
+                                    title={<Typography variant='h5' color='initial'>¡Utilice comas para separar los establecimientos!</Typography>} 
+                                    arrow
+                                 >
+                                    <MyTextField
+                                       name='establecimientoVisitado' 
+                                       label="Lugar o establecimiento visitado"
+                                       size={currentScreen === screens.desktop ? 40 : 33}
+                                       multiline
+                                    />
+                                 </Tooltip>
+                              </FormGroup>
+
                            </Box>
                            <Divider style={{ margin: '10px 0' }} />
                            <Box display='flex' justifyContent='space-between'>
@@ -164,7 +178,7 @@ export default function FirstStage() {
                                  type='reset'
                                  color='secondary'
                                  startIcon={<Cancel />}
-                                 onClick={handleInputOnReset}
+                                 onClick={handleInputsOnReset}
                               >
                                  CANCELAR
                               </MyButton>

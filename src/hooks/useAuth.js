@@ -9,11 +9,13 @@ import {
 } from 'redux/actions/usuarioAction'
 
 import { 
+   MODULO,
+   SUB_MODULO,
    ITEM, 
-   MODULO, 
-   SUB_ITEM, 
-   SUB_MODULO 
+   SUB_ITEM,
 } from 'constants/componentType'
+import useHttpStatus from './useHttpStatus'
+import { httpStatus } from 'constants/httpStatus'
 
 export default function useAuth(){
 
@@ -31,21 +33,24 @@ export default function useAuth(){
    const [modAuthenticated, setModAuthenticated] = useState([])
    const [submodAuthenticated, setSubmodAuthenticated] = useState([])
    const [pathAuthenticated, setPathAuthenticated] = useState([])
+   const { status } = useHttpStatus()
 
    /*» EFFECT'S */
+   useEffect(() => { status === httpStatus.FORBIDDEN && handleLogout() }, [status])
+
    useEffect(() => {
       Object.keys(userCredentials).length
          && setComponentsAuth(userCredentials.usrProcedimiento.map(({procedimiento}) => procedimiento))
    }, [userCredentials])
 
    useEffect(() => {
-      Object.keys(userCredentials).length
+      componentsAuth.length
          && setRedirectComponentsAuth(
-            userCredentials.usrProcedimiento
-               .filter(({procedimiento: { tipo }}) => tipo !== ITEM && tipo !== SUB_ITEM)
-               .map(({procedimiento}) => procedimiento)
+            componentsAuth
+               .filter(({ tipo }) => tipo !== ITEM && tipo !== SUB_ITEM)
+               .map((procedimiento) => procedimiento)
          )
-   }, [userCredentials])
+   }, [componentsAuth])
    
    useEffect(() => {
       setPathAuthenticated(
@@ -61,8 +66,8 @@ export default function useAuth(){
       let submod = {}
       modAuthenticated?.map(({ nombre: nombreMod, rutaMod: rutaModFromMap }) => {
          componentsAuth
-            .filter(({tipo}) => tipo === SUB_MODULO)
-            .filter(({rutaMod}) => rutaModFromMap === rutaMod)
+            .filter(({ tipo }) => tipo === SUB_MODULO)
+            .filter(({ rutaMod }) => rutaModFromMap === rutaMod)
             .map((record) => { 
                submod[nombreMod] = typeof(submod[nombreMod]) !== 'undefined' 
                   ? [...submod[nombreMod], record] 
@@ -85,7 +90,7 @@ export default function useAuth(){
       userCredentials,
 
       componentsAuth,
-      redirectComponentsAuth,
+      redirectComponentsAuth,/*» Components that rendered other components as MOD and SUB_MOD ... */
       modAuthenticated,
       submodAuthenticated,
       pathAuthenticated,

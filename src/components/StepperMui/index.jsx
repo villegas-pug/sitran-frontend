@@ -27,7 +27,7 @@ export default function StepperMui({ activeStep, steps }) {
       <div className={classes.root}>
          <Stepper activeStep={activeStep - 1}>
             {
-               steps.map(({ stage, description }) => (
+               steps?.map(({ stage, description }) => (
                   <Step className={classes.step} key={stage} >
                      <StepLabel>{description}</StepLabel>
                   </Step>

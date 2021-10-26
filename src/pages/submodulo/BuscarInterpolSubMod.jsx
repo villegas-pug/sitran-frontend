@@ -6,7 +6,6 @@ import {
    IconButton, Typography,
 } from '@material-ui/core'
 import {
-   DeleteSweep,
    Search,
    FindInPage,
    GetApp
@@ -14,25 +13,24 @@ import {
 import Fade from 'react-reveal/Fade'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
-import { format } from 'date-fns'
-import { es } from 'date-fns/locale'
+/* import { format } from 'date-fns' */
 import styled from 'styled-components'
 
 import MyTextField from 'components/Formik/MyTextField'
 import AppTitle from 'components/Styled/AppTitle'
 import SpeedDial from 'components/SpeedDial'
 import Table from 'components/Table'
-import InterpolDetalle from 'components/InterpolDetalle'
+import FichaInterpolDetalle from 'components/Interpol/FichaInterpolDetalle'
 import SimpleModal from 'components/SimpleModal'
 
 import useInterpol from 'hooks/useInterpol'
 import useBreakpoints from 'hooks/useBreakpoints'
-import { ENDPOINT_BASE } from 'constants/endpointBase'
 
 const Content = styled.div`
    margin: .5rem;
 `
 export default function BuscarInterpolSubMod(props) {
+   
    /*» HOOK'S...*/
    const rSubmit = useRef()
    const rReset = useRef()
@@ -40,24 +38,19 @@ export default function BuscarInterpolSubMod(props) {
    const [detInterpolRecord, setDetInterpolRecord] = useState({})
 
    /*» CUSTOM HOOK'S ... */
-   const { interpolLoading, interpolDb, handleFindByApprox } = useInterpol()
+   const { interpolLoadingDb, interpolDb, handleFindByApprox, handleDownloadScreenshot } = useInterpol()
    const { currentScreen, screens, unsuscribeScreenResizeListener } = useBreakpoints() 
 
    /*» EFFECT'S ... */
    useEffect(() => () => { unsuscribeScreenResizeListener() }, [])
-   useEffect(() => { console.log({currentScreen}) }, [currentScreen])
-   useEffect(() => { console.log({screens}) }, [])
 
    /*» HANDLER'S ...  */
-   const handleActionDetalle = (rowData) => {
-      setDetInterpolRecord(rowData)
-      setOpenModal(true)
-   }
+   const handleActionDetalle = (rowData) => { setDetInterpolRecord(rowData); setOpenModal(true) }
 
    /*» DEPENDENCY'S  */
-   /*» ARGUMENT ◄► `dataTable`  */
+   /*» ARGUMENT ◄► `configTable`  */
    const configTable = useMemo(() => ({
-      actions: [{ icon: 'Detalle' }, { icon: 'Descargar' }],
+      actions: [{ icon: 'Detalle' }, { icon: 'Correo' }],
       components: ({ action: { icon }, data: record }) => {
          if (icon === 'Detalle')
             return (
@@ -73,15 +66,15 @@ export default function BuscarInterpolSubMod(props) {
                   </IconButton>
                </Tooltip>
             )
-         else if(icon === 'Descargar'){
+         else if(icon === 'Correo'){
+            if(!record.isScreenshot) return <></>
             return (
                <Tooltip
-                  title='Descargar'
+                  title='Captura de correo'
                   arrow
                >
                   <IconButton
-                     disabled
-                     onClick={() => { window.open(`${ENDPOINT_BASE}/microservicio-interpol/downloadInterpol/${record.archivo}`) }}
+                     onClick={() => handleDownloadScreenshot(record.idInterpol) }
                   >
                      <GetApp />
                   </IconButton>
@@ -94,15 +87,15 @@ export default function BuscarInterpolSubMod(props) {
    /*» ARGUMENT ◄► `dataTable`  */
    const dataTable = useMemo(() => ({
       columns: [
-         { title: 'Pasaporte', field: 'pasaporte', width: 10, render: ({pasaporte}) => pasaporte.trim() || '-' },
+         { title: 'Pasaporte', field: 'pasaporte', width: 10, render: ({pasaporte}) => pasaporte?.trim() || '-' },
          {
             title: 'Ciudadano', field: 'nombres', type: 'date', width: 70,
             render: ({ nombres, apellidos }) => `${nombres}, ${apellidos}`
          },
          { title: 'Nacionalidad', field: 'nacionalidad', width: 20 },
          {
-            title: 'Fecha Emisión', field: 'fechaEmision', type: 'date', width: 15,
-            render: ({ fechaEmision }) => format(new Date(fechaEmision), 'P', { locale: es })
+            title: 'Fecha Emisión', field: 'fechaEmision', type: 'date', width: 15
+            /* render: ({ fechaEmision }) => new Intl.DateTimeFormat('es-PE', { dateStyle: 'short' }).format(Date.parse(fechaEmision)) */
          },
       ],
       data: interpolDb
@@ -114,11 +107,6 @@ export default function BuscarInterpolSubMod(props) {
          icon: <Search />,
          tooltip: 'Buscar',
          handleOnClick: () => { rSubmit.current.click() }
-      },
-      {
-         icon: <DeleteSweep />,
-         tooltip: 'Limpiar',
-         handleOnClick: () => { rReset.current.click() }
       }
    ]
 
@@ -148,7 +136,7 @@ export default function BuscarInterpolSubMod(props) {
                            {/* <AppTitle name='» BUSCAR INTERPOL' align='left' size={1} color='#777' /> */}
                            <Paper elevation={10}>
                               <Box display='flex' justifyContent='space-between' p={2} height={85} >
-                                 <MyTextField name='nombres' value={nombres} label='Nombres' size={20} />
+                                 <MyTextField name='nombres' value={nombres} label='Nombres' size={20} focused />
                                  <MyTextField name='apellidos' value={apellidos} label='Apellidos' size={20} />
                                  <MyTextField name='cedula' value={cedula} label='N° Cédula' size={10} />
                                  <MyTextField name='pasaporte' value={pasaporte} label='N° Pasaporte' size={10} />
@@ -164,7 +152,7 @@ export default function BuscarInterpolSubMod(props) {
                {/* » BODY */}
                <Box mt={.5}>
                   <Table
-                     isLoading={interpolLoading}
+                     isLoading={interpolLoadingDb}
                      dataTable={dataTable}
                      configTable={configTable}
                      pageSize={ 
@@ -186,7 +174,7 @@ export default function BuscarInterpolSubMod(props) {
          {/*» MODAL  */}
          <SimpleModal open={openModal} setOpen={setOpenModal} >
             <AppTitle name='DATOS ADICIONALES' align='left' color='#777' size={1} />
-            <InterpolDetalle data={detInterpolRecord} {...props} />
+            <FichaInterpolDetalle data={detInterpolRecord} {...props} />
          </SimpleModal>
       </>
    )
